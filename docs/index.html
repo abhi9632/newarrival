@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>IAG Hackathon 2026 — Sprint Board</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#F3F1EC;
+  --surface:#FFFFFF;
+  --surface2:#F9F8F6;
+  --border:#E2E0DB;
+  --ink:#1B2430;
+  --muted:#5B6472;
+  --faint:#9CA3AF;
+  --done-bg:#DCFCE7;       --done-text:#15803D;      --done-border:#86EFAC;
+  --progress-bg:#DBEAFE;   --progress-text:#1D4ED8;  --progress-border:#93C5FD;
+  --available-bg:#FEF9C3;  --available-text:#854D0E; --available-border:#FDE047;
+  --blocked-bg:#FEE2E2;    --blocked-text:#B91C1C;   --blocked-border:#FCA5A5;
+  --planning-bg:#F3E8FF;   --planning-text:#7C3AED;  --planning-border:#C4B5FD;
+  --accent:#2B5C73;
+  --mono:'IBM Plex Mono',monospace;
+  --sans:'IBM Plex Sans',sans-serif;
+}
+body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14px;line-height:1.5;min-height:100dvh}
+
+/* ── Page shell ── */
+.page{max-width:980px;margin:0 auto;padding:28px 20px 80px}
+
+/* ── Header ── */
+.header{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:24px;flex-wrap:wrap;gap:12px}
+.brand{font-size:16px;font-weight:600;color:var(--ink)}
+.brand em{font-style:normal;color:var(--accent)}
+.repo{font-family:var(--mono);font-size:11px;color:var(--faint);margin-top:2px}
+.header-right{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.last-updated{font-family:var(--mono);font-size:11px;color:var(--faint)}
+.btn-sm{display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border:1px solid var(--border);border-radius:6px;background:var(--surface);color:var(--muted);font-size:12px;font-family:var(--sans);cursor:pointer;transition:all .15s;text-decoration:none}
+.btn-sm:hover{border-color:var(--accent);color:var(--accent)}
+.btn-primary{background:var(--accent);color:#fff;border-color:var(--accent)}
+.btn-primary:hover{background:#1e4455;border-color:#1e4455;color:#fff}
+
+/* ── Planning gate banner ── */
+.planning-gate{background:linear-gradient(135deg,#F3E8FF 0%,#EDE9FE 100%);border:1px solid var(--planning-border);border-radius:12px;padding:32px;text-align:center;margin-bottom:28px}
+.planning-gate h2{font-size:20px;font-weight:600;color:var(--planning-text);margin-bottom:10px}
+.planning-gate p{font-size:14px;color:#5B21B6;line-height:1.7;max-width:560px;margin:0 auto 20px}
+.planning-steps{display:flex;flex-direction:column;gap:10px;max-width:520px;margin:0 auto 24px;text-align:left}
+.planning-step{display:flex;align-items:flex-start;gap:12px;background:#fff;border:1px solid var(--planning-border);border-radius:8px;padding:14px 16px}
+.step-num{flex-shrink:0;width:26px;height:26px;border-radius:50%;background:var(--planning-text);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+.step-body{flex:1}
+.step-title{font-size:13px;font-weight:600;color:var(--ink);margin-bottom:2px}
+.step-sub{font-size:12px;color:var(--muted);line-height:1.5}
+.step-cmd{font-family:var(--mono);font-size:11px;background:#1B2430;color:#A5F3C4;padding:4px 10px;border-radius:4px;display:inline-block;margin-top:5px}
+.planning-note{font-size:12px;color:var(--planning-text);opacity:.8;font-style:italic;margin-top:4px}
+
+/* ── Tabs ── */
+.tabs{display:flex;gap:2px;border-bottom:2px solid var(--border);margin-bottom:28px;overflow-x:auto}
+.tab{padding:9px 18px;font-size:13px;font-weight:500;color:var(--muted);cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-2px;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none;transition:color .15s}
+.tab:hover{color:var(--ink)}
+.tab.active{color:var(--accent);border-bottom-color:var(--accent);font-weight:600}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ── Stat pills ── */
+.stats{display:flex;gap:10px;margin-bottom:24px;flex-wrap:wrap}
+.stat{display:flex;flex-direction:column;gap:2px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;min-width:80px}
+.stat-num{font-family:var(--mono);font-size:24px;font-weight:600;line-height:1}
+.stat-label{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.stat-done .stat-num{color:var(--done-text)}
+.stat-progress .stat-num{color:var(--progress-text)}
+.stat-available .stat-num{color:var(--available-text)}
+.stat-blocked .stat-num{color:var(--blocked-text)}
+.progress-wrap{flex:1;min-width:180px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:12px 18px;display:flex;flex-direction:column;gap:8px}
+.progress-label{display:flex;justify-content:space-between}
+.progress-label span:first-child{font-size:11px;color:var(--muted);text-transform:uppercase;letter-spacing:.06em}
+.progress-pct{font-family:var(--mono);font-size:13px;font-weight:600}
+.progress-bar{height:6px;background:#E5E7EB;border-radius:3px;overflow:hidden}
+.progress-fill{height:100%;background:var(--done-text);border-radius:3px;transition:width .6s ease}
+
+/* ── GSD state banner ── */
+.gsd-state{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:16px 20px;margin-bottom:20px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.gsd-badge{font-family:var(--mono);font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;white-space:nowrap}
+.gsd-executing{background:var(--progress-bg);color:var(--progress-text);border:1px solid var(--progress-border)}
+.gsd-planning{background:var(--planning-bg);color:var(--planning-text);border:1px solid var(--planning-border)}
+.gsd-complete{background:var(--done-bg);color:var(--done-text);border:1px solid var(--done-border)}
+.gsd-label{font-size:13px;color:var(--muted)}
+.gsd-label strong{color:var(--ink)}
+
+/* ── Section heading ── */
+.section-label{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.08em;color:var(--faint);margin-bottom:12px}
+
+/* ── Task table ── */
+.task-table{width:100%;border-collapse:collapse;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.task-table thead tr{background:var(--surface2);border-bottom:1px solid var(--border)}
+.task-table th{padding:10px 14px;font-size:11px;font-weight:600;color:var(--faint);text-transform:uppercase;letter-spacing:.07em;text-align:left;white-space:nowrap}
+.task-table td{padding:13px 14px;border-bottom:1px solid var(--border);vertical-align:middle}
+.task-table tbody tr:last-child td{border-bottom:none}
+.task-table tbody tr{transition:background .1s}
+.task-table tbody tr:hover{filter:brightness(.97)}
+.row-done{background:rgba(220,252,231,.2)}
+.row-blocked{background:rgba(254,226,226,.2)}
+.row-progress{background:rgba(219,234,254,.2)}
+.task-id{font-family:var(--mono);font-size:12px;font-weight:600;color:var(--muted);white-space:nowrap}
+.task-name{font-size:13px;color:var(--ink)}
+.task-desc{font-size:12px;color:var(--muted);margin-top:2px;line-height:1.4}
+.dep-chip{display:inline-block;font-family:var(--mono);font-size:11px;padding:1px 7px;border-radius:3px;background:#F3F4F6;color:var(--muted);border:1px solid #E5E7EB;margin:1px}
+.dep-none{color:var(--faint);font-size:12px}
+.owner-cell{font-family:var(--mono);font-size:12px;color:var(--accent)}
+
+/* ── Badge ── */
+.badge{display:inline-flex;align-items:center;gap:4px;padding:3px 9px;border-radius:4px;font-size:11px;font-weight:600;font-family:var(--mono);white-space:nowrap;border:1px solid transparent}
+.badge-done{background:var(--done-bg);color:var(--done-text);border-color:var(--done-border)}
+.badge-in-progress{background:var(--progress-bg);color:var(--progress-text);border-color:var(--progress-border)}
+.badge-available{background:var(--available-bg);color:var(--available-text);border-color:var(--available-border)}
+.badge-blocked{background:var(--blocked-bg);color:var(--blocked-text);border-color:var(--blocked-border)}
+
+/* ── Claim button ── */
+.btn-claim{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:5px;font-size:11px;font-weight:600;font-family:var(--sans);cursor:pointer;border:1px solid var(--accent);background:transparent;color:var(--accent);transition:all .15s;white-space:nowrap}
+.btn-claim:hover{background:var(--accent);color:#fff}
+.btn-claim:disabled{opacity:.4;cursor:not-allowed}
+
+/* ── Claim modal ── */
+.modal-overlay{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:100;display:flex;align-items:center;justify-content:center;padding:20px}
+.modal-overlay.hidden{display:none}
+.modal{background:var(--surface);border-radius:12px;padding:28px;max-width:420px;width:100%;box-shadow:0 20px 60px rgba(0,0,0,.2)}
+.modal h3{font-size:15px;font-weight:600;margin-bottom:6px}
+.modal p{font-size:13px;color:var(--muted);margin-bottom:18px;line-height:1.5}
+.modal label{font-size:12px;font-weight:600;color:var(--muted);display:block;margin-bottom:5px;text-transform:uppercase;letter-spacing:.05em}
+.modal input{width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:6px;font-family:var(--mono);font-size:13px;margin-bottom:16px;outline:none;transition:border .15s}
+.modal input:focus{border-color:var(--accent)}
+.modal-actions{display:flex;gap:10px;justify-content:flex-end}
+.modal-msg{font-size:12px;margin-top:10px;padding:8px 12px;border-radius:5px;display:none}
+.modal-msg.ok{background:var(--done-bg);color:var(--done-text);display:block}
+.modal-msg.err{background:var(--blocked-bg);color:var(--blocked-text);display:block}
+
+/* ── Handoff tab ── */
+.handoff-grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px}
+@media(max-width:640px){.handoff-grid{grid-template-columns:1fr}}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.card h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:12px}
+.card p,.card li{font-size:13px;line-height:1.65;color:var(--ink)}
+.card ul{list-style:none;padding:0}
+.card ul li{padding:3px 0;border-bottom:1px solid var(--border);color:var(--ink)}
+.card ul li:last-child{border-bottom:none}
+.card ul li::before{content:"→ ";color:var(--accent);font-weight:600}
+.quick-resume{grid-column:1/-1;background:linear-gradient(135deg,#EDF4F7 0%,#F9F8F6 100%);border-color:#BDD6E0}
+.quick-resume h3{color:var(--accent)}
+.quick-resume p{font-size:13px;line-height:1.7}
+
+/* ── Session log ── */
+.session-log{background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden}
+.session-log table{width:100%;border-collapse:collapse}
+.session-log th{padding:10px 14px;font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:.07em;color:var(--faint);background:var(--surface2);border-bottom:1px solid var(--border);text-align:left}
+.session-log td{padding:11px 14px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:top;line-height:1.5}
+.session-log tbody tr:last-child td{border-bottom:none}
+.session-log tbody tr:hover{background:var(--surface2)}
+.session-num{font-family:var(--mono);color:var(--faint);font-size:11px}
+.session-owner{font-family:var(--mono);font-weight:600;color:var(--accent);white-space:nowrap}
+.session-date{font-family:var(--mono);font-size:11px;color:var(--muted);white-space:nowrap}
+.session-summary{color:var(--ink);max-width:480px}
+
+/* ── Next actions tab ── */
+.action-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px;margin-bottom:14px}
+.action-card.highlight{border-color:#BDD6E0;background:linear-gradient(135deg,#EDF4F7 0%,#fff 100%)}
+.action-card h3{font-size:14px;font-weight:600;margin-bottom:8px;display:flex;align-items:center;gap:8px}
+.action-card p{font-size:13px;color:var(--muted);line-height:1.6;margin-bottom:10px}
+.action-card .cmd{font-family:var(--mono);font-size:12px;background:#1B2430;color:#A5F3C4;border-radius:5px;padding:8px 14px;margin-top:8px;display:block;word-break:break-all}
+.pill{display:inline-flex;align-items:center;gap:4px;padding:2px 9px;border-radius:20px;font-size:11px;font-weight:600;font-family:var(--mono)}
+.pill-green{background:var(--done-bg);color:var(--done-text)}
+.pill-blue{background:var(--progress-bg);color:var(--progress-text)}
+.pill-yellow{background:var(--available-bg);color:var(--available-text)}
+.pill-red{background:var(--blocked-bg);color:var(--blocked-text)}
+.pill-purple{background:var(--planning-bg);color:var(--planning-text)}
+
+/* ── Blockers tab ── */
+.checklist{list-style:none;padding:0;background:var(--surface);border:1px solid var(--border);border-radius:10px;overflow:hidden;margin-bottom:20px}
+.checklist li{display:flex;align-items:flex-start;gap:12px;padding:13px 16px;border-bottom:1px solid var(--border);font-size:13px;line-height:1.5}
+.checklist li:last-child{border-bottom:none}
+.check-icon{flex-shrink:0;width:18px;height:18px;margin-top:1px}
+.check-open{color:#B91C1C}
+.check-done{color:#15803D}
+.check-text{flex:1}
+.check-label{font-weight:500;color:var(--ink)}
+.check-sub{font-size:12px;color:var(--muted);margin-top:2px}
+.blocker-section{margin-bottom:24px}
+.blocker-section h3{font-size:13px;font-weight:600;text-transform:uppercase;letter-spacing:.06em;color:var(--faint);margin-bottom:12px}
+
+/* ── Team tab ── */
+.team-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px;margin-bottom:28px}
+.team-card{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:20px}
+.team-avatar{width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:flex;align-items:center;justify-content:center;font-size:18px;font-weight:600;margin-bottom:12px}
+.team-name{font-size:15px;font-weight:600;margin-bottom:2px}
+.team-handle{font-family:var(--mono);font-size:12px;color:var(--accent);margin-bottom:6px}
+.team-role{font-size:12px;color:var(--muted)}
+.team-tasks{margin-top:10px;display:flex;flex-wrap:wrap;gap:5px}
+
+/* ── Legend ── */
+.legend{display:flex;gap:14px;flex-wrap:wrap;margin-bottom:16px}
+.legend-item{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--muted)}
+.legend-dot{width:10px;height:10px;border-radius:2px}
+
+/* ── Utility ── */
+.msg{padding:40px;text-align:center;color:var(--faint);font-size:13px}
+.err-box{background:#FEF2F2;border:1px solid #FECACA;border-radius:8px;padding:14px 18px;color:#991B1B;font-size:13px;line-height:1.6;margin-bottom:16px}
+.spinner{display:inline-block;width:14px;height:14px;border:2px solid var(--border);border-top-color:var(--accent);border-radius:50%;animation:spin .7s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+
+<!-- CLAIM MODAL -->
+<div class="modal-overlay hidden" id="claimModal">
+  <div class="modal">
+    <h3>Claim Task <span id="modalTaskId" style="color:var(--accent);font-family:var(--mono)"></span></h3>
+    <p id="modalTaskName" style="margin-bottom:14px"></p>
+    <label for="claimHandle">Your GitHub handle</label>
+    <input type="text" id="claimHandle" placeholder="e.g. abhi9632" autocomplete="off">
+    <div id="modalMsg" class="modal-msg"></div>
+    <div class="modal-actions">
+      <button class="btn-sm" onclick="closeModal()">Cancel</button>
+      <button class="btn-sm btn-primary" id="confirmClaimBtn" onclick="confirmClaim()">Claim task</button>
+    </div>
+  </div>
+</div>
+
+<div class="page">
+  <!-- HEADER -->
+  <div class="header">
+    <div>
+      <div class="brand">IAG Hackathon <em>2026</em> — Sprint Board</div>
+      <div class="repo">github.com/abhi9632/iag-hackathon-2026</div>
+    </div>
+    <div class="header-right">
+      <span class="last-updated" id="last-upd"></span>
+      <button class="btn-sm" onclick="loadAll()">
+        <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><h d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
+        Refresh
+      </button>
+      <a class="btn-sm" href="https://github.com/abhi9632/iag-hackathon-2026" target="_blank" rel="noopener noreferrer">
+        <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
+        GitHub
+      </a>
+    </div>
+  </div>
+
+  <!-- PRE-PLANNING BANNER (shown when task queue is empty) -->
+  <div id="planningGate" class="planning-gate hidden">
+    <h2>Planning not started yet</h2>
+    <p>The task queue in <strong>AGENTS.md</strong> is empty. The lead (abhi9632) needs to run planning first. Once the task queue is filled, this board will automatically switch to the full sprint view on the next refresh.</p>
+    <div class="planning-steps">
+      <div class="planning-step">
+        <div class="step-num">1</div>
+        <div class="step-body">
+          <div class="step-title">Lead: run Prompt 1 (initial setup)</div>
+          <div class="step-sub">Read all files, install skills, confirm git identity. See README.md for the exact prompt.</div>
+        </div>
+      </div>
+      <div class="planning-step">
+        <div class="step-num">2</div>
+        <div class="step-body">
+          <div class="step-title">Lead: run Prompt 2 (planning)</div>
+          <div class="step-sub">Paste the project brief. Claude runs GSD phases 1-5 and fills AGENTS.md with the task queue.</div>
+          <span class="step-cmd">/gsd-plan-phase 1 → /gsd-plan-phase 2 → ... → /gsd-plan-phase 5</span>
+        </div>
+      </div>
+      <div class="planning-step">
+        <div class="step-num">3</div>
+        <div class="step-body">
+          <div class="step-title">Builders: wait for the signal commit</div>
+          <div class="step-sub">Planning is done when you see the commit: <strong>"chore: task queue ready -- build phase open"</strong>. Refresh this board after that commit appears.</div>
+        </div>
+      </div>
+      <div class="planning-step">
+        <div class="step-num">4</div>
+        <div class="step-body">
+          <div class="step-title">All sessions: run Prompt 3 then Prompt 4</div>
+          <div class="step-sub">Claim a task on this board, then run Prompt 4 from README.md with your task ID and GSD phase number.</div>
+        </div>
+      </div>
+    </div>
+    <p class="planning-note">This banner disappears automatically once planning is complete and AGENTS.md has tasks.</p>
+  </div>
+
+  <!-- SPRINT BOARD (shown once tasks exist) -->
+  <div id="sprintBoard">
+    <!-- GSD STATE BAR -->
+    <div id="gsdStateBar" class="gsd-state hidden">
+      <span class="gsd-badge" id="gsdBadge"></span>
+      <span class="gsd-label" id="gsdLabel"></span>
+    </div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button class="tab active" onclick="switchTab('tasks',this)">Tasks</button>
+      <button class="tab" onclick="switchTab('handoff',this)">Handoff</button>
+      <button class="tab" onclick="switchTab('actions',this)">Next Actions</button>
+      <button class="tab" onclick="switchTab('blockers',this)">Blockers</button>
+      <button class="tab" onclick="switchTab('team',this)">Team</button>
+    </div>
+
+    <div class="tab-pane active" id="tab-tasks"><div class="msg"><span class="spinner"></span> Loading...</div></div>
+    <div class="tab-pane" id="tab-handoff"><div class="msg"><span class="spinner"></span> Loading...</div></div>
+    <div class="tab-pane" id="tab-actions"><div class="msg"><span class="spinner"></span> Loading...</div></div>
+    <div class="tab-pane" id="tab-blockers"><div class="msg"><span class="spinner"></span> Loading...</div></div>
+    <div class="tab-pane" id="tab-team"><div class="msg"><span class="spinner"></span> Loading...</div></div>
+  </div>
+</div>
+
+<script>
+const OWNER='abhi9632', REPO='iag-hackathon-2026';
+const PAT='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';
+
+// ── Fetch helpers ─────────────────────────────────────────
+async function fetchRaw(path){
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,
+    {cache:'no-store',headers:{Authorization:'token '+PAT,Accept:'application/vnd.github.v3.raw'}});
+  if(!r.ok) throw new Error(`${path} ${r.status}`);
+  return r.text();
+}
+async function fetchRawOptional(path){
+  try{ return await fetchRaw(path); }catch(e){ return null; }
+}
+async function fetchJson(path){
+  const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?_=${Date.now()}`,
+    {cache:'no-store',headers:{Authorization:'token '+PAT,Accept:'application/vnd.github.v3+json'}});
+  if(!r.ok) throw new Error(`${path} ${r.status}`);
+  const d=await r.json();
+  if(typeof d!=='object'||!d.sha) throw new Error('Unexpected GitHub API response');
+  return d;
+}
+
+// ── Tab switching ─────────────────────────────────────────
+function switchTab(id,el){
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  document.getElementById('tab-'+id).classList.add('active');
+  el.classList.add('active');
+}
+
+// ── Parse AGENTS.md tasks ─────────────────────────────────
+function parseTasks(md){
+  const lines=md.split('\n');
+  const start=lines.findIndex(l=>l.includes('## TASK QUEUE'));
+  if(start<0) return [];
+  const rows=[];
+  for(let i=start+1;i<lines.length;i++){
+    const l=lines[i];
+    if(l.match(/^##[^#]/)) break;
+    if(!l.trim().startsWith('|')) continue;
+    if(/^\|[-| :]+\|/.test(l.trim())) continue;
+    const cells=l.split('|').slice(1,-1).map(c=>c.trim());
+    if(!cells[0]||cells[0]==='#'||/^Task/.test(cells[1])||cells[0]==='---') continue;
+    const full=cells[1]||'';
+    const ci=full.indexOf(':');
+    const short=ci>0?full.slice(0,ci).trim():full;
+    const detail=ci>0?full.slice(ci+1).trim():'';
+    rows.push({id:cells[0],short,detail,deps:cells[2]||'--',status:(cells[3]||'').toLowerCase().trim(),claimed:cells[4]||''});
+  }
+  return rows.filter(r=>r.id&&r.id!=='#'&&!/^Task/.test(r.id));
+}
+
+// ── Parse .planning/STATE.md ──────────────────────────────
+function parseState(md){
+  if(!md) return null;
+  const get=(key)=>{ const m=md.match(new RegExp(key+':\\s*[\'\"](.*?)[\'\"]')); return m?m[1]:null; };
+  const getNum=(key)=>{ const m=md.match(new RegExp(key+':\\s*(\\d+)')); return m?parseInt(m[1]):null; };
+  return {
+    status: get('status')||'unknown',
+    pct: getNum('percent')||0,
+    completedPhases: getNum('completed_phases')||0,
+    totalPhases: getNum('total_phases')||0,
+    completedPlans: getNum('completed_plans')||0,
+    totalPlans: getNum('total_plans')||0,
+  };
+}
+
+// ── Parse HANDOFF.md sections ─────────────────────────────
+function parseHandoff(md){
+  const sections={};
+  let cur=null,buf=[];
+  for(const line of md.split('\n')){
+    const h2=line.match(/^## (.+)/);
+    if(h2){ if(cur) sections[cur]=buf.join('\n').trim(); cur=h2[1].trim(); buf=[]; }
+    else if(cur) buf.push(line);
+  }
+  if(cur) sections[cur]=buf.join('\n').trim();
+  return sections;
+}
+function parseSessions(md){
+  const sec=parseHandoff(md)['Session log']||'';
+  const rows=[];
+  for(const line of sec.split('\n')){
+    if(!line.trim().startsWith('|')) continue;
+    if(/^\|[-| :]+\|/.test(line.trim())) continue;
+    const cells=line.split('|').slice(1,-1).map(c=>c.trim());
+    if(!cells[0]||/^#$|^---$/.test(cells[0])) continue;
+    rows.push({num:cells[0],date:cells[1],owner:cells[2],summary:cells[3]});
+  }
+  return rows.filter(r=>r.num&&r.date);
+}
+function parseTeam(md){
+  const lines=md.split('\n');
+  const start=lines.findIndex(l=>l.includes('## TEAM'));
+  if(start<0) return [];
+  const rows=[];
+  for(let i=start+1;i<lines.length;i++){
+    const l=lines[i];
+    if(l.match(/^##[^#]/)) break;
+    if(!l.trim().startsWith('|')) continue;
+    if(/^\|[-| :]+\|/.test(l.trim())) continue;
+    const cells=l.split('|').slice(1,-1).map(c=>c.trim());
+    if(!cells[0]||cells[0]==='Person') continue;
+    rows.push({name:cells[0],handle:cells[1],role:cells[2]});
+  }
+  return rows;
+}
+
+// ── Status meta ───────────────────────────────────────────
+const SM={
+  'done':        {cls:'badge-done',       row:'row-done',    dot:'#86EFAC',label:'Done',        icon:'✓'},
+  'in-progress': {cls:'badge-in-progress',row:'row-progress',dot:'#93C5FD',label:'In Progress', icon:'●'},
+  'available':   {cls:'badge-available',  row:'',            dot:'#FDE047',label:'Available',   icon:'○'},
+  'blocked':     {cls:'badge-blocked',    row:'row-blocked', dot:'#FCA5A5',label:'Blocked',     icon:'✕'},
+};
+function sm(s){return SM[s]||{cls:'badge-blocked',row:'',dot:'#E5E7EB',label:s||'?',icon:'?'}}
+function badge(s){const m=sm(s);return `<span class="badge ${m.cls}">${m.icon} ${m.label}</span>`}
+
+// ── Render GSD state bar ──────────────────────────────────
+function renderGSDState(state){
+  const bar=document.getElementById('gsdStateBar');
+  const bdg=document.getElementById('gsdBadge');
+  const lbl=document.getElementById('gsdLabel');
+  if(!state){ bar.classList.add('hidden'); return; }
+  bar.classList.remove('hidden');
+  const statusMap={
+    executing: {cls:'gsd-executing',text:'GSD: Executing'},
+    planning:  {cls:'gsd-planning', text:'GSD: Planning'},
+    complete:  {cls:'gsd-complete', text:'GSD: Complete'},
+  };
+  const s=statusMap[state.status]||{cls:'gsd-planning',text:'GSD: '+state.status};
+  bdg.className='gsd-badge '+s.cls;
+  bdg.textContent=s.text;
+  lbl.innerHTML=`<strong>${state.completedPhases}/${state.totalPhases} phases</strong> — ${state.completedPlans}/${state.totalPlans} plans done &nbsp; <strong style="color:var(--done-text)">${state.pct}%</strong>`;
+}
+
+// ── Render tasks tab ──────────────────────────────────────
+function renderTasks(tasks){
+  const c={done:0,'in-progress':0,available:0,blocked:0};
+  tasks.forEach(t=>{if(c[t.status]!==undefined)c[t.status]++;});
+  const pct=tasks.length?Math.round(c.done/tasks.length*100):0;
+  const stats=`<div class="stats">
+    <div class="stat stat-done"><div class="stat-num">${c.done}</div><div class="stat-label">Done</div></div>
+    <div class="stat stat-progress"><div class="stat-num">${c['in-progress']}</div><div class="stat-label">In Progress</div></div>
+    <div class="stat stat-available"><div class="stat-num">${c.available}</div><div class="stat-label">Claimable</div></div>
+    <div class="stat stat-blocked"><div class="stat-num">${c.blocked}</div><div class="stat-label">Blocked</div></div>
+    <div class="progress-wrap">
+      <div class="progress-label"><span>Sprint Progress</span><span class="progress-pct">${pct}%</span></div>
+      <div class="progress-bar"><div class="progress-fill" style="width:${pct}%"></div></div>
+    </div>
+  </div>`;
+  const legend=`<div class="legend">${Object.entries(SM).map(([,v])=>`<div class="legend-item"><div class="legend-dot" style="background:${v.dot}"></div>${v.label}</div>`).join('')}</div>`;
+  const rows=tasks.map(t=>{
+    const deps=(!t.deps||t.deps==='--')?'<span class="dep-none">—</span>':t.deps.split(',').map(d=>`<span class="dep-chip">${d.trim()}</span>`).join(' ');
+    const detail=t.detail?`<div class="task-desc">${t.detail.slice(0,100)}${t.detail.length>100?'…':''}</div>`:'';
+    const action=t.status==='available'
+      ?`<button class="btn-claim" onclick="openModal('${t.id}','${escapeAttr(t.short)}')">Claim →</button>`
+      :`<span style="color:var(--faint);font-size:12px">${t.claimed||'—'}</span>`;
+    return `<tr class="${sm(t.status).row}"><td><span class="task-id">${t.id}</span></td><td><div class="task-name">${t.short}${detail}</div></td><td>${deps}</td><td>${badge(t.status)}</td><td>${action}</td></tr>`;
+  }).join('');
+  document.getElementById('tab-tasks').innerHTML=stats+
+    `<div class="section-label">Task Queue</div>${legend}<table class="task-table"><thead><tr><th>ID</th><th>Task</th><th>Depends On</th><th>Status</th><th>Claimed By / Action</th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="msg">No tasks yet — waiting for planning to complete.</td></tr>'}</tbody></table>`;
+}
+
+// ── Render handoff tab ────────────────────────────────────
+function renderHandoff(md){
+  const s=parseHandoff(md);
+  const sessions=parseSessions(md);
+  const quickResume=s['Quick resume']||'No quick resume yet.';
+  const currentState=s['Current state']||'';
+  const scope=s['Scope changes']||'None recorded.';
+  const stateBullets=currentState.split('\n').filter(l=>l.trim().startsWith('-')).map(l=>`<li>${l.replace(/^[-*]\s*/,'').trim()}</li>`).join('');
+  const sessionRows=sessions.slice().reverse().slice(0,12).map(r=>`<tr><td class="session-num">${r.num}</td><td class="session-date">${r.date||''}</td><td class="session-owner">${r.owner||''}</td><td class="session-summary">${(r.summary||'').slice(0,140)}${(r.summary||'').length>140?'…':''}</td></tr>`).join('');
+  document.getElementById('tab-handoff').innerHTML=`
+    <div class="handoff-grid">
+      <div class="card quick-resume"><h3>Quick Resume</h3><p>${quickResume}</p></div>
+      <div class="card"><h3>Current State</h3><ul>${stateBullets||'<li>See HANDOFF.md</li>'}</ul></div>
+      <div class="card"><h3>Scope Changes</h3><p style="font-size:13px;color:var(--muted)">${scope}</p></div>
+    </div>
+    <div class="section-label">Session Log (most recent first)</div>
+    <div class="session-log"><table>
+      <thead><tr><th>#</th><th>Date</th><th>Owner</th><th>Summary</th></tr></thead>
+      <tbody>${sessionRows||'<tr><td colspan="4" class="msg">No sessions logged yet.</td></tr>'}</tbody>
+    </table></div>`;
+}
+
+// ── Render next actions tab ───────────────────────────────
+function renderActions(tasks){
+  const available=tasks.filter(t=>t.status==='available');
+  const inProgress=tasks.filter(t=>t.status==='in-progress');
+  const blocked=tasks.filter(t=>t.status==='blocked');
+  let html='';
+  if(!tasks.length){
+    html=`<div class="action-card"><h3><span class="pill pill-purple">Planning pending</span></h3><p>No tasks yet. Wait for the planner to commit the task queue, then refresh.</p></div>`;
+  } else {
+    if(available.length) html+=`<div class="action-card highlight">
+      <h3><span class="pill pill-yellow">${available.length} task${available.length>1?'s':''} ready to claim</span></h3>
+      <p>Pick one and claim it below. Run Prompt 4 from README.md with your task ID and phase number.</p>
+      ${available.map(t=>`<div style="border:1px solid var(--border);border-radius:8px;padding:14px;margin-top:10px;background:#fff">
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="task-id">${t.id}</span><strong style="font-size:13px">${t.short}</strong></div>
+        <div style="font-size:12px;color:var(--muted);margin-bottom:10px;line-height:1.6">${t.detail.slice(0,160)}${t.detail.length>160?'…':''}</div>
+        <button class="btn-claim" style="font-size:12px;padding:5px 14px" onclick="openModal('${t.id}','${escapeAttr(t.short)}')">Claim ${t.id} →</button>
+        <code class="cmd">bash scripts/claim-task.sh ${t.id}</code>
+      </div>`).join('')}
+    </div>`;
+    if(inProgress.length) html+=`<div class="action-card">
+      <h3><span class="pill pill-blue">${inProgress.length} in progress</span></h3>
+      <p>These are owned. Don't claim them.</p>
+      ${inProgress.map(t=>`<div style="padding:6px 0;border-bottom:1px solid var(--border);font-size:13px"><span class="task-id">${t.id}</span> ${t.short}${t.claimed?` <span style="font-family:var(--mono);font-size:11px;color:var(--accent);margin-left:8px">→ ${t.claimed}</span>`:''}</div>`).join('')}
+    </div>`;
+    if(blocked.length) html+=`<div class="action-card">
+      <h3><span class="pill pill-red">${blocked.length} blocked</span></h3>
+      <p>Blocked on: ${blocked.map(t=>`<strong>${t.id}</strong> (needs ${t.deps})`).join(', ')}. Unlocks once deps are done.</p>
+    </div>`;
+    if(tasks.length&&tasks.every(t=>t.status==='done')) html+=`<div class="action-card highlight"><h3>All tasks complete!</h3><p>Sprint done. Deploy (V3) and prep the demo.</p></div>`;
+  }
+  document.getElementById('tab-actions').innerHTML=html||'<div class="msg">Nothing to show.</div>';
+}
+
+// ── Render blockers tab ───────────────────────────────────
+function renderBlockers(tasks,handoffMd){
+  const s=parseHandoff(handoffMd);
+  const standingRaw=s['Standing blockers']||'';
+  const standingItems=standingRaw.split('\n').filter(l=>l.match(/^[-*]\[/));
+  const standingHtml=standingItems.map(l=>{
+    const done=l.includes('[x]')||l.includes('[X]');
+    const text=l.replace(/^[-*]\s*\[[xX ]?\]\s*/,'');
+    return `<li><svg class="check-icon ${done?'check-done':'check-open'}" viewBox="0 0 16 16" fill="currentColor">${done?'<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/>':'<path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zm-.75 3a.75.75 0 0 1 1.5 0v4a.75.75 0 0 1-1.5 0v-4zm.75 7.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>'}</svg><div class="check-text"><div class="check-label">${text}</div></div></li>`;
+  }).join('');
+  const codeFailures=s['Code failures & fixes']||'None.';
+  const failures=codeFailures.split('\n').filter(l=>l.trim().startsWith('-')).map(l=>l.replace(/^[-*]\s*/,'').trim());
+  const failuresHtml=failures.length
+    ?failures.map(f=>`<li><svg class="check-icon" style="color:var(--muted)" viewBox="0 0 16 16" fill="currentColor"><path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11z"/></svg><div class="check-text"><div class="check-label" style="font-size:12px;color:var(--muted)">${f.slice(0,120)}${f.length>120?'…':''}</div></div></li>`).join('')
+    :'<li><div class="check-text" style="color:var(--faint);font-size:13px">No failures logged.</div></li>';
+  // dynamic delivery checklist built from tasks
+  const taskIds=new Set(tasks.filter(t=>t.status==='done').map(t=>t.id));
+  const hasV1=tasks.filter(t=>t.id.startsWith('V1')).length>0;
+  const allV1Done=hasV1&&tasks.filter(t=>t.id.startsWith('V1')).every(t=>t.status==='done');
+  const allV2Done=tasks.filter(t=>t.id.startsWith('V2')).every(t=>t.status==='done');
+  const v3Done=!!tasks.find(t=>t.id==='V3'&&t.status==='done');
+  const sprintChecks=[
+    {done:!!taskIds.has('T1'), label:'T1 foundation complete', sub:'Shared types, mock data, router, AppShell'},
+    {done:allV1Done&&hasV1, label:'V1 screens complete (minimum demoable prototype)', sub:'All V1x tasks done — judges can click through'},
+    {done:allV2Done&&tasks.filter(t=>t.id.startsWith('V2')).length>0, label:'V2 differentiators done', sub:'All V2x tasks done'},
+    {done:v3Done, label:'Deployed to Vercel/Netlify (V3)', sub:'Live URL verified, both routes smoke-tested'},
+    {done:v3Done, label:'Real mobile device check done', sub:'Not just browser resize — actual device'},
+    {done:false, label:'Demo rehearsed (queue-to-detail x2, under 2 min)', sub:'Feature freeze declared after this'},
+  ];
+  const sprintHtml=sprintChecks.map(c=>`<li><svg class="check-icon ${c.done?'check-done':'check-open'}" viewBox="0 0 16 16" fill="currentColor">${c.done?'<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/>':'<path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zm-.75 3a.75.75 0 0 1 1.5 0v4a.75.75 0 0 1-1.5 0v-4zm.75 7.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>'}</svg><div class="check-text"><div class="check-label">${c.label}</div><div class="check-sub">${c.sub}</div></div></li>`).join('');
+  document.getElementById('tab-blockers').innerHTML=`
+    <div class="blocker-section"><h3>Standing Blockers</h3><ul class="checklist">${standingHtml||'<li><div class="check-text" style="color:var(--faint);font-size:13px">No standing blockers.</div></li>'}</ul></div>
+    <div class="blocker-section"><h3>Sprint Delivery Checklist</h3><ul class="checklist">${sprintHtml}</ul></div>
+    <div class="blocker-section"><h3>Known Code Failures</h3><ul class="checklist">${failuresHtml}</ul></div>`;
+}
+
+// ── Render team tab ───────────────────────────────────────
+function renderTeam(agentsMd,handoffMd,tasks){
+  const team=parseTeam(agentsMd);
+  const sessions=parseSessions(handoffMd);
+  const cards=team.map(p=>{
+    const init=(p.name||'?')[0].toUpperCase();
+    const myTasks=tasks.filter(t=>t.claimed&&t.claimed.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
+    const chips=myTasks.map(t=>`<span class="pill ${t.status==='done'?'pill-green':t.status==='in-progress'?'pill-blue':'pill-yellow'}">${t.id}</span>`).join('');
+    const myS=sessions.filter(s=>s.owner&&s.owner.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
+    return `<div class="team-card"><div class="team-avatar">${init}</div><div class="team-name">${p.name}</div><div class="team-handle">${p.handle||'@—'}</div><div class="team-role">${p.role||''}</div><div class="team-tasks">${chips||'<span style="font-size:12px;color:var(--faint)">No tasks claimed yet</span>'}</div><div style="margin-top:10px;font-size:12px;color:var(--muted)">${myS.length} session${myS.length!==1?'s':''} logged</div></div>`;
+  }).join('');
+  const sessionRows=sessions.slice().reverse().map(r=>`<tr><td class="session-num">${r.num}</td><td class="session-date">${r.date||''}</td><td class="session-owner">${r.owner||''}</td><td class="session-summary">${(r.summary||'').slice(0,180)}${(r.summary||'').length>180?'…':''}</td></tr>`).join('');
+  document.getElementById('tab-team').innerHTML=`
+    <div class="section-label">Team Members</div>
+    <div class="team-grid">${cards||'<p style="color:var(--faint);font-size:13px">Fill AGENTS.md TEAM section first.</p>'}</div>
+    <div class="section-label">Full Session Log</div>
+    <div class="session-log"><table><thead><tr><th>#</th><th>Date</th><th>Owner</th><th>Summary</th></tr></thead><tbody>${sessionRows||'<tr><td colspan="4" class="msg">No sessions yet.</td></tr>'}</tbody></table></div>`;
+}
+
+// ── Claim modal ───────────────────────────────────────────
+let pendingClaim=null;
+function escapeAttr(s){return s.replace(/'/g,"\\'").replace(/"/g,'&quot;');}
+function openModal(taskId,taskName){
+  pendingClaim={taskId,taskName};
+  document.getElementById('modalTaskId').textContent=taskId;
+  document.getElementById('modalTaskName').textContent=taskName;
+  document.getElementById('claimHandle').value='';
+  document.getElementById('modalMsg').className='modal-msg';
+  document.getElementById('modalMsg').textContent='';
+  document.getElementById('confirmClaimBtn').disabled=false;
+  document.getElementById('confirmClaimBtn').textContent='Claim task';
+  document.getElementById('claimModal').classList.remove('hidden');
+  setTimeout(()=>document.getElementById('claimHandle').focus(),100);
+}
+function closeModal(){
+  document.getElementById('claimModal').classList.add('hidden');
+  pendingClaim=null;
+}
+async function confirmClaim(){
+  const handle=document.getElementById('claimHandle').value.trim().replace(/^@/,'');
+  if(!handle){showModalMsg('err','Please enter your GitHub handle.');return;}
+  if(!pendingClaim) return;
+  const btn=document.getElementById('confirmClaimBtn');
+  btn.disabled=true; btn.textContent='Claiming...';
+  try{
+    const info=await fetchJson('AGENTS.md');
+    const raw=atob(info.content.replace(/\n/g,''));
+    const taskId=pendingClaim.taskId;
+    const lines=raw.split('\n');
+    let updated=false;
+    const newLines=lines.map(line=>{
+      if(!line.includes('| '+taskId+' |')&&!line.startsWith('| '+taskId+' |')) return line;
+      const cells=line.split('|');
+      if(cells.length<6) return line;
+      cells[4]=' in-progress '; cells[5]=' '+handle+' ';
+      updated=true; return cells.join('|');
+    });
+    if(!updated){showModalMsg('err','Could not find task '+taskId+'. Refresh and try again.');btn.disabled=false;btn.textContent='Claim task';return;}
+    const res=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/AGENTS.md`,{
+      method:'PUT',
+      headers:{Authorization:'token '+PAT,'Content-Type':'application/json'},
+      body:JSON.stringify({message:`chore: claim ${taskId} by ${handle}`,content:btoa(unescape(encodeURIComponent(newLines.join('\n')))),sha:info.sha})
+    });
+    if(!res.ok){let m=res.status;try{const e=await res.json();m=e.message||m;}catch(_){}throw new Error(m);}
+    showModalMsg('ok',`✓ ${taskId} claimed by @${handle}! Refreshing...`);
+    setTimeout(()=>{closeModal();loadAll();},1800);
+  }catch(e){
+    showModalMsg('err','Failed: '+e.message);
+    btn.disabled=false; btn.textContent='Claim task';
+  }
+}
+function showModalMsg(type,text){
+  const el=document.getElementById('modalMsg');
+  el.className='modal-msg '+type; el.textContent=text;
+}
+document.getElementById('claimModal').addEventListener('click',function(e){if(e.target===this)closeModal();});
+
+// ── Main load ─────────────────────────────────────────────
+async function loadAll(){
+  document.getElementById('last-upd').textContent='';
+  try{
+    const [agentsMd, handoffMd, stateMd]=await Promise.all([
+      fetchRaw('AGENTS.md'),
+      fetchRaw('HANDOFF.md'),
+      fetchRawOptional('.planning/STATE.md'),
+    ]);
+    const tasks=parseTasks(agentsMd);
+    const state=parseState(stateMd);
+    const gate=document.getElementById('planningGate');
+    const board=document.getElementById('sprintBoard');
+
+    if(!tasks.length){
+      // Planning not complete yet: show gate, hide board
+      gate.classList.remove('hidden');
+      board.classList.add('hidden');
+    } else {
+      // Tasks exist: show board, hide gate
+      gate.classList.add('hidden');
+      board.classList.remove('hidden');
+      renderGSDState(state);
+      renderTasks(tasks);
+      renderHandoff(handoffMd);
+      renderActions(tasks);
+      renderBlockers(tasks,handoffMd);
+      renderTeam(agentsMd,handoffMd,tasks);
+    }
+    document.getElementById('last-upd').textContent='Updated '+new Date().toLocaleTimeString();
+  }catch(e){
+    document.getElementById('planningGate').classList.add('hidden');
+    document.getElementById('sprintBoard').classList.remove('hidden');
+    ['tasks','handoff','actions','blockers','team'].forEach(id=>{
+      const el=document.getElementById('tab-'+id);
+      if(el) el.innerHTML=`<div class="err-box">Error loading data: ${e.message}</div>`;
+    });
+  }
+}
+
+loadAll();
+</script>
+</body>
+</html>

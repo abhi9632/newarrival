@@ -1,0 +1,49 @@
+{
+  "includeCoAuthoredBy": false,
+  "gitAttribution": false,
+  "plugins": {
+    "marketplaces": [
+      { "type": "url", "url": "https://raw.githubusercontent.com/anthropics/claude-code/refs/heads/main/.claude/plugins.json" },
+      { "type": "url", "url": "https://raw.githubusercontent.com/anthropics/claude-plugins-official/refs/heads/main/.claude/plugins.json" },
+      { "type": "url", "url": "https://raw.githubusercontent.com/thedotmack/claude-mem/refs/heads/main/.claude/plugins.json" }
+    ],
+    "plugins": [
+      "frontend-design",
+      "claude-code-setup",
+      "claude-mem"
+    ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/cloud-git-identity.sh"
+          }
+        ]
+      },
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/print-handoff.sh"
+          }
+        ]
+      }
+    ],
+    "Stop": [
+      {
+        "matcher": "",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash scripts/handoff-check.sh"
+          }
+        ]
+      }
+    ]
+  }
+}

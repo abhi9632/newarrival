@@ -1,0 +1,34 @@
+# Environment
+.env
+.env.*
+!.env.example
+
+# Dependencies
+node_modules/
+
+# Build outputs
+dist/
+.next/
+.nuxt/
+.output/
+build/
+.cache/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Editor
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Claude Code -- DO NOT ignore .agents/skills/ or skills-lock.json
+# Both must be committed so any machine or container gets the same vendored skills.
+# .agents/skills/   <-- intentionally NOT ignored
+# skills-lock.json  <-- intentionally NOT ignored
+
+# Logs
+*.log
+npm-debug.log*
