@@ -1,5 +1,5 @@
 # SKILL: Hackathon Planning Automation
-# Version: 6.4-hackathon -- IAG Hackathon 2026 (UTS Tech Festival)
+# Version: 6.4-hackathon -- general hackathon template
 # Purpose: Feed GSD a structured problem brief so its questioning produces a focused
 #          48-hour sprint plan, then fill AGENTS.md / CLAUDE.md / HANDOFF.md from
 #          GSD's .planning/ artifacts once the plan is approved.
@@ -64,15 +64,19 @@ Use comma, colon, semicolon, parentheses, or split the sentence. No exceptions.
 
 ## HOW TO INVOKE
 
-On Day 1 morning, after the problem brief is announced:
+**Ideation Sprint runs first.** Before this skill runs, the lead runs `rules/ideation-sprint.md`
+(a 90-minute concept lock) which writes `docs/CONCEPT.md`. This skill's planning input is
+`docs/CONCEPT.md`, not the raw problem statement. If CONCEPT.md does not exist, stop and run
+the Ideation Sprint first.
 
-- "Run the project planning skill -- here's the brief: [paste]"
-- "Problem statement: [paste]. Run the hackathon planning skill."
+On Day 1 morning, once CONCEPT.md is locked:
+
+- "Run the project planning skill. The brief is docs/CONCEPT.md plus DAY1.md EVENT CONFIG."
 
 Claude executes ALL phases in sequence without further prompting.
 Do NOT skip phases. Each phase gates the next.
 
-**The flow:** Phase 1 extracts the problem and locks constraints -> GSD questions the
+**The flow:** Phase 1 reads the locked concept and locks constraints -> GSD questions the
 team interactively, researches, scopes, and produces a roadmap -> Phase 3 fills
 governance docs from GSD's output -> Phase 4 is the approval gate and execution start.
 
@@ -100,17 +104,28 @@ These are non-negotiable. They go verbatim into the GSD brief doc in Phase 1.
 - No new frameworks nobody on the team has used before.
 - Deployment: Vercel or Netlify (1-click from repo). Must be live before demo.
 
-**Judge scoring criteria (feed to GSD as constraints):**
-- Problem clarity: does the demo make the problem immediately obvious?
-- Solution quality: does it actually solve the problem, not just describe it?
-- UX polish: does it feel intentional, not like a prototype thrown together?
-- Feasibility: is there a believable path to a real product from this?
-- Presentation: does the team tell a compelling story in the time slot?
+**Judging rubric (feed to GSD as constraints):**
 
-**UI polish -- Day 2, not Day 1:**
-Build all features first. UI beautification (design tokens, visual polish, frontend-design
-skill) is a Day 2 activity done after feature freeze, not a gate before building starts.
-Get the happy path working and demoable first. Polish it once it works.
+Read the rubric from DAY1.md EVENT CONFIG. Feed its criteria and weights to GSD as
+constraints. Weight features by rubric points per hour of build time: the criterion worth
+the most points earns the most build time. A simple, clear demo scores higher than a
+complex one that is hard to follow.
+
+Fallback rubric (use only when the event publishes none; recorded in EVENT CONFIG):
+
+| Criterion | Weight | What judges look for |
+|---|---|---|
+| Problem clarity | equal | The problem is specific and immediately obvious |
+| Solution quality | equal | The solution actually addresses the problem |
+| UX polish | equal | The demo looks and feels designed, not templated |
+| Feasibility | equal | The approach is realistic and the tech choice is explainable |
+| Presentation | equal | The story is clear and easy to follow in about 3 minutes |
+
+**UI polish:**
+- Day 1, T1 only: run `frontend-design` and `design-taste-frontend` once to agree
+  design tokens and fill `design-system/README.md`.
+- Day 1 after T1: build features using those tokens. Do not re-run the full design pass.
+- Day 2 after feature freeze: run the full visual polish pass.
 
 ---
 
@@ -135,9 +150,12 @@ The repo is the only shared state between team members and between sessions.
 
 ---
 
-## PHASE 1: PROBLEM BRIEF EXTRACTION + CONSTRAINTS LOCK
+## PHASE 1: CONCEPT INTAKE + CONSTRAINTS LOCK
 
-Accept any format: announcement text, photo of a slide, bullet points, voice notes.
+Primary input is `docs/CONCEPT.md`, written by the Ideation Sprint. It already holds the
+locked problem statement, persona, demo narrative, signature wow moment, rubric mapping,
+risks, and assumptions. Read it first and use its fields verbatim. Use the raw problem brief
+(announcement text, slide photo, bullet points) only to fill gaps CONCEPT.md leaves open.
 
 ### Step 1 -- Extract problem fields
 
@@ -146,10 +164,14 @@ Accept any format: announcement text, photo of a slide, bullet points, voice not
 | Problem statement (1 sentence) | | |
 | Affected user / customer segment | | |
 | Current pain (what breaks today) | | |
+| Target persona (who the demo is for) | | |
 | Proposed solution direction | | |
 | Key screens / flows needed | | |
 | Data needed (what to mock) | | |
-| IAG brand / product context | | |
+| Demo narrative (1 sentence: judge watches X happen) | | |
+| Rubric criterion each feature serves | | |
+| Assumptions to test during build (at least 1) | | |
+| Brand / product context (any provided guidelines) | | |
 | Any provided assets (logo, colours, fonts) | | |
 | Team size + roles | | |
 | Any teammate preferences or constraints | | |
@@ -163,14 +185,14 @@ Write `.planning/_intake/phase1-brief.md` containing:
 
 1. The extraction table from Step 1 (all fields, confidence levels intact)
 2. The hackathon constraints block verbatim (from HACKATHON CONSTRAINTS above)
-3. Judge scoring criteria as a bullet list
-4. Any IAG-specific context extracted from the problem brief
+3. The judging rubric from DAY1.md EVENT CONFIG (criteria + weights)
+4. Any event or brand context extracted from CONCEPT.md and the problem brief
 
-**Design system note:** If the problem brief or provided assets include IAG brand
+**Design system note:** If the problem brief or provided assets include brand
 guidelines (colours, fonts, logo): record "Design System: LOCKED -- [details]".
-If no brand assets provided: record "Design System: OPEN -- favour clean, professional,
-trustworthy aesthetic appropriate for an insurance/financial services context.
-Polish applied on Day 2 after feature freeze."
+If no brand assets provided: record "Design System: OPEN -- choose a distinctive visual
+identity per rules/frontend-design.md; the default component-library look is a bug.
+Polish applied after feature freeze."
 
 Commit `.planning/_intake/phase1-brief.md` and push before Phase 2.
 
@@ -208,6 +230,22 @@ roadmap runs longer than the available build time (Day 1 noon to Day 2 feature f
 push back: "Scope this for [X] hours of build time. Cut or defer anything that does
 not make the demo more compelling."
 
+**Rubric gate -- verify before approving the roadmap:**
+
+Before accepting GSD's roadmap, confirm every rubric criterion in DAY1.md EVENT CONFIG is
+served by the plan. If any are missing, push back to GSD and request a revision before approving.
+
+- For each rubric criterion: name at least one feature in the roadmap that serves it.
+  If a criterion is unserved, ask GSD to add or reshape a task to cover it.
+
+- Demo walkability: the roadmap must produce a demo happy path walkable in about 3 minutes.
+  If the scope is too wide to demo cleanly, ask GSD to cut until it is.
+
+- Iteration: the roadmap must include at least one explicit assumption-test checkpoint
+  before feature freeze. If not, ask GSD to add one.
+
+Do not approve the roadmap until every rubric criterion is served.
+
 ### Step 2 -- CLAUDE.md merge: append-only, never overwrite
 
 GSD generates a CLAUDE.md. The existing CLAUDE.md in this repo is the source of truth.
@@ -218,7 +256,7 @@ Merge protocol:
 4. Append those to the END of the existing CLAUDE.md marked with
    `<!-- GSD: added by gsd-core setup -->`.
 5. Never touch, reorder, or rewrite existing content. Additions only.
-6. Keep the final CLAUDE.md under 150 lines (hackathon context -- keep it scannable).
+6. Keep the final CLAUDE.md under 250 lines (hackathon context -- keep it scannable).
 7. Delete the draft file.
 
 ---
@@ -282,7 +320,7 @@ If only one V1 task is claimable at a time, go back and split it.
 
 Replace all [fill Day 1] placeholders using the sourcing map and translation rules above:
 - Framework and styling from GSD's stack recommendation
-- Deployment target (Vercel or Netlify -- confirm which is faster for the team)
+- Deployment target from DAY1.md EVENT CONFIG (if set, its deploy task goes into phase 1)
 - Task Queue: translate GSD roadmap to V-prefix format (see above)
 - Components: list the first 3-5 components from Phase 1 of GSD's roadmap
 - Design tokens: from Phase 1 brief (LOCKED brand tokens, or OPEN placeholder -- filled Day 2)
@@ -333,8 +371,18 @@ Pause and show:
   HANDOFF.md   -- quick resume, feature freeze time, standing blockers
   ROADMAP.md   -- time-boxed sprint plan in .planning/ROADMAP.md
 
+  RUBRIC CHECKLIST (criteria + weights from DAY1.md EVENT CONFIG):
+  [ ] Every rubric criterion has at least one feature in the roadmap serving it
+  [ ] Demo happy path is walkable in about 3 minutes, no narration required,
+      every feature in the roadmap appears in the demo flow
+  [ ] At least one assumption logged with a test plan before feature freeze
+  [ ] Highest-weighted criterion gets the most build time
+
+  All boxes must be confirmed before replying APPROVED.
+  If any box is unchecked: reply "CHANGE [criterion]" to fix it first.
+
 Reply with:
-  "APPROVED"         -> output final instructions and hand off to the build phase
+  "APPROVED"         -> all rubric boxes confirmed, hand off to build phase
   "CHANGE [what]"    -> update that section and re-present
   "QUESTION: [what]" -> clarify first
 
@@ -350,15 +398,20 @@ Then output these next steps IN ORDER -- do not skip or reorder:
     Run /gsd-plan-phase [N] for every phase (1 through 4). Each writes the spec
     to .planning/phases/[N]-*/[N]-01-PLAN.md -- the file every builder reads.
     Commit all .planning/ files before signalling the team.
-    Builders then claim a task and read its plan file (bash scripts/check-plan.sh [N])
-    before writing any code. GSD is planning-only; it does not drive the build.
+    Verify before signalling the team: run `bash scripts/check-plan.sh [N]` for
+    phases 1 through 4. All must return a valid plan file path. If any phase is
+    missing, run `/gsd-plan-phase [N]` for it now. Do not open Phase B until all
+    phase plans are committed.
+    Pre-flight: confirm no `[fill Day 1]` placeholders remain in AGENTS.md Task Queue.
+    If any rows still show placeholder text, fill them from `.planning/ROADMAP.md`
+    before signalling the team.
     Claim T1 first: bash scripts/claim-task.sh T1
 
-  STEP 2 -- UI POLISH (Day 2, after feature freeze only):
-    Once all features are working and demoable, run frontend-design and
-    design-taste-frontend skills to polish the visual layer.
+  STEP 2 -- UI POLISH:
+    Day 1, T1 only: run frontend-design and design-taste-frontend once to lock tokens.
+    Day 2 after feature freeze: run the full visual polish pass.
     Then fill design-system/README.md with agreed tokens.
-    Do NOT run these before features are complete -- they block momentum.
+    Do not run the full visual polish pass before features are complete.
 
 ---
 
@@ -423,9 +476,9 @@ Change the Session log table in HANDOFF.md to include an Owner column:
 ```
 | # | Date/Time | Owner | Summary |
 |---|---|---|---|
-| 1 | 2026-06-23 09:00 | abhi9632   | Planning session. GSD roadmap approved. |
-| 2 | 2026-06-23 10:45 | teammate-A | Claimed V1a. AppShell + router wired. |
-| 3 | 2026-06-23 10:50 | teammate-B | Claimed V1b. Mock data + ClaimCard done. |
+| 1 | Day 1 09:00 | lead       | Planning session. GSD roadmap approved. |
+| 2 | Day 1 10:45 | teammate-A | Claimed V1a. AppShell + router wired. |
+| 3 | Day 1 10:50 | teammate-B | Claimed V1b. Mock data + primary card done. |
 ```
 
 The Owner column is what lets a resuming session scan the log for their own rows only.
@@ -441,9 +494,25 @@ At feature freeze, before starting polish:
 2. Walk the happy path end-to-end on a real device (not just localhost).
 3. Identify the 3 most visually impressive moments in the flow. Make those perfect.
 4. Everything else: acceptable quality. Not perfect. Time-boxed.
-5. Deploy to Vercel/Netlify. Confirm the live URL works on mobile.
+5. Deploy to the target in DAY1.md EVENT CONFIG (if set). Confirm the live URL works on mobile.
 6. Prepare the 1-sentence problem statement and 1-sentence solution statement
    for the opening of the demo. Write them in HANDOFF.md under "Demo script".
+
+---
+
+## PITCH PHASE
+
+Pitch is a first-class phase, not an afterthought. Every project carries three pitch tasks
+in the AGENTS.md queue, claimable only after feature freeze:
+
+- P1: pitch script + click-path demo script
+- P2: slide deck built in the product's own design language (HTML deck using
+  design-system tokens), so pitch and product read as one designed thing
+- P3: rehearsal + backup capture
+
+Full protocol: `docs/pitch-playbook.md`. The deck reuses `design-system/README.md` tokens
+(same fonts, colours, spacing, components as the product); judges register that coherence as
+polish.
 
 ---
 

@@ -1,19 +1,18 @@
 # HANDOFF.md
 
-HANDOFF_SYNCED_COMMIT: pending-update-after-this-commit
+HANDOFF_SYNCED_COMMIT: none
 
 ## Quick resume
-Day 1 (Tuesday 23 June 2026). Pre-hackathon. Repo fully audited and ready. Pull, paste brief, say "Run the project planning skill".
+Fresh template, no project yet. First action: lead fills DAY1.md EVENT CONFIG, then runs the Ideation Sprint (Prompt 2a in README.md). No code before docs/CONCEPT.md is committed.
 
 ## Current state
-- Phase: pre-hackathon (repo ready, all hooks wired, GSD engine seeded, SKILL.md v6.3-hackathon committed)
-- Agent setup: abhi9632 runs this Claude session. Teammates use their own agents on separate machines. Git is the sync layer.
-- Full audit complete (2026-06-20): all task-id syntax fixed, skills-setup.md created, SKILL.md Rule 0 hard gate, GSD->V-prefix translation, multi-agent resume contract added.
+- Phase: template ready, no event configured
+- Next: fill DAY1.md EVENT CONFIG, run Ideation Sprint, lock docs/CONCEPT.md, then planning (Prompt 2b)
 
 ## Standing blockers
+- [ ] Fill DAY1.md EVENT CONFIG (lead, Day 1 morning, before anything else)
 - [ ] Add teammates as collaborators: GitHub > Settings > Collaborators
-- [ ] Agree on framework and stack Day 1 morning, fill into AGENTS.md
-- [ ] Assign feature ownership per person in AGENTS.md Pages & Routes table
+- [ ] Agree stack Day 1 during planning, fill into AGENTS.md
 - [ ] Vendor skills on first session: `frontend-design`, `design-taste-frontend`, `find-skills` (see `docs/skills-setup.md`)
 
 ## Infra & access blockers
@@ -25,14 +24,6 @@ Day 1 (Tuesday 23 June 2026). Pre-hackathon. Repo fully audited and ready. Pull,
 ## Session log
 | # | Date/Time | Owner | Summary |
 |---|---|---|---|
-| 6 | 2026-06-20 | abhi9632 | Refactored for solo Claude session + multi-agent git integration model |
-| 7 | 2026-06-20 | abhi9632 | Full audit: fixed print-handoff, gitignore skills-lock, design-system tone guard, orphan deleted |
-| 8 | 2026-06-20 | abhi9632 | Audit: fixed stale bootstrap-gsd note, print-handoff awk bug, design-system tone guard, quality hackathon note |
-| 9 | 2026-06-20 | abhi9632 | SKILL.md v6.0-hackathon: GSD owns planning, no --auto, feature freeze + demo prep gates |
-| 10 | 2026-06-20 | abhi9632 | Final audit fixes: print-handoff line cap, CLAUDE.md rules table, session log archived, sync hash set |
-| 11 | 2026-06-20 | abhi9632 | Audit pass 2: parallel-workflow V-prefix, print-handoff cap lifted, design-system placeholder, git-integration modernised |
-| 12 | 2026-06-20 | abhi9632 | Audit pass 3: next-task footer, AGENTS.md code block, DAY1 key commands, handoff-check orphan ID, skills-setup.md created, SKILL.md v6.2 |
-| 13 | 2026-06-20 | abhi9632 | SKILL.md v6.3: multi-agent resume contract, Quick resume scoped to project-level, Session log Owner column added |
 
 ## Scope changes
 (none)
@@ -41,9 +32,12 @@ Day 1 (Tuesday 23 June 2026). Pre-hackathon. Repo fully audited and ready. Pull,
 | Doc | Purpose | When |
 |---|---|---|
 | `CLAUDE.md` | Non-negotiables, Rule 0, decision table | Every session |
-| `AGENTS.md` | Project facts, routes, components, tokens, agent ownership | Adding routes/components |
+| `AGENTS.md` | Project facts, task queue, tokens, scope | Every session |
+| `DAY1.md` | EVENT CONFIG (single source of event facts) + kickoff timeline | Day 1 morning |
 | `SKILL.md` | Planning automation (run on Day 1 morning only) | Day 1 planning only |
-| `rules/frontend-design.md` | Rule 0 process, skill vendor commands | Before any UI |
+| `rules/ideation-sprint.md` | 90-minute concept lock protocol | After problem drops, before planning |
+| `docs/CONCEPT.md` | Locked concept, input to planning | Written during Ideation Sprint |
+| `rules/frontend-design.md` | Rule 0 process, distinctive-design mandate | Before any UI |
 | `rules/brainstorming.md` | Structured ideation before building | When direction is unclear |
 | `rules/development-workflow.md` | Feature build order | Building a feature |
 | `rules/data-and-forms.md` | Fetch + form standards | Fetching data or building forms |
@@ -52,7 +46,8 @@ Day 1 (Tuesday 23 June 2026). Pre-hackathon. Repo fully audited and ready. Pull,
 | `rules/verification-before-completion.md` | Evidence before claims | Before claiming done |
 | `rules/documentation-hooks.md` | Doc update triggers | After finishing a feature |
 | `design-system/README.md` | Design tokens reference (fill after Rule 0) | Before any UI decisions |
+| `docs/pitch-playbook.md` | P1-P3 pitch tasks: script, deck, rehearsal | After feature freeze |
+| `docs/demo-prep.md` | Feature freeze schedule + demo checklist | Freeze day |
 | `docs/skills-setup.md` | Standing skills install instructions | First session only |
 | `docs/git-integration.md` | Multi-agent git sync protocol | Coordinating with teammates |
-| `docs/demo-prep.md` | Feature freeze schedule + demo checklist | Day 2 |
 | `docs/session-archive.md` | Old session log entries | Reference only |

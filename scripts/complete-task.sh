@@ -15,6 +15,12 @@
 #   6. Commits and pushes the updated AGENTS.md
 set -euo pipefail
 
+PY=""
+for c in "python3" "python" "py -3"; do
+  if $c -c 'import sys' >/dev/null 2>&1; then PY="$c"; break; fi
+done
+[ -n "$PY" ] || { echo "ERROR: no working Python found (need python3, python, or py -3)" >&2; exit 1; }
+
 TASK_ID="${1:-}"
 
 if [ -z "$TASK_ID" ]; then
@@ -69,7 +75,7 @@ if echo "$task_line" | grep -qi "human action\|manual\|browser\|physical device\
 fi
 
 # Step 4 + 5: mark done, clear Claimed By, unblock dependents
-python3 - "$TASK_ID" <<'PYEOF'
+$PY - "$TASK_ID" <<'PYEOF'
 import re, pathlib, sys
 
 task_id = sys.argv[1]
@@ -77,7 +83,7 @@ path = pathlib.Path('AGENTS.md')
 lines = path.read_text().splitlines(keepends=True)
 
 def parse_row(line):
-    m = re.match(r'^\s*\|\s*([TV]\d+[a-z]?)\s*\|', line)
+    m = re.match(r'^\s*\|\s*([TVP]\d+[a-z]?)\s*\|', line)
     if not m:
         return None
     parts = [p.strip() for p in line.split('|')]
@@ -85,7 +91,7 @@ def parse_row(line):
         return None
     tid = parts[1].strip()
     raw_deps = parts[3].strip()
-    deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TV]\d+[a-z]?', d.strip())]
+    deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TVP]\d+[a-z]?', d.strip())]
     status = re.sub(r'\s*\(.*?\)', '', parts[4]).strip()
     return tid, deps, status
 

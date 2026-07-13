@@ -62,8 +62,9 @@ bash scripts/next-task.sh
 The queue already has 2+ claimable tasks. Each person claims one and goes.
 
 ### Step 3 -- Throughout the day
-When finishing a task: `bash scripts/complete-task.sh <task-id>`
-When wanting next task: Claude auto-runs `next-task.sh` and suggests the split.
+When finishing a task: Claude Code runs `bash scripts/complete-task.sh <task-id>`
+When wanting next task: human runs `next-task.sh` to see what has opened up,
+then claims with `claim-task.sh <task-id>`, then pastes the builder prompt.
 
 ---
 
@@ -97,22 +98,32 @@ Commit when done.
 Each person opens their own session. The only contract between sessions is
 the Task Queue in AGENTS.md. No pre-assignment.
 
-Follow `rules/development-workflow.md` -- it now includes Task Queue
-claim/release steps at the top. That is the full loop each session runs.
+**How Phase B works -- task ownership model:**
+
+| Step | Who | Action |
+|---|---|---|
+| 1 | Human | `bash scripts/next-task.sh` -- see what is claimable |
+| 2 | Human | `bash scripts/claim-task.sh <task-id>` -- claim it |
+| 3 | Human | Paste builder prompt into Claude Code with task ID filled in |
+| 4 | Claude Code | git pull, read plan, build, update HANDOFF.md, commit, push |
+| 5 | Claude Code | `bash scripts/complete-task.sh <task-id>` -- mark done, unblock deps |
+| 6 | Human | Repeat from step 1 for the next task |
+
+Follow `rules/development-workflow.md` for the full build loop inside each session.
 
 ---
 
 ## Task Queue rules
 
-- **Claim before building.** Run `bash scripts/claim-task.sh <task-id>` as the
-  very first action -- before reading the task, before planning, before code.
-  Example: `bash scripts/claim-task.sh V1a`
-- **Release if session ends mid-task.** Set back to available, log in HANDOFF.md, commit.
-- **Mark done and unblock when finished.** Run `bash scripts/complete-task.sh <task-id>`.
-  Example: `bash scripts/complete-task.sh V1a`
+- **Human claims, Claude Code completes.** Human runs `bash scripts/claim-task.sh <task-id>`
+  before pasting the builder prompt. Claude Code runs `bash scripts/complete-task.sh <task-id>`
+  when the task is done. These are the only two queue-state scripts. Never swap owners.
+- **Pull before claiming.** Run `bash scripts/next-task.sh` first -- it pulls automatically
+  and shows what is claimable. Then run `claim-task.sh`. Never claim without pulling first.
+- **Release if session ends mid-task.** Human edits AGENTS.md to set Status back to
+  available and clear Claimed By. Log progress in HANDOFF.md so teammate can resume. Commit.
 - **Never start a blocked task.** If everything is in-progress or blocked,
   wait -- run `bash scripts/next-task.sh` to check what has opened up.
-- **Pull before claiming.** `next-task.sh` does this automatically.
 
 ---
 
@@ -142,6 +153,9 @@ claims and commits it before anyone else starts. It must include:
 - Design token file
 - `design-system/README.md` filled with the token reference (required before any V1 UI work)
 
+T1 also runs Rule 0 once (frontend-design + design-taste-frontend) to lock design tokens.
+All V1x+ tasks read tokens from `design-system/README.md` -- they do not re-run Rule 0.
+
 Both sessions import from these. Never duplicate them in a feature task.
 
 ---
@@ -163,6 +177,7 @@ For source code conflicts: keep both if possible, merge manually, commit.
 
 - Whatever is committed is safe -- teammate reads HANDOFF.md and picks up.
 - Whatever is uncommitted is lost -- keep commits small and frequent.
-- If your session hits token death: run Hook 9 if possible (release the task).
+- If your session hits token death: human edits AGENTS.md directly to set Status
+  back to available and clear Claimed By. Commit and push.
 - If you cannot update AGENTS.md before dying: teammate sets Status back
   to available after reading your last HANDOFF.md entry.

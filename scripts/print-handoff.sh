@@ -23,4 +23,13 @@ awk '
   }
 ' HANDOFF.md
 echo "===== END (full: HANDOFF.md) ====="
+
+echo ""
+echo "===== ACTION REQUIRED ====="
+echo "WAITING FOR HUMAN AUTHORISATION."
+echo "Do NOT begin any work. Do NOT read plan files. Do NOT run any scripts."
+echo "Wait for the human to run: bash scripts/claim-task.sh <task-id>"
+echo "Then wait for the human to paste the builder prompt."
+echo "Only then may you proceed to SESSION START steps."
+echo "==========================="
 exit 0

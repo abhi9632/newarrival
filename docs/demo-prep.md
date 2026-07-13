@@ -1,4 +1,8 @@
-# docs/demo-prep.md -- Day 2 demo preparation
+# docs/demo-prep.md -- demo preparation
+
+Freeze time and demo time are set in DAY1.md EVENT CONFIG. Times below are relative to
+that freeze time (T). Pitch tasks (P1-P3) are specified in `docs/pitch-playbook.md` and
+become claimable only after freeze.
 
 ## Feature freeze schedule
 | Time | Action |
@@ -6,7 +10,7 @@
 | T-3h | Run through full demo flow. Note every broken interaction. |
 | T-2h | Fix critical bugs only. Nothing new. |
 | T-1h | FREEZE features. Deploy final build. Confirm public URL works. |
-| T-30m | Rehearse pitch (3 min max). Assign speaking parts. |
+| T-30m | Rehearse pitch (3 min max, see `docs/pitch-playbook.md` P3). Assign speaking parts. |
 | T-10m | Open the app on a real device. Confirm it loads. |
 
 ## Demo checklist (complete before T-1h)
@@ -22,16 +26,19 @@
 - [ ] Public URL deployed and loads from a phone on 4G (not just localhost)
 
 ## Pitch structure (3 minutes)
-1. **Problem** (30s): one specific IAG customer pain point, told as a human story
-2. **Solution** (30s): what we built and how it solves it
-3. **Demo** (90s): click through the primary flow live -- no slides, just the product
-4. **Feasibility** (30s): how this could work in production at IAG scale
+Full script structure, click-path template, and deck spec: `docs/pitch-playbook.md` (P1, P2).
+1. **Hook + problem** (40s): one specific persona pain point, told as a human story
+2. **Live demo** (90s): click through the primary flow live -- no slides, just the product
+3. **How it works + feasibility** (40s): architecture in plain language, path to production
+4. **Close** (10s): memorable line, what you want from judges
 
-## Judge scoring areas (anticipated)
-- Problem clarity and relevance to IAG
+## Judge scoring areas
+See DAY1.md EVENT CONFIG for the event's actual rubric and weights. This checklist assumes
+scoring generally rewards:
+- Problem clarity and relevance to the persona
 - UX polish and flow quality
 - Technical execution quality
-- Business viability and scalability
+- Feasibility and scalability
 - Team communication and presentation
 
 ## What judges will click

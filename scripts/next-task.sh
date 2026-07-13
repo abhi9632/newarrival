@@ -5,6 +5,12 @@
 # Usage: bash scripts/next-task.sh
 set -euo pipefail
 
+PY=""
+for c in "python3" "python" "py -3"; do
+  if $c -c 'import sys' >/dev/null 2>&1; then PY="$c"; break; fi
+done
+[ -n "$PY" ] || { echo "ERROR: no working Python found (need python3, python, or py -3)" >&2; exit 1; }
+
 cd "$(git rev-parse --show-toplevel)"
 
 git pull --rebase origin main --quiet 2>/dev/null || true
@@ -20,7 +26,7 @@ if [ -z "$SESSION_OWNER" ]; then
   SESSION_OWNER=$(git config --global user.name 2>/dev/null || echo "unknown")
 fi
 
-python3 - "$SESSION_OWNER" <<'PYEOF'
+$PY - "$SESSION_OWNER" <<'PYEOF'
 import re, pathlib, sys
 
 me = sys.argv[1]
@@ -30,7 +36,7 @@ lines = path.read_text().splitlines()
 task_status = {}
 rows = []
 for line in lines:
-    m = re.match(r'^\s*\|\s*([TV]\d+[a-z]?)\s*\|', line)
+    m = re.match(r'^\s*\|\s*([TVP]\d+[a-z]?)\s*\|', line)
     if m:
         parts = [p.strip() for p in line.split('|')]
         if len(parts) < 6:
@@ -40,7 +46,7 @@ for line in lines:
         raw_deps = parts[3] if len(parts) > 3 else ''
         status   = re.sub(r'\s*\(.*?\)', '', parts[4]).strip() if len(parts) > 4 else ''
         owner    = parts[5].strip() if len(parts) > 5 else ''
-        deps     = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TV]\d+[a-z]?', d.strip())]
+        deps     = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TVP]\d+[a-z]?', d.strip())]
         task_status[tid] = status
         rows.append((tid, desc, deps, status, owner))
 
@@ -52,6 +58,9 @@ for tid, desc, deps, status, owner in rows:
         done.append((tid, desc, owner))
     elif status == 'in-progress':
         in_progress.append((tid, desc, owner))
+    elif status == 'blocked' and not deps:
+        # ponytail: zero-dep blocked = manual gate (e.g. P1 at feature freeze); only the lead flips it
+        blocked.append((tid, desc, ['lead (manual gate)']))
     elif status in ('available', 'blocked'):
         if not unmet:
             claimable.append((tid, desc, owner))

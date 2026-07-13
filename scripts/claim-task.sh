@@ -11,6 +11,12 @@
 # Example: bash scripts/claim-task.sh V1a
 set -euo pipefail
 
+PY=""
+for c in "python3" "python" "py -3"; do
+  if $c -c 'import sys' >/dev/null 2>&1; then PY="$c"; break; fi
+done
+[ -n "$PY" ] || { echo "ERROR: no working Python found (need python3, python, or py -3)" >&2; exit 1; }
+
 TASK_ID="${1:-}"
 
 if [ -z "$TASK_ID" ]; then
@@ -46,14 +52,14 @@ if [ "$status_val" != "available" ]; then
   echo ""
   echo "Tasks available right now:"
   echo ""
-  python3 - <<'PYEOF'
+  $PY - <<'PYEOF'
 import re, pathlib
 path = pathlib.Path('AGENTS.md')
 lines = path.read_text().splitlines()
 task_status = {}
 rows = []
 for line in lines:
-    m = re.match(r'^\s*\|\s*([TV]\d+[a-z]?)\s*\|', line)
+    m = re.match(r'^\s*\|\s*([TVP]\d+[a-z]?)\s*\|', line)
     if m:
         parts = [p.strip() for p in line.split('|')]
         if len(parts) < 6:
@@ -62,7 +68,7 @@ for line in lines:
         desc = parts[2]
         raw_deps = parts[3]
         status = re.sub(r'\s*\(.*?\)', '', parts[4]).strip()
-        deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TV]\d+[a-z]?', d.strip())]
+        deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TVP]\d+[a-z]?', d.strip())]
         task_status[tid] = status
         rows.append((tid, desc, deps, status))
 found = False
@@ -81,7 +87,7 @@ PYEOF
 fi
 
 # Step 3: update AGENTS.md
-python3 - "$TASK_ID" "$OWNER" <<'PYEOF'
+$PY - "$TASK_ID" "$OWNER" <<'PYEOF'
 import re, pathlib, sys
 task_id, owner = sys.argv[1], sys.argv[2]
 path = pathlib.Path('AGENTS.md')
@@ -113,14 +119,14 @@ if ! git push origin main 2>/dev/null; then
   echo ""
   echo "Tasks available right now:"
   echo ""
-  python3 - <<'PYEOF'
+  $PY - <<'PYEOF'
 import re, pathlib
 path = pathlib.Path('AGENTS.md')
 lines = path.read_text().splitlines()
 task_status = {}
 rows = []
 for line in lines:
-    m = re.match(r'^\s*\|\s*([TV]\d+[a-z]?)\s*\|', line)
+    m = re.match(r'^\s*\|\s*([TVP]\d+[a-z]?)\s*\|', line)
     if m:
         parts = [p.strip() for p in line.split('|')]
         if len(parts) < 6:
@@ -129,7 +135,7 @@ for line in lines:
         desc = parts[2]
         raw_deps = parts[3]
         status = re.sub(r'\s*\(.*?\)', '', parts[4]).strip()
-        deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TV]\d+[a-z]?', d.strip())]
+        deps = [d.strip() for d in re.split(r'[,\s]+', raw_deps) if re.match(r'[TVP]\d+[a-z]?', d.strip())]
         task_status[tid] = status
         rows.append((tid, desc, deps, status))
 found = False
