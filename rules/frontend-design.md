@@ -38,7 +38,7 @@ Test on a projector-like setup: high contrast, readable at distance, key flows v
 ```sh
 npx skills add anthropics/claude-code --skill "frontend-design"
 npx skills add Leonxlnx/taste-skill --skill "design-taste-frontend"
-npx skills add skills-sh/find-skills --skill "find-skills"
+npx skills add vercel-labs/skills --skill "find-skills"
 ```
 Commit `.agents/skills/` + `skills-lock.json`.
 

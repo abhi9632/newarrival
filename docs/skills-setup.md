@@ -9,7 +9,7 @@ If the Setup Script has already run them, these are no-ops.
 ```bash
 npx skills add anthropics/claude-code --skill "frontend-design"
 npx skills add Leonxlnx/taste-skill --skill "design-taste-frontend"
-npx skills add anthropics/claude-code --skill "find-skills"
+npx skills add vercel-labs/skills --skill "find-skills"
 ```
 
 ## Verify installation
