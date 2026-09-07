@@ -21,6 +21,10 @@ Fresh template, no project yet. First action: lead fills DAY1.md EVENT CONFIG, t
 - [ ] Vendor skills on first session: `frontend-design`, `design-taste-frontend`, `find-skills` (see `docs/skills-setup.md`). Install all three, invoke ONE per design pass
 
 ## Infra & access blockers
+This is the human-action ledger: accounts, dashboard settings, DNS, purchases, API keys,
+anything Claude cannot do itself. Capture items the moment they surface so they can be
+actioned in parallel with the build.
+
 (none)
 
 ## Code failures & fixes
