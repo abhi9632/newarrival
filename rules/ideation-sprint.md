@@ -74,8 +74,18 @@ locked late. If deadlocked at T+85, take the higher rubric-fit score.
 ## Assumptions to test during build
 ```
 
+## One concept document, forever
+
+`docs/CONCEPT.md` is the only concept file. Refinements, business-analyst passes and
+review notes **edit it in place**. Never create `CONCEPT-REVIEW.md`, `CONCEPT-v2.md` or
+similar; last event a second file appeared and the first question asked was "what are
+each of those for?". If a review produces findings, fold the accepted ones into
+CONCEPT.md and delete the findings list.
+
 ## Anti-patterns
 - Brainstorming past the timebox.
 - Revisiting the decision after lock.
 - Building the first idea without divergence.
 - Ideating features instead of concepts.
+- Producing a second concept document instead of editing the locked one.
+- Letting a post-lock refinement session run unbounded. Timebox it like the sprint.

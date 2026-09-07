@@ -261,9 +261,13 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 7. **Missing plan file is not a stop.** Say so, build from `docs/CONCEPT.md` + AGENTS.md,
    log the assumption
 8. **No queue below 3 parallel sessions.** Solo and pairs build straight from scope
-9. **No em dashes** anywhere. Commas, colons, semicolons
-10. **Every fetch**: loading / error / empty. **Every form**: pending-disable, preserve
+9. **Never hardcode a secret** in any file, including demo pages and dashboards.
+   Runtime config goes in localStorage, an env var, or the host dashboard
+10. **No em dashes** anywhere. Commas, colons, semicolons
+11. **Every fetch**: loading / error / empty. **Every form**: pending-disable, preserve
     input on error, inline validation
-11. **No code before `docs/CONCEPT.md`** exists and is committed
-12. **HANDOFF summary stays under 60 lines.** It is injected into every session start
-13. **Pitch tasks (P1-P3) are real queue tasks**, not an afterthought
+12. **No code before `docs/CONCEPT.md`** exists and is committed, and it stays the only
+    concept file
+13. **HANDOFF summary stays under 60 lines.** It is injected into every session start
+14. **Deploy in T1**, not V3. A live URL from hour one
+15. **Pitch length comes from DAY1.md EVENT CONFIG.** Never assume 3 minutes

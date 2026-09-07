@@ -25,7 +25,12 @@ become claimable only after freeze.
 - [ ] No placeholder text or [TODO] visible
 - [ ] Public URL deployed and loads from a phone on 4G (not just localhost)
 
-## Pitch structure (3 minutes)
+## Pitch structure
+
+Length comes from DAY1.md EVENT CONFIG. The breakdown below is the 3-minute shape;
+for a 2-minute slot use the cut-down table in `docs/pitch-playbook.md`.
+
+### 3-minute shape
 Full script structure, click-path template, and deck spec: `docs/pitch-playbook.md` (P1, P2).
 1. **Hook + problem** (40s): one specific persona pain point, told as a human story
 2. **Live demo** (90s): click through the primary flow live -- no slides, just the product

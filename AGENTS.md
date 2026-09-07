@@ -30,7 +30,12 @@ Full roster (with machines) lives in DAY1.md EVENT CONFIG. Fill both.
 
 ## TASK QUEUE
 
-Contract between all parallel sessions. No pre-assignment. Anyone picks the next available task.
+> **Only fill this table if 3 or more sessions will run in parallel.** Solo and pairs
+> delete it and build from the SCOPE section plus `docs/CONCEPT.md`. Last event the queue
+> was never filled, yet every prompt still required it to be checked. See
+> `rules/parallel-workflow.md`.
+
+Contract between parallel sessions. No pre-assignment. Anyone picks the next available task.
 Filled by the planner during Phase A. Expect 8-12 tasks total for a 3-4 person team.
 
 > **Task descriptions below are SUMMARIES only.** The full specification for each task lives
@@ -41,14 +46,14 @@ Filled by the planner during Phase A. Expect 8-12 tasks total for a 3-4 person t
 
 | # | Task | Depends On | Status | Claimed By |
 |---|---|---|---|---|
-| T1 | Shared foundation: mockData, AppShell/layout, design tokens, router | -- | available | |
+| T1 | Shared foundation: mockData, AppShell/layout, art direction + tokens, router, **deploy pipeline (live URL from hour one)** | -- | available | |
 | V1a | [fill Day 1 -- vertical slice 1, e.g. primary user flow] | T1 | blocked | |
 | V1b | [fill Day 1 -- vertical slice 2, e.g. secondary view] | T1 | blocked | |
 | V1c | [fill Day 1 -- vertical slice 3, e.g. shared components] | T1 | blocked | |
 | V1d | [fill Day 1 -- compose V1a+V1b into full flow] | V1a, V1b | blocked | |
 | V2a | [fill Day 1 -- second priority feature] | V1d | blocked | |
 | V2b | [fill Day 1 -- second priority feature] | V1d | blocked | |
-| V3 | Polish, deploy, mobile verify | V2a, V2b | blocked | |
+| V3 | Polish, mobile verify, backup demo recording (deploy already live since T1) | V2a, V2b | blocked | |
 | P1 | Pitch script + click-path demo script (docs/pitch-playbook.md) | feature freeze | blocked | |
 | P2 | Slide deck in product design language (HTML deck using design-system tokens) | P1 | blocked | |
 | P3 | Rehearsal + backup capture | P2 | blocked | |
@@ -79,6 +84,12 @@ bash scripts/next-task.sh               # see what is claimable right now
 | Icons | [fill Day 1] |
 
 Full reference: `design-system/README.md` (filled by planner during Phase A after Rule 0)
+
+## SECRETS
+Never hardcode a token, key or password in any file in this repo, including HTML, demo
+pages and dashboards. A previous version of `docs/index.html` shipped a live GitHub PAT
+into every repo cloned from this template. Runtime config goes in localStorage, an env
+var, or the host's dashboard.
 
 ## CODE STANDARDS
 - TypeScript strict if using TS

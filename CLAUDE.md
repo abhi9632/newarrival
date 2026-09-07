@@ -22,6 +22,17 @@ Pick the tier first, in one line, then work at that tier.
 If you cannot name the tier, it is Feature. Never run Foundation ceremony on Quick work.
 Never claim a tier down to skip the visual gate on a screen a judge will see.
 
+### Model routing
+
+Match the model to the tier. Requested during the last event and worth keeping:
+"use sonnet 5 for building easy stuff and opus 5 for complex tasks".
+
+| Tier | Model |
+|---|---|
+| Quick | Sonnet |
+| Feature | Sonnet for a component against an existing pattern, Opus for anything new or cross-cutting |
+| Foundation, design direction, debugging a real bug | Opus |
+
 ---
 
 ## PUSH POLICY -- main only, push constantly
@@ -101,6 +112,16 @@ exist for 3+ parallel sessions. Below that they cost more than they coordinate. 
 event the queue was never filled and the rows still read `[fill Day 1]` at the end,
 while every session prompt still demanded them. Work straight from the AGENTS.md scope
 and `docs/CONCEPT.md`, and keep HANDOFF.md current.
+
+---
+
+## MACHINE HYGIENE
+
+- One dev server at a time. Kill the old one before starting a new one. Background dev
+  servers were killed twice last event with "system is running low on memory", which
+  silently breaks every screenshot and verification step that follows.
+- Never hardcode a token, key or password in any file, including demo pages and
+  dashboards. Runtime config goes in localStorage, an env var, or the host dashboard.
 
 ---
 

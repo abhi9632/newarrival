@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>IAG Hackathon 2026 — Sprint Board</title>
+<title>Hackathon Sprint Board</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
@@ -228,11 +228,27 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 </div>
 
 <div class="page">
+  <!-- SETUP: no repo configured yet. Never hardcode a token in this file. -->
+  <div class="setup-gate hidden" id="setupGate" style="padding:24px;border:1px solid #3a3a3a;border-radius:8px;margin-bottom:16px">
+    <div style="font-weight:600;margin-bottom:8px">Point this board at your hackathon repo</div>
+    <div style="opacity:.7;font-size:13px;margin-bottom:12px">
+      Stored in this browser only (localStorage). A token is needed only for a private repo,
+      and it never gets written into this file or committed.
+    </div>
+    <div style="display:flex;gap:8px;flex-wrap:wrap;align-items:center">
+      <input id="cfgOwner" placeholder="github owner" style="padding:6px 8px">
+      <input id="cfgRepo" placeholder="repo name" style="padding:6px 8px">
+      <input id="cfgPat" type="password" placeholder="token (private repos only)" style="padding:6px 8px;min-width:260px">
+      <button class="btn-sm" onclick="saveSetup()">Save</button>
+      <button class="btn-sm" onclick="clearSetup()">Clear</button>
+    </div>
+  </div>
+
   <!-- HEADER -->
   <div class="header">
     <div>
-      <div class="brand">IAG Hackathon <em>2026</em> — Sprint Board</div>
-      <div class="repo">github.com/abhi9632/iag-hackathon-2026</div>
+      <div class="brand" id="brandLabel">Hackathon <em>Sprint Board</em></div>
+      <div class="repo" id="repoLabel"></div>
     </div>
     <div class="header-right">
       <span class="last-updated" id="last-upd"></span>
@@ -240,7 +256,7 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
         <svg width="11" height="11" viewBox="0 0 16 16" fill="currentColor"><h d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/><path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/></svg>
         Refresh
       </button>
-      <a class="btn-sm" href="https://github.com/abhi9632/iag-hackathon-2026" target="_blank" rel="noopener noreferrer">
+      <a class="btn-sm" id="repoLink" href="#" target="_blank" rel="noopener noreferrer">
         <svg width="12" height="12" viewBox="0 0 16 16" fill="currentColor"><path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27s1.36.09 2 .27c1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"/></svg>
         GitHub
       </a>
@@ -311,13 +327,56 @@ body{background:var(--bg);color:var(--ink);font-family:var(--sans);font-size:14p
 </div>
 
 <script>
-const OWNER='abhi9632', REPO='iag-hackathon-2026';
-const PAT='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';
+// Repo + token are runtime config held in this browser's localStorage.
+// NEVER hardcode a token here. A previous version of this file shipped a live
+// GitHub PAT into every repo cloned from this template.
+const CFG_KEY='hackboard.cfg';
+function loadCfg(){ try{ return JSON.parse(localStorage.getItem(CFG_KEY))||null; }catch(e){ return null; } }
+let CFG = loadCfg();
+let OWNER = CFG && CFG.owner || '', REPO = CFG && CFG.repo || '', PAT = CFG && CFG.pat || '';
+
+function ghHeaders(accept){
+  const h = { Accept: accept };
+  if (PAT) h.Authorization = 'token ' + PAT;   // omitted entirely for public repos
+  return h;
+}
+function saveSetup(){
+  const o = {
+    owner: document.getElementById('cfgOwner').value.trim(),
+    repo:  document.getElementById('cfgRepo').value.trim(),
+    pat:   document.getElementById('cfgPat').value.trim()
+  };
+  if(!o.owner || !o.repo){ alert('Owner and repo are both required.'); return; }
+  localStorage.setItem(CFG_KEY, JSON.stringify(o));
+  CFG=o; OWNER=o.owner; REPO=o.repo; PAT=o.pat;
+  applyCfg(); loadAll();
+}
+function clearSetup(){
+  localStorage.removeItem(CFG_KEY);
+  CFG=null; OWNER=''; REPO=''; PAT='';
+  applyCfg();
+}
+function applyCfg(){
+  const gate=document.getElementById('setupGate');
+  const label=document.getElementById('repoLabel');
+  const link=document.getElementById('repoLink');
+  if(OWNER && REPO){
+    gate.classList.add('hidden');
+    label.textContent = `github.com/${OWNER}/${REPO}`;
+    link.href = `https://github.com/${OWNER}/${REPO}`;
+    document.getElementById('cfgOwner').value=OWNER;
+    document.getElementById('cfgRepo').value=REPO;
+  } else {
+    gate.classList.remove('hidden');
+    label.textContent = 'no repo configured';
+    link.href = '#';
+  }
+}
 
 // ── Fetch helpers ─────────────────────────────────────────
 async function fetchRaw(path){
   const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}`,
-    {cache:'no-store',headers:{Authorization:'token '+PAT,Accept:'application/vnd.github.v3.raw'}});
+    {cache:'no-store',headers:ghHeaders('application/vnd.github.v3.raw')});
   if(!r.ok) throw new Error(`${path} ${r.status}`);
   return r.text();
 }
@@ -326,7 +385,7 @@ async function fetchRawOptional(path){
 }
 async function fetchJson(path){
   const r=await fetch(`https://api.github.com/repos/${OWNER}/${REPO}/contents/${path}?_=${Date.now()}`,
-    {cache:'no-store',headers:{Authorization:'token '+PAT,Accept:'application/vnd.github.v3+json'}});
+    {cache:'no-store',headers:ghHeaders('application/vnd.github.v3+json')});
   if(!r.ok) throw new Error(`${path} ${r.status}`);
   const d=await r.json();
   if(typeof d!=='object'||!d.sha) throw new Error('Unexpected GitHub API response');
@@ -444,7 +503,7 @@ function renderGSDState(state){
   const s=statusMap[state.status]||{cls:'gsd-planning',text:'GSD: '+state.status};
   bdg.className='gsd-badge '+s.cls;
   bdg.textContent=s.text;
-  lbl.innerHTML=`<strong>${state.completedPhases}/${state.totalPhases} phases</strong> — ${state.completedPlans}/${state.totalPlans} plans done &nbsp; <strong style="color:var(--done-text)">${state.pct}%</strong>`;
+  lbl.innerHTML=`<strong>${state.completedPhases}/${state.totalPhases} phases</strong> · ${state.completedPlans}/${state.totalPlans} plans done &nbsp; <strong style="color:var(--done-text)">${state.pct}%</strong>`;
 }
 
 // ── Render tasks tab ──────────────────────────────────────
@@ -464,15 +523,15 @@ function renderTasks(tasks){
   </div>`;
   const legend=`<div class="legend">${Object.entries(SM).map(([,v])=>`<div class="legend-item"><div class="legend-dot" style="background:${v.dot}"></div>${v.label}</div>`).join('')}</div>`;
   const rows=tasks.map(t=>{
-    const deps=(!t.deps||t.deps==='--')?'<span class="dep-none">—</span>':t.deps.split(',').map(d=>`<span class="dep-chip">${d.trim()}</span>`).join(' ');
+    const deps=(!t.deps||t.deps==='--')?'<span class="dep-none">-</span>':t.deps.split(',').map(d=>`<span class="dep-chip">${d.trim()}</span>`).join(' ');
     const detail=t.detail?`<div class="task-desc">${t.detail.slice(0,100)}${t.detail.length>100?'…':''}</div>`:'';
     const action=t.status==='available'
       ?`<button class="btn-claim" onclick="openModal('${t.id}','${escapeAttr(t.short)}')">Claim →</button>`
-      :`<span style="color:var(--faint);font-size:12px">${t.claimed||'—'}</span>`;
+      :`<span style="color:var(--faint);font-size:12px">${t.claimed||'-'}</span>`;
     return `<tr class="${sm(t.status).row}"><td><span class="task-id">${t.id}</span></td><td><div class="task-name">${t.short}${detail}</div></td><td>${deps}</td><td>${badge(t.status)}</td><td>${action}</td></tr>`;
   }).join('');
   document.getElementById('tab-tasks').innerHTML=stats+
-    `<div class="section-label">Task Queue</div>${legend}<table class="task-table"><thead><tr><th>ID</th><th>Task</th><th>Depends On</th><th>Status</th><th>Claimed By / Action</th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="msg">No tasks yet — waiting for planning to complete.</td></tr>'}</tbody></table>`;
+    `<div class="section-label">Task Queue</div>${legend}<table class="task-table"><thead><tr><th>ID</th><th>Task</th><th>Depends On</th><th>Status</th><th>Claimed By / Action</th></tr></thead><tbody>${rows||'<tr><td colspan="5" class="msg">No tasks yet, waiting for planning to complete.</td></tr>'}</tbody></table>`;
 }
 
 // ── Render handoff tab ────────────────────────────────────
@@ -553,10 +612,10 @@ function renderBlockers(tasks,handoffMd){
   const v3Done=!!tasks.find(t=>t.id==='V3'&&t.status==='done');
   const sprintChecks=[
     {done:!!taskIds.has('T1'), label:'T1 foundation complete', sub:'Shared types, mock data, router, AppShell'},
-    {done:allV1Done&&hasV1, label:'V1 screens complete (minimum demoable prototype)', sub:'All V1x tasks done — judges can click through'},
+    {done:allV1Done&&hasV1, label:'V1 screens complete (minimum demoable prototype)', sub:'All V1x tasks done, judges can click through'},
     {done:allV2Done&&tasks.filter(t=>t.id.startsWith('V2')).length>0, label:'V2 differentiators done', sub:'All V2x tasks done'},
     {done:v3Done, label:'Deployed to Vercel/Netlify (V3)', sub:'Live URL verified, both routes smoke-tested'},
-    {done:v3Done, label:'Real mobile device check done', sub:'Not just browser resize — actual device'},
+    {done:v3Done, label:'Real mobile device check done', sub:'Not just browser resize, an actual device'},
     {done:false, label:'Demo rehearsed (queue-to-detail x2, under 2 min)', sub:'Feature freeze declared after this'},
   ];
   const sprintHtml=sprintChecks.map(c=>`<li><svg class="check-icon ${c.done?'check-done':'check-open'}" viewBox="0 0 16 16" fill="currentColor">${c.done?'<path d="M13.78 4.22a.75.75 0 0 1 0 1.06l-7.25 7.25a.75.75 0 0 1-1.06 0L2.22 9.28a.75.75 0 1 1 1.06-1.06L6 10.94l6.72-6.72a.75.75 0 0 1 1.06 0z"/>':'<path d="M8 1a7 7 0 1 1 0 14A7 7 0 0 1 8 1zm0 1.5a5.5 5.5 0 1 0 0 11 5.5 5.5 0 0 0 0-11zm-.75 3a.75.75 0 0 1 1.5 0v4a.75.75 0 0 1-1.5 0v-4zm.75 7.5a1 1 0 1 1 0-2 1 1 0 0 1 0 2z"/>'}</svg><div class="check-text"><div class="check-label">${c.label}</div><div class="check-sub">${c.sub}</div></div></li>`).join('');
@@ -575,7 +634,7 @@ function renderTeam(agentsMd,handoffMd,tasks){
     const myTasks=tasks.filter(t=>t.claimed&&t.claimed.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
     const chips=myTasks.map(t=>`<span class="pill ${t.status==='done'?'pill-green':t.status==='in-progress'?'pill-blue':'pill-yellow'}">${t.id}</span>`).join('');
     const myS=sessions.filter(s=>s.owner&&s.owner.toLowerCase().includes(p.name.toLowerCase().split(' ')[0]));
-    return `<div class="team-card"><div class="team-avatar">${init}</div><div class="team-name">${p.name}</div><div class="team-handle">${p.handle||'@—'}</div><div class="team-role">${p.role||''}</div><div class="team-tasks">${chips||'<span style="font-size:12px;color:var(--faint)">No tasks claimed yet</span>'}</div><div style="margin-top:10px;font-size:12px;color:var(--muted)">${myS.length} session${myS.length!==1?'s':''} logged</div></div>`;
+    return `<div class="team-card"><div class="team-avatar">${init}</div><div class="team-name">${p.name}</div><div class="team-handle">${p.handle||'@-'}</div><div class="team-role">${p.role||''}</div><div class="team-tasks">${chips||'<span style="font-size:12px;color:var(--faint)">No tasks claimed yet</span>'}</div><div style="margin-top:10px;font-size:12px;color:var(--muted)">${myS.length} session${myS.length!==1?'s':''} logged</div></div>`;
   }).join('');
   const sessionRows=sessions.slice().reverse().map(r=>`<tr><td class="session-num">${r.num}</td><td class="session-date">${r.date||''}</td><td class="session-owner">${r.owner||''}</td><td class="session-summary">${(r.summary||'').slice(0,180)}${(r.summary||'').length>180?'…':''}</td></tr>`).join('');
   document.getElementById('tab-team').innerHTML=`
@@ -645,6 +704,7 @@ document.getElementById('claimModal').addEventListener('click',function(e){if(e.
 
 // ── Main load ─────────────────────────────────────────────
 async function loadAll(){
+  if(!OWNER || !REPO){ applyCfg(); return; }
   document.getElementById('last-upd').textContent='';
   try{
     const [agentsMd, handoffMd, stateMd]=await Promise.all([
@@ -683,6 +743,7 @@ async function loadAll(){
   }
 }
 
+applyCfg();
 loadAll();
 </script>
 </body>

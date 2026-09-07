@@ -29,6 +29,17 @@ quality, UX polish, Feasibility, Presentation).
 | [fill] | [fill] | [fill] |
 | [fill] | [fill] | [fill] |
 
+**Pitch and demo length** -- from the event, not assumed:
+| Field | Value |
+|---|---|
+| Pitch length (hard limit) | [fill -- e.g. 2 min] |
+| Q&A after pitch | [fill -- yes/no, how long] |
+| Demo inside the pitch | [fill -- live app, recorded, or slides] |
+
+The template used to assume 3 minutes. Last event it was 2, which changes the script
+completely: at 2 minutes there is room for a hook, the problem, one flow and a close,
+and nothing else. Fill this before P1 is written, not on pitch day.
+
 **Scope mode** -- pick one:
 - `prototype`: mock data only, no backend. Every data path is static JSON or hardcoded objects.
 - `full-stack`: real backend allowed. Adds a backend/data task to the plan and a deploy path that runs it.
@@ -38,7 +49,10 @@ Chosen: [fill -- prototype or full-stack]
 **Stack** -- chosen Day 1 during planning: [fill]
 
 **Deploy target** -- e.g. Vercel, Netlify, or `none`: [fill]
-If set, a deploy task goes into phase 1 so every push produces a live URL. If `none`, demo runs locally.
+If set, **deploy is part of T1**, not V3. Every push then produces a live URL from the
+first hour. Last event the deploy happened in the final five minutes under time pressure;
+that is a risk with no upside. If `none`, the demo runs locally and you still capture a
+backup recording after freeze.
 
 **Team roster**
 | Name | GitHub handle | Machine |

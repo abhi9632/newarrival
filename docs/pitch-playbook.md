@@ -1,5 +1,31 @@
 # docs/pitch-playbook.md
 
+## Length comes from DAY1.md EVENT CONFIG
+
+Read the pitch length there before writing a word. Do not assume three minutes; last
+event it was two, and the script had to be rewritten three times because it was built
+for the wrong clock.
+
+| Pitch length | What fits |
+|---|---|
+| 2 min | Intro + hook (20s), problem (25s), live demo (60s), close (15s). Nothing else. No architecture segment, no team slide, one flow only. |
+| 3 min | The full table below. |
+
+At 2 minutes, cutting is the job. Pick the ONE flow that proves the concept and drop
+every other feature from the script, however good it is.
+
+## Write it as a script, not as a table
+
+Deliver actual sentences the speaker reads, not a structure they have to improvise
+against. Last event the first draft was a segment table and the feedback was: "i dont
+like how it starts. there must be an introduction as well. a proper script".
+
+Every pitch opens with, in this order:
+1. **Introduction**: who is speaking and what the product is called, in one sentence.
+   Judges need a name to attach the next 2 minutes to. Never open cold on a statistic.
+2. **Hook**: the one line that makes a tired judge look up.
+3. Then the problem.
+
 ## Principle
 
 The deliverable is a 3-minute experience for a tired judge who has seen 30 teams. Pitch is
