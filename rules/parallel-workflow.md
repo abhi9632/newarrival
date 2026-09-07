@@ -1,5 +1,46 @@
 # rules/parallel-workflow.md
 
+## READ THIS FIRST: does your team actually need the queue?
+
+| Sessions running at once | Use |
+|---|---|
+| 1 or 2 | **No queue.** Work from AGENTS.md scope + `docs/CONCEPT.md`. Skip this file. |
+| 3 or more | The queue below. |
+
+The claim/complete/next scripts coordinate 3+ parallel sessions. Below that they cost
+more than they coordinate: a pull, a commit and a push per task transition, plus a table
+to keep consistent, plus a prompt that tells every session to check a board nobody else
+is using.
+
+Evidence: last event the queue was never filled. At the end of the hackathon the rows
+still read `[fill Day 1]` with status `blocked`, while every session prompt, CLAUDE.md,
+AGENTS.md and the workflow rules all still demanded the queue be consulted before any
+code. That is pure overhead paid on every task for zero coordination.
+
+If you are solo or a pair: delete the queue table from AGENTS.md, keep the scope section,
+and build.
+
+---
+
+## Subagent limits (applies to every team size)
+
+- **Maximum 2 concurrent agents.** Not five, not six.
+- **Every agent commits and pushes its own work before reporting back.** An agent that
+  reports a summary but leaves the work uncommitted has produced nothing.
+- **Commit before you fan out.** Never spawn agents on top of uncommitted work.
+- Assume a rate limit can kill every running agent at the same instant, because it did:
+  six agents were terminated by one session limit last event, and every one of them lost
+  everything it had built.
+
+## Commit cadence under session limits
+
+- Push after every completed unit of work, never at the end of a task.
+- If a step will take more than ~10 minutes, commit what already works first.
+- Keep HANDOFF.md current enough that a different account on a different machine can
+  resume from the pushed repo alone. That is the only real recovery path.
+
+---
+
 ## Core model: dependency-ordered task queue
 
 Instead of pre-assigning features to people, every task lives in a shared

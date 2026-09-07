@@ -1,5 +1,8 @@
 # rules/documentation-hooks.md
 
+Run after every completed **Feature or Foundation** task. Quick-tier work skips this
+entire file: commit, push, done.
+
 Run after every completed feature or state change:
 
 | Hook | Trigger | Update |

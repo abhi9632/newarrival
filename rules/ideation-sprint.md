@@ -59,6 +59,11 @@ locked late. If deadlocked at T+85, take the higher rubric-fit score.
 
 ## Signature wow moment
 
+## What each role sees that the others do not
+<!-- One line per role. If two roles see the same screens, the concept is not differentiated
+     yet. Last event the coordinator screens came out nearly identical to the volunteer
+     screens and the human had to send it back. Settle this now, not after building. -->
+
 ## Why it wins each rubric criterion
 - [criterion]: [one line]
 

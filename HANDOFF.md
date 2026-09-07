@@ -2,6 +2,11 @@
 
 HANDOFF_SYNCED_COMMIT: none
 
+> **Size budget: Quick resume + Current state must stay under 60 lines combined.**
+> This summary is injected into every session start by the SessionStart hook. Last event
+> it reached 16KB and every session paid that cost before doing any work. When it grows,
+> move detail into docs/session-archive.md, do not raise the budget.
+
 ## Quick resume
 Fresh template, no project yet. First action: lead fills DAY1.md EVENT CONFIG, then runs the Ideation Sprint (Prompt 2a in README.md). No code before docs/CONCEPT.md is committed.
 
@@ -13,7 +18,7 @@ Fresh template, no project yet. First action: lead fills DAY1.md EVENT CONFIG, t
 - [ ] Fill DAY1.md EVENT CONFIG (lead, Day 1 morning, before anything else)
 - [ ] Add teammates as collaborators: GitHub > Settings > Collaborators
 - [ ] Agree stack Day 1 during planning, fill into AGENTS.md
-- [ ] Vendor skills on first session: `frontend-design`, `design-taste-frontend`, `find-skills` (see `docs/skills-setup.md`)
+- [ ] Vendor skills on first session: `frontend-design`, `design-taste-frontend`, `find-skills` (see `docs/skills-setup.md`). Install all three, invoke ONE per design pass
 
 ## Infra & access blockers
 (none)
@@ -37,7 +42,8 @@ Fresh template, no project yet. First action: lead fills DAY1.md EVENT CONFIG, t
 | `SKILL.md` | Planning automation (run on Day 1 morning only) | Day 1 planning only |
 | `rules/ideation-sprint.md` | 90-minute concept lock protocol | After problem drops, before planning |
 | `docs/CONCEPT.md` | Locked concept, input to planning | Written during Ideation Sprint |
-| `rules/frontend-design.md` | Rule 0 process, distinctive-design mandate | Before any UI |
+| `rules/frontend-design.md` | Rule 0: one design authority, art direction, visual gate | Before any UI |
+| `docs/postmortem-2026-09.md` | Why the process is shaped this way | Before changing the process |
 | `rules/brainstorming.md` | Structured ideation before building | When direction is unclear |
 | `rules/development-workflow.md` | Feature build order | Building a feature |
 | `rules/data-and-forms.md` | Fetch + form standards | Fetching data or building forms |

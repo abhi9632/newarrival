@@ -68,25 +68,22 @@ Copy and paste these prompts exactly. Do not paraphrase.
 ### Lead only -- Prompt 1: Initial setup (run once, first session ever)
 
 ```
-Read and deeply understand every file in this repo before doing anything else.
-Start with CLAUDE.md, then AGENTS.md, then HANDOFF.md, then SKILL.md, then every
-file in rules/, then scripts/, then design-system/, then docs/. Read them all --
-do not skim or summarise early.
+Read CLAUDE.md and DAY1.md. Do not read the whole repo -- CLAUDE.md tells you
+which rules/ file to load when, and reading them all up front burns the context
+you need for building.
 
-Once you have read everything:
+Then:
 
-1. Follow docs/skills-setup.md exactly and install all three standing skills:
-   frontend-design, design-taste-frontend, and find-skills.
+1. Follow docs/skills-setup.md and install the three standing skills:
+   frontend-design, design-taste-frontend, find-skills.
+   Install all three. Never load more than one design skill in a single design
+   pass -- see rules/frontend-design.md.
 
-2. For all git operations in this session: commit and push directly to main.
-   Do not create branches. Do not open pull requests.
+2. All git operations in this project: commit and push directly to main.
+   Never create a branch. Never open a pull request.
 
-3. Once everything above is confirmed working, tell me you are ready and wait
-   for me to provide the project brief.
-
-Note: any changes made must be pushed to main directly without creating any
-branches. We do not work with branches at all. Thoroughly go through every
-bit of code in the repo.
+3. Confirm the skills installed, then tell me you are ready and wait for the
+   project brief. Do not read further or plan anything yet.
 ```
 
 ---
@@ -134,57 +131,65 @@ git config user.email "<claimed-handle>@users.noreply.github.com"
 
 Never use "Claude" or any Anthropic email as the git identity at any point in this session.
 
-Now read every file in this repo before doing anything, especially:
-CLAUDE.md, AGENTS.md, HANDOFF.md, and all files in rules/
-
-Thoroughly go through every bit of code in the repo.
-
-Once done, read HANDOFF.md carefully and tell me:
+The SessionStart hook already printed the HANDOFF summary. Using that summary, tell me:
 1. What was the last thing completed
 2. What the next incomplete step is
 3. What you need from me to continue
 
+Read CLAUDE.md if it is not already loaded. Do not read the rest of the repo yet --
+load a rules/ file only when the task you are given calls for it.
+
 Do not start building anything yet.
 
-Note: any changes made must be pushed to main directly without creating any
-branches. We do not work with branches at all in this session.
+Push directly to main. Never create a branch, never open a pull request.
 ```
 
 ---
 
-### All teammates -- Prompt 4: Execute task (run after Prompt 3, once you have claimed a task)
+### All teammates -- Prompt 4: Execute task (run after Prompt 3)
 
-Replace `<task-id>` with the task ID you claimed (e.g. V2a). That is the only value you need to fill in.
+Replace `<task-id>` with your task ID (e.g. V2a), or just describe the task if your team
+is not using the queue.
 
 ```
 I am working on task <task-id>. Execute it now.
 
-Before writing any code:
-1. Run `git pull` to get the latest repo state.
-2. Read the task description for <task-id> in AGENTS.md (summary only).
-3. Derive the phase number from the task ID using this map:
-   T1 = phase 1, V1x = phase 2, V2x = phase 3, V3 = phase 4.
-   Run `bash scripts/check-plan.sh <derived-phase-number>`.
-   If the plan file is missing, STOP. Do not run any planning commands.
-   Tell me: "Plan file for phase <N> is missing. The lead must fix this before
-   execution can continue."
-4. Read rules/development-workflow.md in full.
-5. Read the GSD plan file (.planning/phases/<N>-*/<N>-01-PLAN.md) in full.
-   This is your specification. The plan covers the whole phase -- your job is
-   to implement only the section that corresponds to <task-id>. Do not build
-   work belonging to other task IDs in the same phase.
-6. If this is task T1: invoke frontend-design and design-taste-frontend to lock
-   design tokens, then fill design-system/README.md.
-   If this is any other task: read design-system/README.md for tokens. Do not
-   re-run Rule 0.
+1. Say which effort tier this is (Quick / Feature / Foundation, see CLAUDE.md).
+   Quick tier: do it, commit, push, stop. Ignore the rest of this prompt.
 
-Once the task is complete:
-1. Commit all feature code.
-2. Update HANDOFF.md: Quick resume (project-level only), Current state,
-   Session log row (Owner column), Iteration Log entry.
-3. Run `bash scripts/complete-task.sh <task-id>`
-   (this marks done, unblocks dependents, and pushes AGENTS.md).
-4. Commit and push all remaining changes.
+2. git pull.
+
+3. Read the AGENTS.md row for <task-id>. Derive the phase (T1=1, V1x=2, V2x=3, V3=4)
+   and run `bash scripts/check-plan.sh <phase>`. Read only the section of the plan
+   that belongs to <task-id>.
+   If the plan file is missing, say so in one line and build from docs/CONCEPT.md and
+   the AGENTS.md task description instead. Do not stall and do not re-plan.
+
+4. UI work: read design-system/README.md, especially the Art direction block, and
+   reinforce the Signature. Use ONE design authority skill if this pass needs a
+   design decision. Never two.
+
+5. Build. Commit and push as soon as anything works -- do not batch to the end.
+
+6. UI: pass the visual gate before calling it done. Run the app, screenshot the real
+   screen at 375 and 1280, and answer in writing whether this could be any other
+   team's project with the logo swapped. If yes, fix it. Log the pass in
+   design-system/README.md.
+
+7. Update HANDOFF.md in the same commit as your final change, then push.
+   If your team uses the queue: bash scripts/complete-task.sh <task-id>
+```
+
+---
+
+### Any session -- Prompt 5: Quick task
+
+For a commit, a copy fix, a config change, a one-line bug. Do not use Prompt 4 for these.
+
+```
+Quick tier task: <describe it>.
+Do it now, commit, and push to main. No plan file, no task queue, no HANDOFF update.
+If nothing worth handing off changed, put "no-handoff" in the commit message.
 ```
 
 ---
@@ -215,7 +220,8 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 | `docs/CONCEPT.md` | The locked concept. Written during ideation, input to planning. |
 | `docs/pitch-playbook.md` | Pitch phase: script, deck in product design language, rehearsal. |
 | `rules/parallel-workflow.md` | How to build in parallel with teammates. |
-| `rules/frontend-design.md` | Rule 0. Runs once on T1 to lock tokens. |
+| `rules/frontend-design.md` | Rule 0: ONE design authority, art direction, visual gate. |
+| `docs/postmortem-2026-09.md` | Why these rules exist. Read before relaxing any of them. |
 | `rules/brainstorming.md` | Structured ideation before committing to a direction. |
 | `rules/development-workflow.md` | Feature build order. |
 | `rules/data-and-forms.md` | Fetch and form standards. |
@@ -241,14 +247,23 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 
 ## Non-negotiables
 
-1. **Rule 0** on T1 only: invoke `frontend-design` + `design-taste-frontend` to lock tokens. V1x+ read `design-system/README.md` instead
-2. **GSD plan file** before ANY code: `bash scripts/check-plan.sh [N]`, then read the plan file. If missing, stop and tell the lead -- do not re-plan
-3. **No em dashes** anywhere. Use commas, colons, or semicolons
-4. **Every fetch**: loading / error / empty states
-5. **Every form**: pending-disable, preserve input on error, inline validation
-6. **Before claiming done**: `rules/verification-before-completion.md`
-7. **Any bug**: `rules/systematic-debugging.md` before attempting a fix
-8. **End of every work block**: push commits, update HANDOFF.md
-9. **No code before `docs/CONCEPT.md`** exists and is committed. Ideation locks the concept first
-10. **Pitch tasks (P1-P3) are real queue tasks**, not an afterthought; the deck uses product design tokens
-11. **Distinctive design mandate** per `rules/frontend-design.md`: the default component-library look is a bug, not a baseline
+1. **Name the effort tier before doing anything.** Quick / Feature / Foundation.
+   Full ceremony on a Quick task is the most expensive habit this repo has had
+2. **ONE design authority per design pass.** Never load two design skills for the same
+   pass. Stacking them averages into the default look. `rules/frontend-design.md`
+3. **Art direction before tokens.** `design-system/README.md` opens with Signature,
+   Reference, Anti-reference, Type stance, Colour world. Tokens alone are not a design
+4. **Visual gate before any screen is done.** Screenshot 375 + 1280, and answer: could
+   this be another team's project with the logo swapped? If yes, it is not done
+5. **Push to main after every unit of work.** No branches, no pull requests, no batching.
+   Uncommitted work dies with the session
+6. **Max 2 concurrent agents**, each committing its own work
+7. **Missing plan file is not a stop.** Say so, build from `docs/CONCEPT.md` + AGENTS.md,
+   log the assumption
+8. **No queue below 3 parallel sessions.** Solo and pairs build straight from scope
+9. **No em dashes** anywhere. Commas, colons, semicolons
+10. **Every fetch**: loading / error / empty. **Every form**: pending-disable, preserve
+    input on error, inline validation
+11. **No code before `docs/CONCEPT.md`** exists and is committed
+12. **HANDOFF summary stays under 60 lines.** It is injected into every session start
+13. **Pitch tasks (P1-P3) are real queue tasks**, not an afterthought

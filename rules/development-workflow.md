@@ -1,105 +1,104 @@
 # rules/development-workflow.md
 
-## Working with the Task Queue (parallel sessions)
+## Step 0 -- name the effort tier
 
-Claiming a task is done MANUALLY by the human before invoking Claude Code.
-The human runs `bash scripts/claim-task.sh <task-id>` in their terminal, then
-pastes the builder prompt into Claude Code with the task ID filled in.
-Claude Code never claims a task autonomously -- it receives an already-claimed task.
+Before anything else, say which tier this is (see CLAUDE.md EFFORT TIERS):
 
-Before building anything:
-1. `git pull` -- get the latest AGENTS.md and `.planning/` files
-2. Confirm the task ID you have claimed is marked `in-progress` in AGENTS.md
-3. Read the task description in AGENTS.md (a summary only), then read the GSD plan file for
-   the phase -- the plan file is the real spec (see Step 1 of the build order)
-4. Follow the feature build order below -- Step 1 is mandatory and cannot be skipped
-5. Run `bash scripts/complete-task.sh <task-id>` when done -- Claude Code runs this
-6. Loop -- human checks the sprint board for the next available task and claims it
+- **Quick**: commit, push, copy fix, config, one-line bug, a question.
+  Do it now. Skip the rest of this file. Commit and push.
+- **Feature**: a component, screen, or data flow. Continue below.
+- **Foundation**: T1, architecture, design direction, deploy. Continue below, in full.
 
-If all tasks are `in-progress` or `blocked`: pull every 5 minutes and wait.
-Never start a task that is not marked `available` or `in-progress` (claimed by you).
+Running Foundation process on Quick work is the single most expensive habit in this
+repo's history. It is not thoroughness, it is latency.
 
 ---
 
 ## Feature build order
 
-### Step 1 -- Read the GSD plan file (MANDATORY -- do not skip, do not defer)
+### Step 1 -- Read the spec for YOUR task only
 
-The GSD plan was approved before build started. It is the locked specification.
-Do not invoke GSD, do not re-plan, do not modify `.planning/` files during execution.
-
-**Identify which GSD phase the task belongs to:**
-
-| Task prefix | GSD phase |
-|---|---|
-| T1 | Phase 1 |
-| V1a, V1b, V1c, V1d | Phase 2 |
-| V2a, V2b, V2c | Phase 3 |
-| V3 | Phase 4 |
-
-**Run:**
+If a GSD plan exists, run:
 
 ```bash
 bash scripts/check-plan.sh [N]
 ```
 
-This locates the phase plan file (`.planning/phases/[N]-*/[N]-01-PLAN.md`) and prints its
-path. **Read that plan file in full** -- it is your specification. The plan covers the
-whole phase. Implement only the section that corresponds to your task ID. Do not
-build work belonging to other task IDs in the same phase.
+Phase map: T1 = 1, V1x = 2, V2x = 3, V3 = 4.
 
-Before proceeding to Step 2, confirm the plan serves the rubric criteria in DAY1.md
-EVENT CONFIG.
-If any criterion is missing, STOP and tell the human. Do not invoke GSD.
+Read the **section of the plan for your task ID**. The plan covers the whole phase; you
+implement one section. Do not read the whole phase file end to end unless you are the
+Foundation owner. Do not build work belonging to other task IDs.
 
-If check-plan.sh reports the plan file is missing:
-STOP. Do not invoke GSD or re-plan. Tell the human:
-"Plan file for phase [N] is missing. The lead must fix this before execution can continue."
+**If the plan file does not exist:** say so in one line and keep going. Build from
+`docs/CONCEPT.md` plus the AGENTS.md task description and scope, and record the
+assumption in HANDOFF.md. Do not invoke GSD, do not re-plan, and do not stall waiting
+for a plan file.
 
-**Do not proceed to Step 2 until you have read the plan file end to end.**
+This used to be a hard STOP. Last event `.planning/` was never created at all, so that
+rule meant every task either blocked or silently ignored the rule. A hackathon clock does
+not pause for a missing document.
 
-### Step 2 -- Rule 0 (UI tasks only)
+Confirm the work serves a rubric criterion in DAY1.md EVENT CONFIG. If it serves none,
+say so and ask before building.
 
-If this is task T1: invoke `frontend-design` then `design-taste-frontend` to lock
-design tokens, then fill `design-system/README.md`. Hard blocker.
-Full process: `rules/frontend-design.md`.
+### Step 2 -- Design (UI tasks only)
 
-If this is any other task (V1x, V2x, V3): read `design-system/README.md` for tokens.
-Do not re-run Rule 0 on V1x or later tasks.
+**ONE design authority per pass.** Never two. See `rules/frontend-design.md`.
+
+- T1: pick the authority, invoke it, write the Art direction block and the tokens in
+  `design-system/README.md`.
+- Any other task: read `design-system/README.md` and reinforce the Signature. If the
+  screen you produce looks generic, run a fresh single-authority pass on it.
 
 ### Step 3 -- Uncertain on direction?
 
-Brainstorm first (`rules/brainstorming.md`) before committing to an approach.
-Do not re-open the planning phase. Stay within the scope of the approved plan.
+`rules/brainstorming.md` before committing to an approach. Stay inside the approved scope.
 
-### Step 4 -- Build (from the plan file)
+### Step 4 -- Build
 
-1. Define types/interfaces first
-2. Write validation schema if a form is involved
-3. Build UI with all states: loading, error, empty, success
-4. Verify before claiming done (`rules/verification-before-completion.md`)
-5. Run `rules/documentation-hooks.md` hooks before the next feature
+1. Types and interfaces first
+2. Validation schema if a form is involved
+3. UI with all states: loading, error, empty, success
+4. **Commit and push as soon as something works.** Do not wait for the whole task.
+5. Verify per `rules/verification-before-completion.md`, at your tier
+6. UI: pass the visual gate and log it in `design-system/README.md`
 
-### Step 5 -- Mark complete
+### Step 5 -- Close out
 
-Once all code is committed and HANDOFF.md is updated:
-```bash
-bash scripts/complete-task.sh <task-id>
-```
-This marks the task done in AGENTS.md, unblocks dependents, and pushes. Claude Code
-runs this. The human does not need to run it.
+- Commit and push everything.
+- Update HANDOFF.md in that same commit (the Stop hook checks the last commit touched it).
+- If the task queue is in use, run `bash scripts/complete-task.sh <task-id>`.
+
+---
+
+## Working with the Task Queue (3+ parallel sessions only)
+
+Skip this section for a solo or two-person team. See `rules/parallel-workflow.md`.
+
+The human runs `bash scripts/claim-task.sh <task-id>` before pasting the builder prompt.
+Claude Code runs `bash scripts/complete-task.sh <task-id>` when the task is done. Claude
+never claims a task autonomously.
+
+1. `git pull`
+2. Confirm your task ID is `in-progress` in AGENTS.md
+3. Build per the order above
+4. `bash scripts/complete-task.sh <task-id>`
 
 ---
 
 ## Before writing any component
-- Visual? Rule 0 (Step 2 above)
-- Fetches data? See `rules/data-and-forms.md`
-- Bug or unexpected behaviour? See `rules/systematic-debugging.md`
+- Visual? Step 2 above. One authority.
+- Fetches data? `rules/data-and-forms.md`
+- Bug or unexpected behaviour? `rules/systematic-debugging.md`
 - Missing capability? `find-skills`
 
-## Day 1 foundations (do before any feature)
-1. Agree stack, fill AGENTS.md
-2. Rule 0 on T1 only: run frontend-design + design-taste-frontend, fill `design-system/README.md`
+## Day 1 foundations (before any feature)
+1. Agree the stack, fill AGENTS.md
+2. Rule 0 on T1: one design authority, Art direction block, then tokens
 3. Global layout shell: nav, page wrapper, mobile breakpoint
-4. Mock data layer: static JSON or in-memory objects
-5. Generic error/empty fallback component
+4. Mock data layer
+5. Generic error and empty fallback component
+6. A running demo path. Before the first feature task closes, `npm run dev` must show
+   something clickable end to end. A design plan handed to another tool is not a demo,
+   and the human should never have to ask "is this even a usable product".

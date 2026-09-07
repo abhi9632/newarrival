@@ -25,12 +25,23 @@ If any are missing, re-run the relevant install command above.
 
 | Skill | When to invoke | Command |
 |---|---|---|
-| `frontend-design` | Before ANY UI code (Rule 0, step 1) | `invoke frontend-design` |
-| `design-taste-frontend` | Immediately after `frontend-design` (Rule 0, step 2) | `invoke design-taste-frontend` |
+| `frontend-design` | Product UI, dashboards, app screens. One authority per pass | `invoke frontend-design` |
+| `design-taste-frontend` | Landing and marketing pages. One authority per pass | `invoke design-taste-frontend` |
 | `find-skills` | When you need a capability not in this repo | `invoke find-skills` |
 
-## Rule 0 reminder
+## Rule 0 reminder -- ONE authority, not both
 
-Both `frontend-design` and `design-taste-frontend` must be invoked before the first
-component is written. This is a hard blocker. Not optional. Not a reminder.
-If you are about to write a component and have not run Rule 0: stop and run it now.
+Install all three skills. **Invoke only ONE design skill per design pass.**
+
+`frontend-design` and `design-taste-frontend` are both complete, opinionated design
+systems. Loading both for the same pass averages two strong points of view into the
+default look. Last event four design skills were loaded inside 58 seconds and the result
+was rejected as AI slop; the same page redesigned with `design-taste-frontend` alone was
+accepted with no other change.
+
+| Brief | Authority |
+|---|---|
+| Landing page, marketing, hero, pitch site | `design-taste-frontend` |
+| Product UI, dashboard, forms, app screens | `frontend-design` |
+
+Pick one, say which and why, then build. Full rule: `rules/frontend-design.md`.
