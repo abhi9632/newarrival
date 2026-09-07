@@ -4,6 +4,20 @@ Run these three commands at the start of your first session only.
 The project Setup Script runs them automatically on every subsequent session start.
 If the Setup Script has already run them, these are no-ops.
 
+## GSD Core installs per machine, not from the repo
+
+```bash
+npx -y @opengsd/gsd-core@latest --local --claude
+```
+
+The project Setup Script already runs this. It is deliberately not committed: the
+installer writes machine-absolute paths into all ~460 files it manages, so a vendored
+copy is only correct on the machine that generated it. The copy that used to live in
+this repo pointed at `/home/user/claude_template`, which existed on nobody's machine,
+so every GSD agent import silently resolved to nothing. Requires Node 24+.
+
+Update it later with `/gsd-update`.
+
 ## Install the three standing skills
 
 ```bash

@@ -24,6 +24,24 @@ Thumbs.db
 *.swp
 *.swo
 
+# GSD Core -- installed per machine, never committed.
+# The installer writes machine-absolute paths into every agent and command file,
+# so a vendored copy is only ever correct on the machine that generated it. The
+# copy previously committed here pointed at /home/user/claude_template and was
+# broken for everyone. Setup runs: npx @opengsd/gsd-core@latest --local --claude
+.claude/gsd-core/
+.claude/agents/
+.claude/commands/gsd/
+.claude/hooks/
+.claude/scripts/
+.claude/gsd-file-manifest.json
+.claude/gsd-install-state.json
+.claude/gsd-migration-journal/
+.claude/package.json
+.claude/.gsd-profile
+.claude/settings.local.json
+gsd-local-patches/
+
 # Claude Code -- DO NOT ignore .agents/skills/ or skills-lock.json
 # Both must be committed so any machine or container gets the same vendored skills.
 # .agents/skills/   <-- intentionally NOT ignored

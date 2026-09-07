@@ -175,6 +175,40 @@ warns on both uncommitted changes and unpushed commits.
 
 ---
 
+## Addendum: GSD was never actually installed
+
+Found while checking for GSD updates after the event.
+
+The template vendored a complete GSD Core install (332 files, 4.0MB, 93% of the repo's
+file count) at version 1.4.5. Two things were wrong with it.
+
+**The paths pointed at someone else's machine.** 170 of those files contained imports
+like `@/home/user/claude_template/.claude/gsd-core/references/mandatory-initial-read.md`.
+That directory exists on no machine any of us use, so every GSD agent, command and
+workflow silently loaded nothing. Re-running the installer locally confirms why: it
+writes machine-absolute paths into all ~460 files it manages. A vendored copy is only
+ever correct on the machine that generated it, which makes vendoring GSD into a template
+repo unfixable in principle, not just misconfigured.
+
+**Its hooks were never wired.** The committed `.claude/settings.json` contained zero
+`gsd-` hook entries.
+
+So the GSD layer was inert from the initial commit, while CLAUDE.md, AGENTS.md,
+`development-workflow.md` and Prompt 4 all treated its plan files as a hard prerequisite
+and a hard STOP if missing. The Base44 mandate explains why nobody noticed.
+
+**Fix:** GSD is no longer committed. `.gitignore` excludes everything the installer owns
+and the Setup Script runs `npx -y @opengsd/gsd-core@latest --local --claude`, so every
+machine gets a working install at the current version, with correct paths. The repo went
+from 505 files to 37. `/gsd-update` keeps it current from there.
+
+Also removed while in there: `.claude/commands/dev.md` was a tombstone pointing at
+`/start`, and `.claude/commands/audit.md` referenced `rules/security.md` and
+`rules/pre-launch-checklist.md`, neither of which exists in this template. `/audit` was
+rewritten around files that do exist and now leads with a secret scan.
+
+---
+
 ## The one-line version
 
 Stacking design skills produced worse design than using one. Uniform ceremony made small

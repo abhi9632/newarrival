@@ -47,9 +47,18 @@ if [ -d "src" ]; then
   cd src && npm install && cd ..
 fi
 
-# Install standing skills
+# Install standing skills.
+# Install all three. Invoke only ONE design skill per design pass -- see
+# rules/frontend-design.md.
 npx skills add anthropics/claude-code --skill "frontend-design"
 npx skills add Leonxlnx/taste-skill --skill "design-taste-frontend"
+npx skills add vercel-labs/skills --skill "find-skills"
+
+# Install GSD Core for this machine.
+# Not committed to the repo on purpose: the installer bakes machine-absolute paths
+# into every agent and command file, so a vendored copy only works on the machine
+# that produced it. Needs Node 24+.
+npx -y @opengsd/gsd-core@latest --local --claude
 
 exit 0
 ```
@@ -222,6 +231,7 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 | `rules/parallel-workflow.md` | How to build in parallel with teammates. |
 | `rules/frontend-design.md` | Rule 0: ONE design authority, art direction, visual gate. |
 | `docs/postmortem-2026-09.md` | Why these rules exist. Read before relaxing any of them. |
+| `.claude/` | Only `settings.json` and two commands are committed. GSD installs per machine. |
 | `rules/brainstorming.md` | Structured ideation before committing to a direction. |
 | `rules/development-workflow.md` | Feature build order. |
 | `rules/data-and-forms.md` | Fetch and form standards. |

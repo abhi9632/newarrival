@@ -1,52 +1,42 @@
-# /audit — Run a full security audit
+# /audit -- Pre-demo audit
 
-Conduct a structured security review of the codebase against the project's documented standards.
-Do NOT start coding or making fixes until the full audit report is complete.
+Report first. Do not fix anything until the report is complete and the human has read it.
 
-## Steps
+## 1. Secrets (run this first, always)
 
-1. Read `rules/security.md` in full — this is the primary security standard.
-2. Read the Security section of `rules/pre-launch-checklist.md`.
-3. Read `rules/data-and-forms.md` — covers form-specific security requirements.
-4. Scan the codebase systematically against every rule and checklist item. Check actual files — do not assume compliance.
-5. Produce a structured audit report in this exact format:
+```bash
+grep -rnE "github_pat_|ghp_|gho_|sk-[A-Za-z0-9]{20}|AIza[0-9A-Za-z_-]{35}|-----BEGIN [A-Z ]*PRIVATE KEY" \
+  --exclude-dir=node_modules --exclude-dir=.git . | head -40
+```
 
----
+Any hit is a finding, including in HTML, demo pages and dashboards. A live GitHub PAT
+once shipped in this template's own sprint board. If a secret is found: it must be
+rotated by the human, not just deleted from the file, because it stays in git history.
 
-### Security Audit Report
+## 2. Demo path
 
-**Date:** [today]
-**Branch:** [current branch]
-**Verdict:** GO / NO-GO
+Walk every step of the click path in `docs/pitch-playbook.md`. Note every broken
+interaction. Check `docs/demo-prep.md` for the full checklist.
 
-#### Findings
+## 3. Visual
 
-| Rule | Area | Status | Severity | Detail |
-|------|------|--------|----------|--------|
-| R1 | Error boundary | PASS/FAIL/N/A | — | |
-| R2 | Custom 404 | PASS/FAIL/N/A | — | |
-| R3 | SafeImage | PASS/FAIL/N/A | — | |
-| R4 | Data fetch states | PASS/FAIL/N/A | — | |
-| R5 | Form hardening | PASS/FAIL/N/A | — | |
-| R6 | HTTP headers + CSP | PASS/FAIL/N/A | — | |
-| R7 | Webhook HMAC | PASS/FAIL/N/A | — | |
-| R8 | Rate limiting | PASS/FAIL/N/A | — | |
-| R9 | Open redirect guard | PASS/FAIL/N/A | — | |
-| R10 | Auth cookies (Acuity) | PASS/FAIL/N/A | — | |
-| R11 | Env var security | PASS/FAIL/N/A | — | |
-| R12 | CORS | PASS/FAIL/N/A | — | |
-| R13 | Input validation | PASS/FAIL/N/A | — | |
-| R14 | Dependency scan | PASS/FAIL/N/A | — | |
-| R15 | Production audit gate | PASS/FAIL/N/A | — | |
+For each screen on the demo path, confirm a visual gate entry exists in
+`design-system/README.md`. A screen with no entry has never been looked at.
 
-For every FAIL: severity (CRITICAL/HIGH/MEDIUM/LOW), file + line, vulnerability, exploit path, exact fix.
+## 4. States and access
 
-#### Blockers (sorted by severity)
-[List any CRITICAL or HIGH findings here with exact fix instructions]
+- Every fetch: loading, error and empty states reachable (`rules/data-and-forms.md`)
+- Every form: pending-disable, input preserved on error (`rules/data-and-forms.md`)
+- Keyboard reachable, focus visible, 44px touch targets (`rules/quality.md`)
+- 375px: no overflow. 1280px: no broken layout
 
-#### Manual steps for [CLIENT]
-[List anything that requires manual verification, e.g. auth cookie flags, securityheaders.com test]
+## 5. Copy
 
----
+No em dashes, no lorem, no placeholder names, no visible TODO.
 
-6. After the report: list proposed fixes in priority order. Wait for [CLIENT]'s approval before applying any fix.
+## Report format
+
+| Severity | File:line | Finding | Fix |
+|---|---|---|---|
+
+Order: secrets, then anything on the demo path, then everything else.
