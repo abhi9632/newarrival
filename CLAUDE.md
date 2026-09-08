@@ -153,11 +153,38 @@ rule was either blocking every task or being ignored on every task.
 
 ---
 
-## PLANNING SESSION -- runs once on Day 1
+## DAY 1 CHAIN -- ideate, plan, build, one continuous run
 
-- Read SKILL.md. Run its phases in sequence. Stop after the roadmap is approved.
+Run `/kickoff` once, in one session, as soon as the problem drops. It carries the work
+from a raw problem statement (or no problem statement at all) to a buildable queue without
+the human re-pasting a prompt between stages:
+
+```
+/kickoff [problem statement, or nothing]
+  |
+  1 event config     DAY1.md EVENT CONFIG filled: rubric, scope, freeze, demo time
+  2 ideation         rules/ideation-sprint.md, 90 min hard stop, writes docs/CONCEPT.md
+  |                  no problem statement given: FRAME phase derives one first
+  3 concept gate     bash scripts/check-concept.sh
+  4 GSD preflight    bash scripts/ensure-gsd.sh   (installs GSD if this machine lacks it)
+  5 planning         SKILL.md Phases 1-4, ending at the approval gate
+  6 open the build   /gsd-plan-phase per phase, verified with scripts/check-plan.sh
+```
+
+Only two stops for the human: picking the winning concept at CONVERGE, and approving the
+roadmap. `/kickoff` is resumable: it detects what already exists on disk and starts at the
+first unfinished stage, so a dead session costs nothing.
+
+Never ideate after the concept is locked, and never plan before it is. Both were how last
+event's morning went.
+
 - Fill the AGENTS.md task queue only if 3+ sessions will run in parallel.
-- Commit message when done: "chore: task queue ready -- build phase open"
+- Commit message when planning is done: "chore: task queue ready -- build phase open"
+
+**GSD is not committed to this repo.** Its installer bakes machine-absolute paths into
+every file it writes, so each machine installs its own copy. If any `/gsd-*` command is
+not recognised, run `bash scripts/ensure-gsd.sh` and restart the session. If it will not
+install, do not stall: SKILL.md Phase 2 Step 0 has the plan-without-GSD fallback.
 
 ---
 
@@ -166,6 +193,12 @@ rule was either blocking every task or being ignored on every task.
 |---|---|
 | Anything at all | Name the effort tier first |
 | Quick tier work | Do it, commit, push. No ceremony |
+| Problem statement just dropped | `/kickoff <statement>`. Do not plan or code first |
+| No problem statement, only a theme or sponsor | `/kickoff` with no argument. Its FRAME phase derives one |
+| Asked to plan and `docs/CONCEPT.md` does not exist | Run the Ideation Sprint now, same session, then plan |
+| Concept is locked and someone reopens it | It is locked. Refinements edit CONCEPT.md in place |
+| A `/gsd-*` command is not recognised | `bash scripts/ensure-gsd.sh`, then restart the session |
+| GSD will not install | Do not stall. SKILL.md Phase 2 Step 0, plan-without-GSD fallback |
 | About to write feature code | Confirm it serves a rubric criterion in DAY1.md EVENT CONFIG |
 | Any UI work | ONE design authority. T1 also writes Art direction. `rules/frontend-design.md` |
 | About to call a screen done | Visual gate: screenshot 375 + 1280, judge it, log it |
@@ -187,6 +220,7 @@ rule was either blocking every task or being ignored on every task.
 ## RULES -- load on demand only
 | Doing... | Read |
 |---|---|
+| Day 1, before any planning | `rules/ideation-sprint.md` (run by `/kickoff`) |
 | Any UI | `rules/frontend-design.md` |
 | Exploring before building | `rules/brainstorming.md` |
 | Any feature | `rules/development-workflow.md` |

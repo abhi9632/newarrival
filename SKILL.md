@@ -64,10 +64,26 @@ Use comma, colon, semicolon, parentheses, or split the sentence. No exceptions.
 
 ## HOW TO INVOKE
 
-**Ideation Sprint runs first.** Before this skill runs, the lead runs `rules/ideation-sprint.md`
-(a 90-minute concept lock) which writes `docs/CONCEPT.md`. This skill's planning input is
-`docs/CONCEPT.md`, not the raw problem statement. If CONCEPT.md does not exist, stop and run
-the Ideation Sprint first.
+**Preferred: run `/kickoff`.** That command runs the whole Day 1 chain as one session:
+event config, Ideation Sprint, concept gate, GSD install check, this skill's four phases,
+then the phase plans. It resumes at whatever stage the repo is already past, so it is safe
+to re-run after a session dies. Everything below is what `/kickoff` executes for the
+planning stages, and what to do by hand if the command is not available.
+
+**Ideation Sprint runs first.** This skill's planning input is `docs/CONCEPT.md`, written
+by `rules/ideation-sprint.md` (a 90-minute concept lock), never the raw problem statement.
+
+Verify the concept before doing anything else:
+
+```bash
+bash scripts/check-concept.sh
+```
+
+- Exit 0: continue to Phase 1.
+- Exit 1 because sections are empty: fix them in `docs/CONCEPT.md`, commit, re-run.
+- Exit 1 because the file is missing: **run the Ideation Sprint now, in this session**
+  (`rules/ideation-sprint.md`), then come back to Phase 1. Do not stop and hand the
+  problem back to the human, and do not plan without a concept.
 
 On Day 1 morning, once CONCEPT.md is locked:
 
@@ -76,9 +92,10 @@ On Day 1 morning, once CONCEPT.md is locked:
 Claude executes ALL phases in sequence without further prompting.
 Do NOT skip phases. Each phase gates the next.
 
-**The flow:** Phase 1 reads the locked concept and locks constraints -> GSD questions the
-team interactively, researches, scopes, and produces a roadmap -> Phase 3 fills
-governance docs from GSD's output -> Phase 4 is the approval gate and execution start.
+**The flow:** Ideation Sprint locks `docs/CONCEPT.md` -> Phase 1 reads the locked concept
+and locks constraints -> GSD questions the team interactively, researches, scopes, and
+produces a roadmap -> Phase 3 fills governance docs from GSD's output -> Phase 4 is the
+approval gate and execution start.
 
 ---
 
@@ -199,6 +216,38 @@ Commit `.planning/_intake/phase1-brief.md` and push before Phase 2.
 ---
 
 ## PHASE 2: INVOKE GSD -- INTERACTIVE QUESTIONING + PLANNING
+
+### Step 0 -- Confirm GSD is installed on this machine
+
+GSD Core is never committed to this repo. Its installer writes machine-absolute paths into
+every agent, command and hook file it produces, so a vendored copy is only correct on the
+machine that generated it. Each machine installs its own.
+
+```bash
+bash scripts/ensure-gsd.sh
+```
+
+Run this before invoking any `/gsd-*` command, every time. It is idempotent: if GSD is
+already there it does nothing.
+
+If the install ran just now and `/gsd-new-project` is not recognised, the session started
+before the command files existed. Restart the session and re-run `/kickoff`; Stage 0
+resumes here.
+
+**If GSD is unavailable** (install fails, no network, Node missing), do not stall and do
+not sit waiting for the human. Plan without it:
+
+1. Write `.planning/ROADMAP.md` yourself from `docs/CONCEPT.md` plus the rubric and the
+   feature freeze time in DAY1.md EVENT CONFIG. Phases, tasks at 1 to 2 hours each,
+   dependencies, and which rubric criterion each task serves.
+2. Write `.planning/phases/0N-<slug>/0N-01-PLAN.md` per phase, holding the per-task
+   specification a builder reads. `scripts/check-plan.sh N` must find each one.
+3. Skip Phase 2 Step 2 (there is no GSD CLAUDE.md to merge) and go to Phase 3.
+4. Record the fallback in HANDOFF.md Standing blockers so a later session can install GSD
+   and re-plan the remaining phases properly.
+
+This costs roadmap quality, not the hackathon. Losing the morning to a package that will
+not install costs the hackathon.
 
 ### Step 1 -- Run GSD interactively
 

@@ -10,7 +10,30 @@ Runs once, immediately after the problem drops, before any planning or code.
 
 Lead + Claude, one session. Teammates may listen. One voice decides.
 
+## Entry: with or without a problem statement
+
+Most events announce a problem or a theme. Some announce only a sponsor, a track, or a
+cause, and expect the team to frame its own problem. Both cases run this same sprint; the
+second one adds a FRAME phase in front of it.
+
+- **Problem statement given:** skip FRAME, start the clock at DECOMPOSE.
+- **No problem statement, only a theme, track, sponsor or cause:** run FRAME first. The
+  90-minute clock starts at DECOMPOSE, so FRAME is 20 extra minutes, not 20 borrowed ones.
+
 ## Protocol (timeboxed -- Claude enforces the clock, announces each phase transition)
+
+### FRAME (20 min, only when no problem statement was given)
+- Gather every scrap the event did give: theme, track, sponsor, cause, judge bios, prize
+  categories, any dataset or API offered, and the rubric from DAY1.md EVENT CONFIG.
+- Name 5 to 7 candidate **problems** (not solutions) that fit that material. Each one is a
+  single sentence in the form: "[specific person] cannot [do specific thing] because
+  [specific obstacle], so [specific cost]."
+- Kill any candidate that is really a solution in disguise, that names no specific person,
+  or that no judge in this room would recognise as real.
+- Score the survivors on: fit to the event material, evidence it is real, and whether a
+  48-hour demo could visibly move it.
+- Present the ranked list and have the lead pick one. That becomes the problem statement.
+- Write the chosen statement down verbatim before continuing. DECOMPOSE starts from it.
 
 ### 0-15 min -- DECOMPOSE
 - Restate the problem in one sentence.
@@ -73,6 +96,21 @@ locked late. If deadlocked at T+85, take the higher rubric-fit score.
 
 ## Assumptions to test during build
 ```
+
+## Handoff into planning -- do not break the chain here
+
+The sprint does not end at the lock. In the same session, once `docs/CONCEPT.md` is
+committed and pushed:
+
+1. Run `bash scripts/check-concept.sh`. It fails on any section still empty. Fix what it
+   names, commit, re-run.
+2. Run `bash scripts/ensure-gsd.sh`. It installs GSD Core if this machine does not have it.
+3. Continue straight into planning with `SKILL.md` Phase 1. Do not wait for a new prompt,
+   do not open a new session, and do not re-ideate: the concept is locked and planning
+   reads it as given.
+
+`/kickoff` runs all of this as one chain. This section is what it follows, and what to do
+by hand if the command is not available.
 
 ## One concept document, forever
 
