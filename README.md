@@ -57,8 +57,9 @@ npx skills add vercel-labs/skills --skill "find-skills"
 # Install GSD Core for this machine.
 # Not committed to the repo on purpose: the installer bakes machine-absolute paths
 # into every agent and command file, so a vendored copy only works on the machine
-# that produced it. Needs Node 24+.
-npx -y @opengsd/gsd-core@latest --local --claude
+# that produced it. The script is idempotent and re-checks on every setup run, so a
+# teammate who skipped this step still gets GSD when /kickoff reaches its preflight.
+bash scripts/ensure-gsd.sh || echo "GSD install failed. Planning falls back per SKILL.md Phase 2 Step 0."
 
 exit 0
 ```
@@ -97,24 +98,43 @@ Then:
 
 ---
 
-### Lead only -- Prompt 2a: Ideation Sprint (run immediately after the problem drops)
+### Lead only -- Prompt 2: Kickoff (run the moment the problem drops)
+
+One command carries the morning from problem to buildable queue. Run it in a single
+session and leave it running.
+
+```
+/kickoff [PROBLEM STATEMENT]
+```
+
+If the event published no problem statement, run `/kickoff` with nothing after it. Its
+FRAME phase derives a problem statement from the theme, sponsor, track and rubric, and
+has you pick one before ideation starts.
+
+What it does, in order: fills DAY1.md EVENT CONFIG gaps, runs the 90-minute Ideation
+Sprint into `docs/CONCEPT.md`, gates on that concept being complete and committed,
+installs GSD Core if this machine lacks it, runs the planning skill through its approval
+gate, then writes the phase plans and opens the build.
+
+It stops for you exactly twice: choosing the winning concept, and approving the roadmap.
+It is resumable. If the session dies, run `/kickoff` again and it restarts at the first
+unfinished stage.
+
+<details>
+<summary>Manual fallback, if the /kickoff command is unavailable</summary>
+
+Run these as two prompts, in this order. Nothing else changes.
 
 ```
 Run the Ideation Sprint in rules/ideation-sprint.md now. Here is the problem statement:
 [PROBLEM STATEMENT]
 
 Read DAY1.md EVENT CONFIG first for scope mode, team size, and the judging rubric.
+If no problem statement is given above, run the FRAME phase first to derive one.
 Enforce the 90-minute timebox: announce each phase transition and hard-stop at T+90.
-End the session with docs/CONCEPT.md written, committed, and pushed. Do not write any
-product code -- this session produces the locked concept only.
+End with docs/CONCEPT.md written, committed and pushed, then run
+bash scripts/check-concept.sh and bash scripts/ensure-gsd.sh. No product code this session.
 ```
-
-Replace `[PROBLEM STATEMENT]` with the announced problem. This runs before any planning.
-No code before docs/CONCEPT.md exists and is committed.
-
----
-
-### Lead only -- Prompt 2b: Planning (run only after CONCEPT.md is locked)
 
 ```
 Run the project planning skill. The brief is docs/CONCEPT.md plus DAY1.md EVENT CONFIG.
@@ -122,9 +142,9 @@ Read both before starting. The concept is already locked -- do not re-ideate.
 
 Team: [number] developer(s), [solo / group]
 ```
+</details>
 
-Replace `[number]` / `[solo / group]` with your team size. The problem is already framed
-in docs/CONCEPT.md, so the planner works from the locked concept, not the raw problem.
+No code before `docs/CONCEPT.md` exists and is committed.
 
 ---
 
@@ -225,8 +245,11 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 | `DAY1.md` | EVENT CONFIG: single source of event facts (rubric, scope, stack, dates, freeze). |
 | `CLAUDE.md` | Per-session bootstrap. Identity, Rule 0, decision table. |
 | `AGENTS.md` | Project facts + task queue for parallel build. |
+| `.claude/commands/kickoff.md` | `/kickoff`: the Day 1 chain, ideation to buildable queue. |
 | `rules/ideation-sprint.md` | 90-minute concept lock. Runs first, before planning. |
 | `docs/CONCEPT.md` | The locked concept. Written during ideation, input to planning. |
+| `scripts/ensure-gsd.sh` | Installs GSD Core on this machine if missing. Idempotent. |
+| `scripts/check-concept.sh` | Gate: concept complete and committed before planning starts. |
 | `docs/pitch-playbook.md` | Pitch phase: script, deck in product design language, rehearsal. |
 | `rules/parallel-workflow.md` | How to build in parallel with teammates. |
 | `rules/frontend-design.md` | Rule 0: ONE design authority, art direction, visual gate. |
@@ -248,9 +271,10 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 ## Start of Day 1
 
 1. Complete collaborator setup above (every person, once)
-2. Lead fills DAY1.md EVENT CONFIG, runs Prompt 1, then Prompt 2a (Ideation Sprint)
-3. CONCEPT.md is locked and committed -- lead runs Prompt 2b (Planning)
-4. Planning is approved -- lead confirms all phase plan files exist in `.planning/phases/`
+2. Lead fills DAY1.md EVENT CONFIG and runs Prompt 1
+3. Problem drops -- lead runs `/kickoff` (Prompt 2) and stays in that session. Ideation,
+   concept lock, GSD install check, planning and the phase plans all happen inside it
+4. Lead confirms all phase plan files exist: `bash scripts/check-plan.sh <N>` per phase
 5. Each session runs Prompt 3, then human claims a task, then runs Prompt 4
 
 ---

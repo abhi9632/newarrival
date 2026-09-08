@@ -35,8 +35,20 @@ fi
 echo "ERROR: No GSD plan file for phase ${PHASE}." >&2
 echo "Looked under .planning/phases/${PADDED}-*/ for *-PLAN.md and found none." >&2
 echo "" >&2
-echo "This phase has not been planned. Run:" >&2
-echo "  /gsd-plan-phase ${PHASE}" >&2
-echo "Wait for it to finish, commit the .planning/ files, then re-run:" >&2
-echo "  bash scripts/check-plan.sh ${PHASE}" >&2
+if bash "$(dirname "$0")/ensure-gsd.sh" --check >/dev/null 2>&1; then
+  echo "This phase has not been planned. Run:" >&2
+  echo "  /gsd-plan-phase ${PHASE}" >&2
+  echo "Wait for it to finish, commit the .planning/ files, then re-run:" >&2
+  echo "  bash scripts/check-plan.sh ${PHASE}" >&2
+else
+  echo "GSD is not installed on this machine either, so /gsd-plan-phase does not exist here." >&2
+  echo "Install it first:" >&2
+  echo "  bash scripts/ensure-gsd.sh" >&2
+  echo "then run /gsd-plan-phase ${PHASE} and re-run this check." >&2
+fi
+
+echo "" >&2
+echo "A missing plan file does not stop a build. Say so in one line, then build from" >&2
+echo "docs/CONCEPT.md plus the AGENTS.md task description, and log the assumption in" >&2
+echo "HANDOFF.md. See CLAUDE.md, SESSION START." >&2
 exit 1

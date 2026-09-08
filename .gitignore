@@ -28,10 +28,15 @@ Thumbs.db
 # The installer writes machine-absolute paths into every agent and command file,
 # so a vendored copy is only ever correct on the machine that generated it. The
 # copy previously committed here pointed at /home/user/claude_template and was
-# broken for everyone. Setup runs: npx @opengsd/gsd-core@latest --local --claude
+# broken for everyone. Setup runs: bash scripts/ensure-gsd.sh
+# Both command layouts are ignored. GSD 1.13.x writes .claude/commands/gsd-*.md flat;
+# earlier versions wrote .claude/commands/gsd/*.md. Ignoring only the nested form left
+# about seventy untracked command files in git status after every install.
 .claude/gsd-core/
 .claude/agents/
 .claude/commands/gsd/
+.claude/commands/gsd-*.md
+.claude/commands/settings.local.json
 .claude/hooks/
 .claude/scripts/
 .claude/gsd-file-manifest.json
@@ -39,6 +44,7 @@ Thumbs.db
 .claude/gsd-migration-journal/
 .claude/package.json
 .claude/.gsd-profile
+.claude/.gsd-staging/
 .claude/settings.local.json
 gsd-local-patches/
 
