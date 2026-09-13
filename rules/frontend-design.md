@@ -19,10 +19,37 @@ Stacking design skills is not thoroughness. It is dilution.
 | Brief | Primary authority |
 |---|---|
 | Landing page, marketing page, hero, pitch site | `design-taste-frontend` |
-| Product UI, dashboard, forms, multi-step app screens | `frontend-design` |
+| Product UI, dashboard, forms, multi-step app screens | `design-taste-frontend` (default preference); `frontend-design` when the brief is genuinely dense data/admin tooling with no product-surface moment at all |
 | Award-level showcase where motion IS the product | `awwwards` |
 
+Default to `design-taste-frontend` even outside landing pages. Its own scope note
+excludes dashboards, meaning: don't expect it to hand you dashboard layout mechanics
+(data tables, dense grids), but its taste system (art direction, colour discipline,
+AI-tell avoidance, motion restraint) still applies and should still be applied in
+full, not sampled for a handful of CSS variables and abandoned. `frontend-design` is
+the fallback for the rare brief that is pure dense data tooling with no product-surface
+moment anywhere in it.
+
 Pick one. Say out loud which one you picked and why, in one line, before writing code.
+
+**This choice is locked at concept time, not improvised at build time.**
+`docs/CONCEPT.md`'s Design authority field names the pick already. T1 reads it and uses
+it; T1 does not re-derive it from scratch. A build session picking a different authority
+than the one the concept locked is a sign the concept itself under-specified its own
+product surface, not a free choice at build time.
+
+### Prototype scope constrains the backend, never the visual bar
+
+`scope: prototype` (DAY1.md EVENT CONFIG) means mock data, no real backend, no auth. It
+does not mean a bare screen is acceptable. A dashboard/devtool pick from the table above
+still has to clear the same bar a landing page does: a real hero or intro moment before
+the mechanism, imagery or illustration where it earns its place, a considered type and
+colour system, motion with a reason. "It's just a prototype" describes what is faked
+behind the screen, never what the screen looks like. If the whole demo is a plain form, a
+button and a list with no visual world around it, that is not a finished prototype, it
+failed the Production value axis in `rules/ideation-sprint.md` SCORE and the concept
+should have specified more surface, or this build session needs to add it before the
+visual gate runs.
 
 If the human names several skills in one message, that is a request for quality, not an
 instruction to load them all. Pick the primary for the brief, state the choice, and treat
@@ -83,10 +110,15 @@ Writing the component is not finishing the component. Before any UI task is mark
 
 1. Run the app. Open the actual screen.
 2. Screenshot it at **375** and **1280**.
-3. Look at the screenshots and answer, in writing, two questions:
+3. Look at the screenshots and answer, in writing, three questions:
    - Does this match the Art direction block, specifically the Signature?
    - Could this be any other team's project with the logo swapped?
-4. If the answer to the second is yes, it is not done. Fix it and screenshot again.
+   - Would this pass as a paying client's shipped deliverable, or does it read as an
+     internal wireframe/utility screen that happens to work? Functional and tested is
+     not the same question as this one. A plain form, a bare list, or default browser
+     controls with tokens swapped in is a wireframe wearing a palette, not a design.
+4. If the answer to question 2 is yes, or the answer to question 3 is "wireframe", it is
+   not done. Fix it and screenshot again.
 
 Evidence, not intent. "I followed the tokens" is not the gate; the screenshot is.
 

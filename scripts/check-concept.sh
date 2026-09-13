@@ -33,6 +33,7 @@ Demo narrative
 Signature wow moment
 What each role sees
 Hard constraints
+Design authority
 Why it wins each rubric criterion
 risks
 Assumptions to test"

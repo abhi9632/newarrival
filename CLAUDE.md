@@ -93,8 +93,11 @@ re-run Rule 0, but you MAY run a fresh single-authority pass on a screen that lo
 generic. A generic screen is a bug.
 
 **Visual gate, every UI task:** run the app, screenshot the real screen at 375 and 1280,
-and answer in writing: could this be any other team's project with the logo swapped?
-If yes, it is not done. Tokens are not evidence. The screenshot is.
+and answer in writing: could this be any other team's project with the logo swapped, AND
+would this pass as a paying client's shipped deliverable rather than an internal
+wireframe that happens to work? If either answer is bad, it is not done. Tokens are not
+evidence. The screenshot is. "Prototype" scope (mock data, no backend) never lowers this
+bar, it only says what is faked behind the screen. Full detail: `rules/frontend-design.md`.
 
 ---
 

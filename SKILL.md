@@ -114,6 +114,12 @@ These are non-negotiable. They go verbatim into the GSD brief doc in Phase 1.
 - All data is static JSON or hardcoded mock objects.
 - Target: a working, clickable demo that tells a clear story from problem to solution.
 - Judges do NOT test every edge case. They follow the happy path. Build that first.
+- **"Prototype" scopes the backend, never the visual bar.** Mock data and no auth are
+  engineering shortcuts, not a licence to ship a bare utility screen. The demo still
+  needs to look like a shipped product: a real hero/intro moment, a considered type and
+  colour system, imagery where it earns its place, motion with a reason. A functional
+  screen that reads as an internal wireframe loses on Design (or whatever the rubric
+  calls its visual-quality criterion) even when every feature behind it works.
 
 **Stack:**
 - Chosen on Day 1 morning. Fill into AGENTS.md immediately.
@@ -146,9 +152,13 @@ Fallback rubric (use only when the event publishes none; recorded in EVENT CONFI
 | Presentation | equal | The story is clear and easy to follow in about 3 minutes |
 
 **UI polish:**
-- Day 1, T1 only: run `frontend-design` and `design-taste-frontend` once to agree
-  design tokens and fill `design-system/README.md`.
-- Day 1 after T1: build features using those tokens. Do not re-run the full design pass.
+- Day 1, T1 only: run the ONE design authority `docs/CONCEPT.md` already named (see
+  Design authority field, `rules/frontend-design.md`) to agree the Art direction block
+  and tokens in `design-system/README.md`. Never run two design skills in the same
+  pass, including `frontend-design` and `design-taste-frontend` together: see Rule 0.
+- Day 1 after T1: build features using those tokens. Do not re-run the full design pass,
+  but a screen that looks generic still gets a fresh single-authority pass on it, per
+  `rules/frontend-design.md`.
 - Day 2 after feature freeze: run the full visual polish pass.
 
 ---
@@ -433,6 +443,10 @@ Pause and show:
       every feature in the roadmap appears in the demo flow
   [ ] At least one assumption logged with a test plan before feature freeze
   [ ] Highest-weighted criterion gets the most build time
+  [ ] The roadmap includes an explicit product-surface task (hero/intro moment,
+      visual craft pass), not just the mechanism. If the concept is a bare
+      utility/devtool/API, confirm the Design authority field in CONCEPT.md named what
+      wraps it and that a phase/task builds that wrapper, not only the mechanism itself
 
   All boxes must be confirmed before replying APPROVED.
   If any box is unchecked: reply "CHANGE [criterion]" to fix it first.

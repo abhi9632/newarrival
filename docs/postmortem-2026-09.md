@@ -209,6 +209,63 @@ rewritten around files that do exist and now leads with a secret scan.
 
 ---
 
+## Failure 4: a fully working, fully tested demo that still couldn't win
+
+### What happened
+
+A solo dogfood run of this template (OpenAI Build Week brief, Developer Tools track)
+produced Spotter, a local static-code-review tool: real rule engine, 12/12 tests
+passing, verified live in a browser, zero em dashes, HANDOFF current, every gate this
+template runs scripted and green. The human's verdict: *"it was supposed to be an end
+to end tested workflow... this cannot even be considered a finished product. it's a
+tool. that's not what we're building for hackathon... i was hoping i would see a
+complete site."* Every mechanical gate passed. The thing itself was not good enough.
+
+### Root cause
+
+Two, one execution and one template.
+
+**a. The design authority was applied thinly, not wrongly.** `design-taste-frontend` is
+the preferred authority even for product UI/dashboard briefs (confirmed: the human
+prefers it over `frontend-design` generally). The session did invoke it, but only
+extracted six CSS variables from it and stopped: no hero/intro moment, no imagery, no
+motion beyond one progress rail, none of the skill's actual taste system (art direction,
+layout craft, AI-tell avoidance) carried through into the build. Naming a skill and
+sampling a palette from it is not the same as following it.
+
+**b. Nothing in the template ever asked "would this look like a shipped product?"**
+`rules/ideation-sprint.md` SCORE scored rubric fit, buildability, demo length and
+distinctiveness. None of those catch "the concept is a mechanism with no product
+surface around it." `SKILL.md` scope rules said "prototype: mock data, no backend, no
+auth" and that got read, correctly by the letter and wrongly in spirit, as permission to
+ship a bare single screen: one card, a paste box, a list. The visual gate only asked "is
+this generic" and "does it match the tokens", never "does this clear the same bar as a
+paying client's deliverable."
+
+**c. `SKILL.md`'s own UI polish section contradicted Rule 0.** It said "run
+`frontend-design` and `design-taste-frontend` once" in the same T1 pass. That is the
+exact two-skill stacking pattern Failure 1 exists to prevent. Nobody had hit it yet
+because past runs happened to only reach for one skill anyway.
+
+### Fixes
+
+- `rules/ideation-sprint.md` SCORE gained a fifth axis, Production value: would the
+  built-out concept look like a shipped product or a bare utility screen. DIVERGE now
+  requires every candidate to name its product surface, not just its mechanism.
+- `docs/CONCEPT.md`'s template gained a locked **Design authority** field, filled at
+  CONVERGE from the same table `rules/frontend-design.md` already had. Gated by
+  `check-concept.sh`. The build session reads the pick, it does not re-derive it.
+- `rules/frontend-design.md` and `CLAUDE.md` Rule 0 both gained a third visual-gate
+  question: would this pass as a paying client's shipped deliverable, not just "is it
+  generic". Functional and tested was never the same question as this one.
+- `SKILL.md` Scope and UI polish sections rewritten: prototype scope constrains the
+  backend, never the visual bar, and the UI polish section no longer tells anyone to run
+  two design skills in one pass.
+- Phase 4's rubric checklist gained a line: confirm the roadmap has an explicit task
+  for the product surface (the wrapper), not only the mechanism.
+
+---
+
 ## The one-line version
 
 Stacking design skills produced worse design than using one. Uniform ceremony made small

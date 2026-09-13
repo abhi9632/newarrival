@@ -44,6 +44,12 @@ second one adds a FRAME phase in front of it.
 ### 15-45 min -- DIVERGE
 - Claude generates 10+ candidate solutions across the spectrum, safe to wild.
 - Each candidate: one-line concept + what the 3-minute demo shows + signature wow moment.
+- Every candidate needs a real **product surface**, not just a mechanism. "A tool that
+  scans code" is a mechanism. "A tool that scans code, wrapped in a product with a hero
+  moment, a live demo section, and a narrative arc a judge watches unfold" is a concept.
+  If the one-line pitch describes only a function (scans X, sorts Y, matches Z) with no
+  mention of what a judge would see and feel, add the surface before it counts as a
+  candidate.
 - No filtering during this phase. Quantity over judgment.
 
 ### 45-70 min -- SCORE
@@ -52,7 +58,23 @@ second one adds a FRAME phase in front of it.
   - Buildable in available hours by this team
   - Demo-ability in 3 minutes
   - Distinctiveness (will judges remember it after 30 teams)
+  - **Production value**: built out, would this look like a real shipped product (a
+    site, an app) or a bare utility screen? Score low anything whose demo is "a form, a
+    button, and a list" with no visual world around it. This axis exists because a
+    concept can win every other axis and still lose the room on sight. The published
+    rubric almost always includes a Design-shaped criterion (call it Design, UX polish,
+    or similar) even when the team's own instinct is to treat visuals as an
+    afterthought; score this axis for real, not as a formality.
+  - Score this axis 1 for real, do not wave it through: if every candidate would score
+    3+ here, the DIVERGE pass was too narrow, add wilder candidates before SCORE closes.
 - Show the matrix. Top 2 advance.
+- **A concept that is inherently a bare utility (an internal devtool, a CLI, an API)
+  still needs a product surface to demo well.** Do not drop production value for these;
+  instead the concept must specify what wraps the mechanism: a landing/intro moment
+  that frames the problem, a narrative the judge follows, at minimum one screen with
+  real visual craft (not the mechanism's raw output rendered plainly). Note this
+  explicitly in the candidate's one-line concept, not left implicit for the builder to
+  invent later.
 
 ### 70-90 min -- CONVERGE
 - Stress-test both finalists:
@@ -81,6 +103,14 @@ locked late. If deadlocked at T+85, take the higher rubric-fit score.
 ## Demo narrative (1 sentence: "judge watches X happen")
 
 ## Signature wow moment
+
+## Design authority (from rules/frontend-design.md's choice table)
+<!-- Pick it now, from the brief, not later during the build session. Say which row of
+     the table this concept matches and why. A concept that is a dashboard/devtool still
+     needs its product-surface moments (see Production value above) treated as a
+     landing/marketing pass if any exist -- name which screens get which authority if
+     they differ, e.g. "frontend-design for the tool screen, design-taste-frontend for
+     the intro/landing moment in front of it." -->
 
 ## What each role sees that the others do not
 <!-- One line per role. If two roles see the same screens, the concept is not differentiated
