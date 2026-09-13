@@ -19,9 +19,25 @@ before the ideation sprint starts.
 
 **Judging rubric**
 
-Copy the event's published rubric verbatim into this table. If the event published no
-rubric, use the fallback rubric in `SKILL.md` (equal-weight: Problem clarity, Solution
-quality, UX polish, Feasibility, Presentation).
+Copy the event's published rubric verbatim into this table. Most events never publish
+one at all, or publish only vague category names -- that is normal, not a gap to feel
+bad about. What matters is that the choice of fallback is a checked fact, not a silent
+default: two past events both ran on the fallback rubric with no record that anyone
+looked for a real one.
+
+Before filling this table, check the obvious places once: event website/rules page,
+sponsor or track pages, the Discord/Slack pinned messages, and ask an organizer directly
+if one is in the room. Then record which of these two happened:
+
+- **Found one:** paste it verbatim below.
+- **Confirmed none exists** (checked the places above, or none apply -- e.g. an informal
+  or invite-only event with no published criteria): write "No published rubric --
+  checked [where], fallback rubric below adopted as the scoring model" and use the
+  fallback rubric in `SKILL.md` (equal-weight: Problem clarity, Solution quality, UX
+  polish, Feasibility, Presentation).
+
+Either way, this line must say what was checked. "Used the fallback because none was
+given" is fine. Using it because nobody looked is the failure mode this fixes.
 
 | Criterion | Weight | What judges look for |
 |---|---|---|

@@ -87,6 +87,16 @@ locked late. If deadlocked at T+85, take the higher rubric-fit score.
      yet. Last event the coordinator screens came out nearly identical to the volunteer
      screens and the human had to send it back. Settle this now, not after building. -->
 
+## Hard constraints (never do this, even if it would work)
+<!-- Things a builder could reasonably reach for mid-build that must not ship, decided
+     now while it costs one sentence instead of a built-and-deleted feature. One past
+     project built a full LLM chatbot against an external API, shipped it, then tore it
+     out two sessions later because "no external API call, ever" was a rule that existed
+     only in someone's head. Ask explicitly: any external API call live on stage (cost,
+     latency, vendor lock, a network dependency the demo can't survive without), any data
+     the org can't legally or ethically share, anything security- or safety-adjacent that
+     needs sign-off. If there are none, write "none identified" -- don't skip the section. -->
+
 ## Why it wins each rubric criterion
 - [criterion]: [one line]
 

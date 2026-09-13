@@ -265,6 +265,8 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
 | `design-system/README.md` | Design tokens (filled once during T1). |
 | `docs/git-integration.md` | Multi-agent git sync protocol. |
 | `docs/demo-prep.md` | Feature freeze schedule + demo checklist. |
+| `scripts/check-freeze.sh` | Gate: freeze is only real once this exits 0 (live URL responds, rehearsal logged, HANDOFF reflects it). |
+| `docs/submission-checklist.md` | The last task. A working, rehearsed demo is not the same as a submitted entry. |
 
 ---
 
@@ -276,6 +278,15 @@ HANDOFF.md  ->  CLAUDE.md  ->  AGENTS.md  ->  rules/*.md
    concept lock, GSD install check, planning and the phase plans all happen inside it
 4. Lead confirms all phase plan files exist: `bash scripts/check-plan.sh <N>` per phase
 5. Each session runs Prompt 3, then human claims a task, then runs Prompt 4
+
+## End of the event
+
+1. At the freeze time in DAY1.md EVENT CONFIG, run `bash scripts/check-freeze.sh`. Not
+   frozen until it exits 0
+2. Claim P1-P3 in `docs/pitch-playbook.md`, logging each rehearsal run in its table
+3. Once check-freeze.sh passes and P3 is done: `docs/submission-checklist.md`
+4. Submitted is a state, not an assumption -- the checklist's last item is a saved
+   confirmation screenshot or email
 
 ---
 

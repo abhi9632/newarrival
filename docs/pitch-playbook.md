@@ -87,6 +87,16 @@ Requirements: keyboard navigation, works offline, 16:9.
 - Backup plan: screen-recorded demo video captured after freeze, plus deployed URL AND
   local fallback ready.
 
+**Log every run below.** `scripts/check-freeze.sh` counts these rows; fewer than 3 fails
+the freeze gate. This exists because two past projects had their deploy and rehearsal
+steps slip past the actual deadline with nothing tracking that they hadn't happened yet.
+
+| # | Time | Result (clean / stumbled where) |
+|---|---|---|
+| | | |
+| | | |
+| | | |
+
 ---
 
 ## Freeze coupling
@@ -94,3 +104,8 @@ Requirements: keyboard navigation, works offline, 16:9.
 P1-P3 are claimable only after feature freeze (time from DAY1.md EVENT CONFIG). See
 `rules/ideation-sprint.md` for how the concept these slides pitch got locked, and
 `docs/demo-prep.md` for the freeze-day checklist these tasks feed into.
+
+## After P3
+
+Run `bash scripts/check-freeze.sh`. If it passes, the last task is
+`docs/submission-checklist.md` -- actually submitting is not implied by "the demo works".

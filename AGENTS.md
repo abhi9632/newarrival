@@ -9,6 +9,7 @@
 | Framework | [fill Day 1 during planning] |
 | Styling | [fill Day 1 during planning] |
 | Deployment | [fill Day 1 -- see DAY1.md EVENT CONFIG deploy target] |
+| Live URL | [fill once T1 deploys -- the actual deployed URL, not the platform name. `scripts/check-freeze.sh` reads this field and fails the freeze gate if it is still `[fill]` or does not respond] |
 | Backend | [fill Day 1 -- None if scope mode is prototype; see DAY1.md EVENT CONFIG] |
 | Auth | [fill Day 1 -- None for prototype] |
 

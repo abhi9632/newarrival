@@ -32,6 +32,7 @@ Solution concept
 Demo narrative
 Signature wow moment
 What each role sees
+Hard constraints
 Why it wins each rubric criterion
 risks
 Assumptions to test"

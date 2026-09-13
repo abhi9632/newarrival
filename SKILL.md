@@ -120,6 +120,13 @@ These are non-negotiable. They go verbatim into the GSD brief doc in Phase 1.
 - Prefer what the team can ship fast in: React + Vite, Next.js, or plain HTML/CSS/JS.
 - No new frameworks nobody on the team has used before.
 - Deployment: Vercel or Netlify (1-click from repo). Must be live before demo.
+- **If the platform, backend, or hosting was named by someone else** (a client, an
+  organizer, a teammate) rather than chosen freely: verify its real capabilities via
+  WebSearch/WebFetch against its own current docs before writing a single line of schema
+  or an Infrastructure spec against it. Two full backend rewrites happened on one past
+  project from inferring a named platform's model instead of checking it (assumed
+  Supabase-style auth/tables for a platform that turned out to work nothing like that).
+  Confirming first costs one search; guessing wrong costs the rewrite.
 
 **Judging rubric (feed to GSD as constraints):**
 

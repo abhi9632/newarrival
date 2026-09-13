@@ -42,6 +42,18 @@ not pause for a missing document.
 Confirm the work serves a rubric criterion in DAY1.md EVENT CONFIG. If it serves none,
 say so and ask before building.
 
+### Step 1a -- Write the screen spec before code (any screen on the demo path)
+
+One short paragraph, written and read back before implementation starts: what this
+screen shows, what data it needs, its states (loading/error/empty/success), and one
+sentence for "done when". Skipping this is cheap right up until it isn't: one past
+project's result screen went through five separate live rearrangements across sessions
+(reordering which card comes first, adding a card, deleting it, adding it back
+differently) because nothing was decided before the code existed to argue with. A
+paragraph is faster than a rewrite.
+
+Not needed for Quick-tier tweaks or screens nobody will judge.
+
 ### Step 2 -- Design (UI tasks only)
 
 **ONE design authority per pass.** Never two. See `rules/frontend-design.md`.

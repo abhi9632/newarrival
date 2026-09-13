@@ -9,9 +9,20 @@ become claimable only after freeze.
 |---|---|
 | T-3h | Run through full demo flow. Note every broken interaction. |
 | T-2h | Fix critical bugs only. Nothing new. |
-| T-1h | FREEZE features. Deploy final build. Confirm public URL works. |
-| T-30m | Rehearse pitch (3 min max, see `docs/pitch-playbook.md` P3). Assign speaking parts. |
+| T-1h | FREEZE features. Deploy final build. Confirm public URL works. Then run `bash scripts/check-freeze.sh` -- do not treat freeze as real until it exits 0. |
+| T-30m | Rehearse pitch (3 min max, see `docs/pitch-playbook.md` P3). Assign speaking parts. Log each run in the P3 rehearsal table. |
 | T-10m | Open the app on a real device. Confirm it loads. |
+| after demo | `docs/submission-checklist.md` -- the demo working is not the same as being submitted. |
+
+This schedule used to be prose nobody was forced to run. Two past projects both had the
+T-1h deploy step and the T-30m rehearsal step slip past the real deadline with nothing
+noticing: one shipped no live URL during judging at all, the other did its pitch-video
+work in a session that never touched git. `check-freeze.sh` is the difference between
+this table being a plan and being checked.
+
+**Post-freeze work still gets committed.** Pitch script, deck, rehearsal notes, deploy
+config -- if it isn't in the repo with a HANDOFF.md session-log line, it didn't happen
+for the next session, and it didn't happen for you reviewing from your phone.
 
 ## Demo checklist (complete before T-1h)
 - [ ] Every primary user flow works end-to-end

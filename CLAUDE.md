@@ -175,6 +175,12 @@ Only two stops for the human: picking the winning concept at CONVERGE, and appro
 roadmap. `/kickoff` is resumable: it detects what already exists on disk and starts at the
 first unfinished stage, so a dead session costs nothing.
 
+`/kickoff` ends at the build queue opening. The chain picks back up at the other end of
+the event: `docs/demo-prep.md` (freeze schedule, gated by `scripts/check-freeze.sh`),
+`docs/pitch-playbook.md` (P1-P3), then `docs/submission-checklist.md`. A finished demo
+and a submitted entry are not the same state -- two past projects treated them as if
+they were.
+
 Never ideate after the concept is locked, and never plan before it is. Both were how last
 event's morning went.
 
@@ -214,6 +220,11 @@ install, do not stall: SKILL.md Phase 2 Step 0 has the plan-without-GSD fallback
 | Scope addition not in plan | Ask first, do not build |
 | Library or API currency uncertain | search the web, never guess |
 | Teammate file conflict | Pull, resolve (keep latest Status and Claimed By), commit |
+| Platform/backend named by someone else, not chosen freely | Verify its real capabilities via WebSearch/WebFetch before writing a spec against it. Never infer |
+| Feature idea appears mid-build that wasn't in CONCEPT.md's Hard constraints | Check it against that section first. If it's a new external dependency or data-sharing question, ask before building, don't build-then-decide |
+| Someone claims "feature freeze" | Run `bash scripts/check-freeze.sh`. Not frozen until it exits 0 |
+| Freeze gate passed, P1-P3 done | `docs/submission-checklist.md`. The demo working is not the same as being submitted |
+| Event published no judging rubric | Say where you checked, then use the SKILL.md fallback. Record which happened in DAY1.md, don't silently default |
 
 ---
 
