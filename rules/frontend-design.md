@@ -117,8 +117,11 @@ Writing the component is not finishing the component. Before any UI task is mark
      internal wireframe/utility screen that happens to work? Functional and tested is
      not the same question as this one. A plain form, a bare list, or default browser
      controls with tokens swapped in is a wireframe wearing a palette, not a design.
-4. If the answer to question 2 is yes, or the answer to question 3 is "wireframe", it is
-   not done. Fix it and screenshot again.
+   - Read every visible string on the screen. Is any of it process narration or a
+     limitation caveat instead of product copy (see "Copy on the demo is product copy"
+     below)? If so it doesn't belong here even if the rest of the screen is done.
+4. If the answer to question 2 is yes, question 3 is "wireframe", or question 4 finds
+   process narration on screen, it is not done. Fix it and screenshot again.
 
 Evidence, not intent. "I followed the tokens" is not the gate; the screenshot is.
 
@@ -129,6 +132,29 @@ skills and never looked at the result.
 Micro-interactions and motion go on the demo-path screens only. Everything else stays plain.
 
 ---
+
+## Copy on the demo is product copy, never process narration
+
+A prototype can and should have real content: a hero, section copy, a features
+showcase, whatever the product needs. That is not "fluff" and Rule 0 does not mean
+strip the page down to bare controls. What is banned is a different thing entirely:
+**meta-commentary about the build itself, anywhere a judge or user sees it.**
+
+Banned on the live page, in any copy, any tooltip, any empty state, any label:
+- Justifying a scope cut or limitation ("we didn't have time for streaks", "heuristic,
+  not a hard rule", "capped at warning because this can be wrong")
+- Defensive reassurance about the tool's own correctness ("genuinely, not a broken one",
+  "this really works")
+- Narrating the process ("built with Claude Code", "AI-generated", version/build labels)
+- Comparative self-praise ("unlike other solutions", "this proves our approach works")
+
+That material belongs in the pitch deck, the README, `docs/CONCEPT.md`, or spoken during
+the pitch, never inside the product surface itself. A judge reading a limitation caveat
+on the live screen reads it as the team apologising for their own work while presenting
+it. Real content stays; commentary about the content does not. Sweep every visible
+string on the demo page before calling a UI task done: does this describe the product,
+or does it describe a decision the team made building the product? Only the first kind
+ships on screen.
 
 ## Non-negotiables for any visual work
 

@@ -255,6 +255,9 @@ because past runs happened to only reach for one skill anyway.
 - `docs/CONCEPT.md`'s template gained a locked **Design authority** field, filled at
   CONVERGE from the same table `rules/frontend-design.md` already had. Gated by
   `check-concept.sh`. The build session reads the pick, it does not re-derive it.
+  The table's own default was also corrected: `design-taste-frontend` is now the
+  preferred authority even for dashboard/devtool briefs (the human's stated preference),
+  not routed away from them just because that skill's own scope note excludes them.
 - `rules/frontend-design.md` and `CLAUDE.md` Rule 0 both gained a third visual-gate
   question: would this pass as a paying client's shipped deliverable, not just "is it
   generic". Functional and tested was never the same question as this one.
@@ -263,6 +266,16 @@ because past runs happened to only reach for one skill anyway.
   two design skills in one pass.
 - Phase 4's rubric checklist gained a line: confirm the roadmap has an explicit task
   for the product surface (the wrapper), not only the mechanism.
+- A second review round on the rebuilt demo caught the actual mechanism of the first
+  failure: the shipped screen carried limitation caveats and defensive copy ("heuristic,
+  not a hard rule", "genuinely, not a broken one") directly on the live page, the same
+  place a build-process justification like "why we didn't use streaks" had appeared on a
+  different past project's landing page. The human's clarification: a prototype's
+  landing/demo page should have real content, same as any production site, it just must
+  never narrate the team's own build decisions. `rules/frontend-design.md` gained a
+  dedicated "Copy on the demo is product copy, never process narration" section and a
+  fourth visual-gate check: read every visible string, flag anything that describes a
+  decision the team made instead of the product itself.
 
 ---
 
