@@ -88,6 +88,11 @@ T1: pick one authority, invoke it, write the **Art direction** block in
 `design-system/README.md` (Signature, Reference, Anti-reference, Type stance, Colour
 world) and then the tokens.
 
+Every UI task, after the authority's layout is on screen: run `emil-design-eng` as a
+polish pass (invisible-detail decisions — easing, hover/press states, interruption).
+Sequential after the authority, never loaded alongside it. Full detail and the rest of
+the `emilkowalski/skills` companions: `rules/frontend-design.md`.
+
 V1x and later: read `design-system/README.md` and reinforce the Signature. You do not
 re-run Rule 0, but you MAY run a fresh single-authority pass on a screen that looks
 generic. A generic screen is a bug.

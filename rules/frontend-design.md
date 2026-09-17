@@ -59,9 +59,33 @@ loading <others> in the same pass -- stacked design skills average into defaults
 ### Supporting skills are not design authorities
 
 Motion and implementation skills (`motion-principles`, `framer-motion`, `css-native`,
-`gsap`, `cast`) are allowed, but only **after** the visual direction is locked and the
-static layout is on screen, and only when that pass actually needs motion. Never load
-them in the same breath as the design authority.
+`gsap`, `cast`, and the `emilkowalski/skills` set below) are allowed, but only **after**
+the visual direction is locked and the static layout is on screen, and only when that
+pass actually needs it. Never load them in the same breath as the design authority.
+
+### Mandatory polish pass — `emil-design-eng`, after the authority, every UI task
+
+Once the design authority (above) has locked the visual direction and the layout is on
+screen, run `emil-design-eng` as a polish pass before calling the screen done. It governs
+invisible-detail decisions the authority skills don't: easing and timing, hover/press/focus
+states, interruption behaviour, toast/library choices. This is a second, sequential pass,
+not a second authority loaded alongside the first — it never picks palette, type, or layout.
+
+Other `emilkowalski/skills` companions, invoked only when the scenario matches (same rule
+as `motion-principles`/`gsap` above — after the authority, never alongside it):
+
+| Scenario | Skill |
+|---|---|
+| Any animation/motion decision (what animates, curve, duration) | `animate` (web) / `animate-expo` (React Native) |
+| Gesture-driven UI, spring physics, sheets | `apple-design` |
+| Toast/notification UI | `ask-sonner` |
+| Demo must be viewed/judged on a phone (viewport, touch, safe area) | `mobile-native` |
+| Reviewing existing motion in a diff | `review-animations` |
+| Auditing motion across the whole build | `improve-animations` |
+| Finding UI that should animate but doesn't | `find-animation-opportunities` |
+| Naming an unfamiliar motion effect | `animation-vocabulary` |
+| Choosing a UI library for a specific need | `pick-ui-library` |
+| Writing/reviewing Swift (native mobile track) | `write-swift` |
 
 ### A second pass is allowed, and encouraged
 
@@ -168,8 +192,21 @@ ships on screen.
 npx skills add anthropics/claude-code --skill "frontend-design"
 npx skills add Leonxlnx/taste-skill --skill "design-taste-frontend"
 npx skills add vercel-labs/skills --skill "find-skills"
+npx skills add emilkowalski/skills --skill "emil-design-eng"
+npx skills add emilkowalski/skills --skill "animate"
+npx skills add emilkowalski/skills --skill "animate-expo"
+npx skills add emilkowalski/skills --skill "apple-design"
+npx skills add emilkowalski/skills --skill "ask-sonner"
+npx skills add emilkowalski/skills --skill "mobile-native"
+npx skills add emilkowalski/skills --skill "review-animations"
+npx skills add emilkowalski/skills --skill "improve-animations"
+npx skills add emilkowalski/skills --skill "find-animation-opportunities"
+npx skills add emilkowalski/skills --skill "animation-vocabulary"
+npx skills add emilkowalski/skills --skill "pick-ui-library"
+npx skills add emilkowalski/skills --skill "write-swift"
 ```
-Commit `.agents/skills/` + `skills-lock.json`.
+Commit `.agents/skills/` + `skills-lock.json`. `emil-design-eng` is mandatory (polish
+pass, above); the rest fire only when their scenario matches.
 
 Installing several design skills is fine. Loading several in one pass is not.
 
