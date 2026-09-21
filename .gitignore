@@ -33,7 +33,7 @@ Thumbs.db
 # earlier versions wrote .claude/commands/gsd/*.md. Ignoring only the nested form left
 # about seventy untracked command files in git status after every install.
 .claude/gsd-core/
-.claude/agents/
+.claude/agents/*
 .claude/commands/gsd/
 .claude/commands/gsd-*.md
 .claude/commands/settings.local.json
@@ -52,6 +52,13 @@ gsd-local-patches/
 # Both must be committed so any machine or container gets the same vendored skills.
 # .agents/skills/   <-- intentionally NOT ignored
 # skills-lock.json  <-- intentionally NOT ignored
+
+# .claude/agents/* above is blanket-ignored for GSD's machine-absolute-path agents.
+# (/* not a trailing / -- git cannot negate a file inside a dir excluded with /.)
+# These two are hand-written, portable, no absolute paths -- carve them back in so
+# they sync across machines like everything else in this repo.
+!.claude/agents/visual-gate-reviewer.md
+!.claude/agents/freeze-auditor.md
 
 # Logs
 *.log
