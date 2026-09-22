@@ -85,9 +85,9 @@ Plans:
 **Assumption test inside this phase**: after criterion 5 is met, check CONCEPT.md's third assumption, that the 500 and 482 timelines diverge obviously to a lay judge. If they do not, the pitch swaps the two-profile moment for the RHCA health swap, and that decision is recorded in HANDOFF.md before Phase 4 starts.
 
 Plans:
-- [ ] 03-01: Derivation engine as pure functions over the corpus, with a runnable check that two profiles produce different obligation sets
-- [ ] 03-02: Four-field intake plus one-click example profiles, wired to the engine
-- [ ] 03-03: Timeline UI, obligation cards with agency, status, plain-language detail and source citation
+- [ ] 03-01-PLAN.md: The derivation engine as pure functions over the corpus, proven end to end by one rendered obligation, with nine named gates and a deliberately hardcoded engine the same check must reject
+- [ ] 03-02-PLAN.md: Four-field intake plus one-click example profiles, all writing one profile state object the engine recomputes from
+- [ ] 03-03-PLAN.md: Timeline UI, obligation cards with agency, status, plain-language detail and source citation, the visual gate at 375 and 1280, and the assumption checkpoint recorded before Phase 4
 
 **Notes**: ENGINE-01 is the criterion that makes or breaks the pitch. If any profile's output is hardcoded rather than derived, the product is a styled to-do list and the demo claim is false. A check that asserts two profiles produce different derived sets belongs in 03-01, not at the end.
 
@@ -110,8 +110,8 @@ Plans:
 **Assumption test inside this phase**: check CONCEPT.md's second assumption, that the cascade reads as one legible event rather than noise, from a real screenshot at 375, before this phase is called done. If it fails, fix the timing here rather than deferring it to Phase 5.
 
 Plans:
-- [ ] 04-01: Perturbation control and the recompute-and-diff logic against the previous derived state
-- [ ] 04-02: Motion pass on the cascade using `animate`, sequential and only after the static layout is settled
+- [ ] 04-01-PLAN.md: Native range perturbation control, a second derived state diffed against a baseline that is never discarded, every card marked as moved, restatused or held, one action reset, and `scripts/check-cascade.mjs` asserting which pinned record ids move and which hold (WHATIF-01, WHATIF-03, WHATIF-04)
+- [ ] 04-02-PLAN.md: `animate` pass, sequential and alone, giving a capped staggered cascade inside a 900ms settle budget with a specified reduced motion path, then the assumption checkpoint recorded against a real 375 screenshot with named fallbacks (WHATIF-02)
 
 **Notes**: This phase is what the three-minute pitch is built around. It must land with time left to polish it, which is why it sits before Phase 5 and not at 19:25. If Phase 2 or 3 overran and this phase is at risk, cut nice-to-have requirements from earlier phases retroactively rather than compressing this one.
 
