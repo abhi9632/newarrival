@@ -1,38 +1,14 @@
 # Design System
 
-> **Status: not yet filled.**
-> The T1 owner fills this at the end of T1, before any V1 UI work begins.
-> Until this file is complete, no builder should write UI code.
+## Art direction
 
----
-
-## Art direction -- FILL THIS FIRST, BEFORE TOKENS
-
-Tokens are not a design. A project can have a perfect token file and still ship a
-generic layout. This block is what stops that, and it is what every later builder
-reads to keep separate sessions producing one site instead of five.
-
-Filled during Rule 0 by the T1 owner, using ONE design authority skill.
-See `rules/frontend-design.md`.
-
-**Signature** -- the one element a judge remembers after 30 demos. Concrete, not abstract.
-<!-- e.g. "the capacity dial that resizes the task board live as you drag it" -->
-<!-- NOT "bold, modern and clean" -->
-
-**Reference** -- one named real-world visual reference, and what specifically is taken from it.
-<!-- e.g. "Linear's changelog: the hairline rules and the 2-column measure, not its palette" -->
-
-**Anti-reference** -- the specific default look this must not resemble.
-<!-- e.g. "stock shadcn card grid, white page, blue primary, 3 feature columns" -->
-
-**Type stance** -- display face, body face, and why this pairing for this subject.
-<!-- e.g. "Bricolage Grotesque display / Instrument Sans body: warm grotesque, not corporate Inter" -->
-
-**Colour world** -- the world in one line, not a hex list.
-<!-- e.g. "deep green and sunflower yellow on a sage canvas, taken from the charity's own brand" -->
-<!-- Safe blue/purple SaaS is a rejected default, not a baseline. -->
-
-**Motion stance** -- where motion is allowed. Demo-path screens only; everywhere else plain.
+Authority: design-taste-frontend (single authority pass, per docs/CONCEPT.md Design authority)
+Signature: the vertical dated rail beside the three-step strip, ticked in terracotta, that becomes the obligation timeline's spine when the Perturbation cascades in Phase 4
+Reference: the London Underground line diagram, taken for its tick rhythm and one confident route line, not its geography or its colour scheme
+Anti-reference: a centered blue or purple SaaS hero with a gradient blob, three equal icon-feature cards, and a stock Tailwind or shadcn card grid on white
+Type stance: Space Grotesk display for civic geometric warmth rather than corporate Inter, paired with IBM Plex Sans body for institutional clarity at small disclaimer sizes
+Colour world: ink on eucalyptus-washed bone, one burnt terracotta accent carrying the rail and the call to action, never blue or purple
+Motion stance: restrained here, one hover, press and focus cycle on the single anchor; full reflow motion is reserved for the Perturbation in Phase 4
 
 ---
 
@@ -90,10 +66,11 @@ After Rule 0 runs and design tokens are agreed, document the following sections 
 
 ## File locations
 
-<!-- Where is the shared token CSS file? e.g. src/styles/tokens.css -->
+Shared token CSS file: `src/app/globals.css`
+Route entry: `src/app/page.tsx`
+
 <!-- Where is the shared mock data? e.g. src/data/mockData.ts -->
 <!-- Where is the AppShell / layout wrapper? e.g. src/components/AppShell.tsx -->
-<!-- Where is the router entry? e.g. src/App.tsx -->
 
 ---
 
