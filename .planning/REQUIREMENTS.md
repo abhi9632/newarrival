@@ -93,17 +93,47 @@ Deferred. Tracked but not in the current roadmap.
 
 ## Traceability
 
-Populated during roadmap creation.
+Which phases cover which requirements. Written during roadmap creation.
 
 | Requirement | Phase | Status |
 |-------------|-------|--------|
-| (pending roadmap) | | |
+| INTAKE-01 | Phase 1 | Pending |
+| SHIP-01 | Phase 1 | Pending |
+| SHIP-03 | Phase 1 | Pending |
+| SRC-04 | Phase 1 | Pending |
+| RULE-01 | Phase 2 | Pending |
+| RULE-02 | Phase 2 | Pending |
+| RULE-03 | Phase 2 | Pending |
+| RULE-04 | Phase 2 | Pending |
+| RULE-05 | Phase 2 | Pending |
+| RULE-06 | Phase 2 | Pending |
+| ENGINE-01 | Phase 3 | Pending |
+| ENGINE-02 | Phase 3 | Pending |
+| ENGINE-03 | Phase 3 | Pending |
+| ENGINE-04 | Phase 3 | Pending |
+| ENGINE-05 | Phase 3 | Pending |
+| INTAKE-02 | Phase 3 | Pending |
+| INTAKE-03 | Phase 3 | Pending |
+| SHIP-04 | Phase 3 | Pending |
+| SRC-01 | Phase 3 | Pending |
+| SRC-02 | Phase 3 | Pending |
+| SRC-03 | Phase 3 | Pending |
+| TIME-01 | Phase 3 | Pending |
+| TIME-02 | Phase 3 | Pending |
+| TIME-03 | Phase 3 | Pending |
+| TIME-04 | Phase 3 | Pending |
+| TIME-05 | Phase 3 | Pending |
+| WHATIF-01 | Phase 4 | Pending |
+| WHATIF-02 | Phase 4 | Pending |
+| WHATIF-03 | Phase 4 | Pending |
+| WHATIF-04 | Phase 4 | Pending |
+| SHIP-02 | Phase 5 | Pending |
 
 **Coverage:**
-- v1 requirements: 29 total
-- Mapped to phases: 0
-- Unmapped: 29
+- v1 requirements: 31 total
+- Mapped to phases: 31
+- Unmapped: 0
 
 ---
 *Requirements defined: 2026-09-22*
-*Last updated: 2026-09-22 after initial definition*
+*Last updated: 2026-09-22 after roadmap creation*
