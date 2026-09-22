@@ -4,89 +4,67 @@ Everyone reads this first. Everything you need is here.
 
 ---
 
-## EVENT CONFIG (lead fills this Day 1 morning, before anything else)
+## EVENT CONFIG (filled 2026-09-22 11:31 AEST)
 
 This block is the single source of truth for every event-specific fact. No other file
-hardcodes the rubric, scope, stack, dates, or freeze time. They all point here. Fill it
-before the ideation sprint starts.
+hardcodes the rubric, scope, stack, dates, or freeze time. They all point here.
 
 **Event**
 | Field | Value |
 |---|---|
-| Event name | [fill] |
-| Dates | [fill] |
-| Venue | [fill] |
+| Event name | Practice run (mock_3), self-run |
+| Dates | 2026-09-22, single day |
+| Venue | Remote, solo |
 
 **Judging rubric**
 
-Copy the event's published rubric verbatim into this table. Most events never publish
-one at all, or publish only vague category names -- that is normal, not a gap to feel
-bad about. What matters is that the choice of fallback is a checked fact, not a silent
-default: two past events both ran on the fallback rubric with no record that anyone
-looked for a real one.
-
-Before filling this table, check the obvious places once: event website/rules page,
-sponsor or track pages, the Discord/Slack pinned messages, and ask an organizer directly
-if one is in the room. Then record which of these two happened:
-
-- **Found one:** paste it verbatim below.
-- **Confirmed none exists** (checked the places above, or none apply -- e.g. an informal
-  or invite-only event with no published criteria): write "No published rubric --
-  checked [where], fallback rubric below adopted as the scoring model" and use the
-  fallback rubric in `SKILL.md` (equal-weight: Problem clarity, Solution quality, UX
-  polish, Feasibility, Presentation).
-
-Either way, this line must say what was checked. "Used the fallback because none was
-given" is fine. Using it because nobody looked is the failure mode this fixes.
+No published rubric. This is a self-run practice event with no organiser, no rules page,
+no Discord and no sponsor, so there is nothing to check. Fallback rubric from `SKILL.md`
+adopted as the scoring model.
 
 | Criterion | Weight | What judges look for |
 |---|---|---|
-| [fill] | [fill] | [fill] |
-| [fill] | [fill] | [fill] |
-| [fill] | [fill] | [fill] |
+| Problem clarity | equal (20%) | The problem is specific and immediately obvious |
+| Solution quality | equal (20%) | The solution actually addresses the problem |
+| UX polish | equal (20%) | The demo looks and feels designed, not templated |
+| Feasibility | equal (20%) | The approach is realistic and the tech choice is explainable |
+| Presentation | equal (20%) | The story is clear and easy to follow in about 3 minutes |
 
-**Pitch and demo length** -- from the event, not assumed:
+**Pitch and demo length**
 | Field | Value |
 |---|---|
-| Pitch length (hard limit) | [fill -- e.g. 2 min] |
-| Q&A after pitch | [fill -- yes/no, how long] |
-| Demo inside the pitch | [fill -- live app, recorded, or slides] |
-
-The template used to assume 3 minutes. Last event it was 2, which changes the script
-completely: at 2 minutes there is room for a hook, the problem, one flow and a close,
-and nothing else. Fill this before P1 is written, not on pitch day.
+| Pitch length (hard limit) | 3 min |
+| Q&A after pitch | No |
+| Demo inside the pitch | Live app |
 
 **Scope mode** -- pick one:
 - `prototype`: mock data only, no backend. Every data path is static JSON or hardcoded objects.
 - `full-stack`: real backend allowed. Adds a backend/data task to the plan and a deploy path that runs it.
 
-Chosen: [fill -- prototype or full-stack]
+Chosen: `prototype`
 
-**Stack** -- chosen Day 1 during planning: [fill]
+**Country / jurisdiction**: Australia. All rules, agencies, visa subclasses and dollar
+figures in the product are Australian and must be traceable to a named real source.
 
-**Deploy target** -- e.g. Vercel, Netlify, or `none`: [fill]
-If set, **deploy is part of T1**, not V3. Every push then produces a live URL from the
-first hour. Last event the deploy happened in the final five minutes under time pressure;
-that is a risk with no upside. If `none`, the demo runs locally and you still capture a
-backup recording after freeze.
+**Stack** -- chosen Day 1 during planning: Next.js (App Router) + TypeScript + Tailwind
+
+**Deploy target**: Vercel. Deploy is part of T1, so every push produces a live URL.
 
 **Team roster**
 | Name | GitHub handle | Machine |
 |---|---|---|
-| [fill] | @[fill] | [fill] |
-| [fill] | @[fill] | [fill] |
-| [fill] | @[fill] | [fill] |
+| Abhi | @abhi9632 | Windows 11 |
 
-**Timeline (fill actual times)**
+**Timeline**
 | Milestone | Time |
 |---|---|
-| Problem announced | [fill] |
-| Ideation sprint start | [fill] |
-| Ideation sprint end (hard stop, +90 min) | [fill] |
-| Planning done (target) | [fill] |
-| V1 demoable (target) | [fill] |
-| FEATURE FREEZE (hard) | [fill] |
-| Demo | [fill] |
+| Problem announced | 11:25 |
+| Ideation sprint start | 11:35 |
+| Ideation sprint end (hard stop, +90 min) | 13:05 |
+| Planning done (target) | 13:45 |
+| V1 demoable (target) | 17:00 |
+| FEATURE FREEZE (hard) | 19:30 |
+| Demo | 23:30 |
 
 Rule: feature freeze must be at least 4 hours before demo. After freeze, only V3 polish
 and P pitch tasks are claimable. No new features.
