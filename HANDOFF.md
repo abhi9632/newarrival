@@ -8,10 +8,12 @@ HANDOFF_SYNCED_COMMIT: none
 > move detail into docs/session-archive.md, do not raise the budget.
 
 ## Quick resume
-Phase 1 complete pending the live-URL blocker. Phase 2 (verified-rules-corpus) now also complete: 02-01 and 02-02 both done in one pass, corpus has all 18 records, `npm run check:rules` prints `OK 18 records` with the `rhca-branch` gate passing. Repo is `abhi9632/newarrival`. Next: Phase 3 (derivation engine), interface `derive(records, profile, today)` in `src/lib/derive.ts`, consumes `rules` from `src/lib/rules.ts`. Read `.planning/phases/03-derivation-engine-timeline/*.md` before starting. One human check still owed: open 3 corpus source URLs at random (one must be `health-rhca-italy`) and confirm they state the figure recorded, per 02-02's summary.
+Phase 1 complete pending the live-URL blocker. Phase 2 (verified-rules-corpus) complete: 18 records, `npm run check:rules` prints `OK 18 records`. Phase 3 (derivation engine + timeline) now also complete: `src/lib/derive.ts` (zero runtime imports, nine falsifiability gates in `scripts/check-engine.ts`, `npm run check:engine` exits 0), the four-control intake plus two one-click presets in `src/app/timeline/page.tsx`, and `ObligationCard` rendering the dated rail + standing conditions. Visual gate passed at 375/1280 against a local production build (live Vercel URL still blocked). Repo is `abhi9632/newarrival`. Next: Phase 4 (perturbation cascade). Read `.planning/phases/04-*/*.md` before starting. One human check still owed: open 3 corpus source URLs at random (one must be `health-rhca-italy`) and confirm they state the figure recorded, per 02-02's summary.
+
+ASSUMPTION 3 (student vs skilled divergence): HOLDS. 14 of 18 obligations differ, legible side by side at 1280 (near-total card replacement across visa, health and tenancy modules, not a few rows swapped; the citizenship-only health swap changes only 2 cards by comparison). Pitch keeps the two profile moment.
 
 ## Current state
-- Phase: 2 complete (02-01, 02-02). Phase 3 not started.
+- Phase: 3 complete (03-01, 03-02, 03-03). Phase 4 not started.
 - Corpus: `src/data/rules.json`, 18 records, schema in `src/lib/rules.ts`, validator `scripts/check-rules.mjs` (eleven gates). Two Home Affairs/ATO hosts block WebFetch (403); verified those records via WebSearch live-quoting the same page instead, sourceUrl still points at the real page.
 - Concept: four facts (visa subclass, citizenship, arrival date, state) derive the timeline. Signature moment is the perturbation cascade: drag the course end date, obligations across three agencies recompute, and the ones that should hold must visibly hold.
 - Scope locked at 2 subclasses (500, 482) x 2 citizenships (India, Italy) x 2 states (VIC, NSW). A third value of anything is v2 and is refused.
