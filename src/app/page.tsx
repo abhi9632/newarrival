@@ -20,6 +20,13 @@ export default function Home() {
         >
           Start with four facts
         </a>
+
+        <a
+          href="/timeline"
+          className="affordance mt-4 inline-flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-border)] px-6 py-3 font-body text-base font-medium text-[var(--color-text)] hover:-translate-y-px hover:border-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+        >
+          Build your timeline
+        </a>
       </div>
 
       <section
