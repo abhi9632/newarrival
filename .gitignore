@@ -63,3 +63,7 @@ gsd-local-patches/
 # Logs
 *.log
 npm-debug.log*
+
+# Local tooling scratch, never committed
+.serena/
+.claude/.headroom_wrap_marker.json
