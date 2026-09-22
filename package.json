@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "check:rules": "node scripts/check-rules.mjs"
+    "check:rules": "node scripts/check-rules.mjs",
+    "check:engine": "node scripts/check-engine.ts"
   },
   "dependencies": {
     "next": "16.3.5",
