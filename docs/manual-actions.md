@@ -5,7 +5,7 @@ Kept separate from `docs/pending-tasks.md` so these can be actioned in parallel 
 
 ## Infra and accounts
 
-- [ ] [2026-09-22] **Authorise Vercel on `abhi9632/newarrival` and import the project.** Blocks Phase 1 completion, which blocks everything: SHIP-03 is unmet without a live URL and Phase 5 has nothing to demo from. The repo is private, so Vercel needs explicit GitHub App access. There is no CLI or API path for this authorisation, which is why it is here.
+- [ ] [2026-09-22] **Authorise Vercel on `abhi9632/newarrival` and import the project.** DEFERRED by Abhi on 2026-09-22: build runs locally first, so this no longer blocks Phase 1. It still has to happen before the demo, because SHIP-03 (a public URL) is unmet without it and a local-only demo dies with the laptop. Do it any time before feature freeze at 19:30. The repo is private, so Vercel needs explicit GitHub App access. There is no CLI or API path for this authorisation, which is why it is here.
 
   Claude has already pushed a building Next.js app to `main`. Nothing else needs building before this deploys.
 
