@@ -8,20 +8,21 @@ HANDOFF_SYNCED_COMMIT: none
 > move detail into docs/session-archive.md, do not raise the budget.
 
 ## Quick resume
-Planning nearly done. Concept LOCKED in `docs/CONCEPT.md` (NewArrival: four facts derive a dated, sourced obligation timeline for a new arrival to Australia). Phases 1 to 4 are planned and pushed; Phase 5 was re-running at session end, so check `.planning/phases/05-*/` before assuming it exists. **Blocked on one human action: Abhi must authorise Vercel on `abhi9632/newarrival`, see `docs/manual-actions.md`.** Repo is `abhi9632/newarrival`, NOT the template. Verify plans with `bash scripts/check-plan.sh <N>` before building.
+Phase 1 (01-foundation-art-direction-live-url) in progress. 01-01 scaffolded the app. 01-02 Task 1 (art direction locked, `design-taste-frontend`) and Task 2 (intro moment built) are done, committed, pushed, build green. Task 3 (`emil-design-eng` polish, focus-visible, reduced-motion) is code-complete and pushed, but the visual gate screenshots at 375/1280 are NOT recorded yet, see Standing blockers. Repo is `abhi9632/newarrival`. Signature: the vertical dated rail (accent to due-soon to upcoming gradient) beside the three-step strip, foreshadowing the Phase 4 timeline.
 
 ## Current state
-- Phase: planning. Build not started. Phase 1 executes first, once Vercel is authorised.
+- Phase: 1, plan 01-02. Tasks 1 and 2 done. Task 3 code done, visual gate evidence still owed.
 - Concept: four facts (visa subclass, citizenship, arrival date, state) derive the timeline. Signature moment is the perturbation cascade: drag the course end date, obligations across three agencies recompute, and the ones that should hold must visibly hold.
 - Scope locked at 2 subclasses (500, 482) x 2 citizenships (India, Italy) x 2 states (VIC, NSW). A third value of anything is v2 and is refused.
-- Design authority LOCKED: `design-taste-frontend`, single authority, every screen, then `emil-design-eng` sequentially. Rule 0 is discharged in Phase 1; later phases build against those tokens and never pick a second authority.
+- Design authority LOCKED: `design-taste-frontend`, single authority, every screen, then `emil-design-eng` sequentially. Art direction block is filled in `design-system/README.md`.
 - ENGINE-01 is the gating requirement: no per-profile hardcoded output anywhere, or the pitch claim is false. Phase 3 ships a runnable check for it.
 - Engine interface is `derive(records, profile, today)` in `src/lib/derive.ts`. Corpus is the first parameter and the reference date is injectable; Phase 4's cascade check depends on both.
-- Clock: feature freeze 19:30, demo 23:30 on 2026-09-22. Roadmap estimates 4h36m against 5h45m.
+- Clock: feature freeze 19:30, demo 23:30 on 2026-09-22.
 - The Ledger (dollar counter) is deliberately v2. Do not let it creep into v1.
 
 ## Standing blockers
-- [ ] **Vercel not authorised on `abhi9632/newarrival`.** Blocks Phase 1 completion and therefore SHIP-03. Click path in `docs/manual-actions.md`.
+- [ ] **Vercel not authorised on `abhi9632/newarrival`.** Blocks the live-URL visual gate and SHIP-03. Click path in `docs/manual-actions.md`.
+- [ ] **01-02 Task 3 visual gate not recorded.** `mcp__claude-in-chrome__resize_window` would not produce a correct 375px/1280px viewport this session (stuck at native desktop resolution, then drifted to inconsistent widths on retry across 5+ attempts). Code (focus-visible, reduced-motion, easing tokens) is done and verified by grep/build. Screenshots still needed: retry browser automation in a fresh session, or take manual screenshots once the live URL exists.
 - [ ] Confirm Phase 5's plan exists and is valid. Its planner was killed once by a rate limit and re-run.
 - [ ] Every legal figure in the rules corpus must be verified against its live .gov.au source during Phase 2, with the check date recorded. Nothing from model memory. Phase 2 ships an 11 gate validator that enforces it.
 - [ ] Repo is private. Flip to public if judges need source: `gh repo edit abhi9632/newarrival --visibility public`.
@@ -70,6 +71,7 @@ the repo-wide sweep fail on the note itself, which is why this paragraph never s
 | # | Date/Time | Owner | Summary |
 |---|---|---|---|
 | 1 | 2026-09-22 11:25-13:05 | Abhi + Claude | `/kickoff` stages 0-5. Filled DAY1 EVENT CONFIG (practice run, Australia, prototype, fallback rubric, freeze 19:30). Ran the Ideation Sprint: 14 candidates scored, finalists were the Simulator and the Ledger, lead picked the Simulator with the Ledger deferred to v2. Locked `docs/CONCEPT.md`, concept gate exit 0. Moved the repo off the template to `abhi9632/newarrival` and force-reset the template's main back to a201104. Installed GSD, wrote PROJECT.md, config.json, REQUIREMENTS.md (31 v1 reqs) and a 5-phase ROADMAP.md. Roadmap APPROVED by Abhi. Phase plans written by gsd-planner, 2 concurrent (the CLAUDE.md cap). Opened `docs/manual-actions.md` with the Vercel authorisation step. Phases 1 to 4 planned and pushed; a rate limit killed two planners, Phase 3's output was rescued from disk and Phase 5 was re-run. Reconciled a real interface mismatch between the Phase 3 and Phase 4 plans. |
+| 2 | 2026-09-22 | Claude | 01-02 Task 1: ran `design-taste-frontend` as sole authority, wrote the Art direction block (Signature: the dated rail beside the three-step strip), added the 14 tokens to `globals.css` and the two `next/font/google` faces (Space Grotesk display, IBM Plex Sans body) to `layout.tsx`. Task 2: built the intro moment and disclaimer in `page.tsx` against the tokens, no form controls, all acceptance greps pass. Task 3: ran `emil-design-eng`, added `.affordance` (named transition token, hover lift, press scale, focus-visible ring) and a `prefers-reduced-motion` block; code verified by grep and `npm run build`. Visual gate screenshots NOT captured: no live URL yet (Vercel still unauthorised), and `resize_window` would not produce a correct 375/1280 viewport locally after 5+ attempts across two tabs. Did not fabricate a passing gate row. |
 
 ## Scope changes
 (none)

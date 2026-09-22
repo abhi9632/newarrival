@@ -16,7 +16,7 @@ export default function Home() {
 
         <a
           href="#how"
-          className="group mt-10 inline-flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-accent)] bg-[var(--color-accent)] px-6 py-3 font-body text-base font-medium text-[var(--color-surface)] transition-colors duration-150 ease-out hover:bg-[var(--color-text)] hover:border-[var(--color-text)] active:scale-[0.98] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+          className="affordance mt-10 inline-flex items-center gap-3 rounded-[var(--radius-md)] border border-[var(--color-accent)] bg-[var(--color-accent)] px-6 py-3 font-body text-base font-medium text-[var(--color-surface)] hover:-translate-y-px hover:border-[var(--color-text)] hover:bg-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
         >
           Start with four facts
         </a>

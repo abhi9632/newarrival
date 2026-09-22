@@ -1,5 +1,10 @@
 @import "tailwindcss";
 
+:root {
+  --ease-out: cubic-bezier(0.23, 1, 0.32, 1);
+  --transition-interactive: 160ms var(--ease-out);
+}
+
 @theme {
   --color-bg: #f6f3ec;
   --color-surface: #fdfcf8;
@@ -20,4 +25,26 @@
 body {
   background: var(--color-bg);
   color: var(--color-text);
+}
+
+.affordance {
+  transition: background-color var(--transition-interactive),
+    border-color var(--transition-interactive),
+    color var(--transition-interactive),
+    transform var(--transition-interactive);
+}
+
+.affordance:active {
+  transform: scale(0.97);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .affordance {
+    transition: none;
+  }
+
+  .affordance:active,
+  .affordance:hover {
+    transform: none;
+  }
 }
