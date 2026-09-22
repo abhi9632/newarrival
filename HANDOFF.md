@@ -8,10 +8,10 @@ HANDOFF_SYNCED_COMMIT: none
 > move detail into docs/session-archive.md, do not raise the budget.
 
 ## Quick resume
-Phase 1 (01-foundation-art-direction-live-url) in progress. 01-01 scaffolded the app. 01-02 Task 1 (art direction locked, `design-taste-frontend`) and Task 2 (intro moment built) are done, committed, pushed, build green. Task 3 (`emil-design-eng` polish, focus-visible, reduced-motion) is code-complete and pushed, but the visual gate screenshots at 375/1280 are NOT recorded yet, see Standing blockers. Repo is `abhi9632/newarrival`. Signature: the vertical dated rail (accent to due-soon to upcoming gradient) beside the three-step strip, foreshadowing the Phase 4 timeline.
+Phase 1 (01-foundation-art-direction-live-url) in progress. 01-01 scaffolded the app. 01-02 Tasks 1, 2, 3 all done: art direction locked, intro moment built, `emil-design-eng` polish applied, and the visual gate is now recorded (screenshots in `docs/visual-gate/`, passed). Repo is `abhi9632/newarrival`. Signature: the vertical dated rail (accent to due-soon to upcoming gradient) beside the three-step strip, foreshadowing the Phase 4 timeline. Vercel MCP is connected this machine but `create_git_project` on `abhi9632/newarrival` returned 403 forbidden, the GitHub App still needs manual authorisation, see Standing blockers.
 
 ## Current state
-- Phase: 1, plan 01-02. Tasks 1 and 2 done. Task 3 code done, visual gate evidence still owed.
+- Phase: 1, plan 01-02. Tasks 1, 2, 3 all done and verified. 01-02 is complete pending the live-URL blocker (separate from this plan's tasks).
 - Concept: four facts (visa subclass, citizenship, arrival date, state) derive the timeline. Signature moment is the perturbation cascade: drag the course end date, obligations across three agencies recompute, and the ones that should hold must visibly hold.
 - Scope locked at 2 subclasses (500, 482) x 2 citizenships (India, Italy) x 2 states (VIC, NSW). A third value of anything is v2 and is refused.
 - Design authority LOCKED: `design-taste-frontend`, single authority, every screen, then `emil-design-eng` sequentially. Art direction block is filled in `design-system/README.md`.
@@ -21,8 +21,7 @@ Phase 1 (01-foundation-art-direction-live-url) in progress. 01-01 scaffolded the
 - The Ledger (dollar counter) is deliberately v2. Do not let it creep into v1.
 
 ## Standing blockers
-- [ ] **Vercel not authorised on `abhi9632/newarrival`.** Blocks the live-URL visual gate and SHIP-03. Click path in `docs/manual-actions.md`.
-- [ ] **01-02 Task 3 visual gate not recorded.** `mcp__claude-in-chrome__resize_window` would not produce a correct 375px/1280px viewport this session (stuck at native desktop resolution, then drifted to inconsistent widths on retry across 5+ attempts). Code (focus-visible, reduced-motion, easing tokens) is done and verified by grep/build. Screenshots still needed: retry browser automation in a fresh session, or take manual screenshots once the live URL exists.
+- [ ] **Vercel not authorised on `abhi9632/newarrival`.** Confirmed again this session: Vercel MCP is connected, but `create_git_project` returns 403 "You don't have permission to create the project" because the GitHub App has no access to this private repo yet. No CLI/API/MCP path around it. Blocks the live-URL visual gate and SHIP-03. Click path in `docs/manual-actions.md`.
 - [ ] Confirm Phase 5's plan exists and is valid. Its planner was killed once by a rate limit and re-run.
 - [ ] Every legal figure in the rules corpus must be verified against its live .gov.au source during Phase 2, with the check date recorded. Nothing from model memory. Phase 2 ships an 11 gate validator that enforces it.
 - [ ] Repo is private. Flip to public if judges need source: `gh repo edit abhi9632/newarrival --visibility public`.
@@ -35,7 +34,9 @@ actioned in parallel with the build.
 (none)
 
 ## Code failures & fixes
-(none -- permanent log, never pruned)
+(permanent log, never pruned)
+
+**`mcp__claude-in-chrome__resize_window` unreliable for the visual gate (2026-09-22, second session in a row).** It resizes the OS window, not the CSS viewport, and on this machine it silently returns a wrong size (1568x749 or 1254x599 when 375x812 was requested) or times out on the next screenshot. Fix: use Playwright's `browser_resize` (sets `page.setViewportSize` directly) plus `browser_take_screenshot` instead. Worked first try at both 375 and 1280. Prefer Playwright over claude-in-chrome for any fixed-viewport screenshot need going forward.
 
 **Tooling trap found during Phase 1 planning (2026-09-22):** the long-dash sweep nearly
 shipped broken on this machine. `grep -P` exits 2 ("supports only unibyte and UTF-8
@@ -72,6 +73,7 @@ the repo-wide sweep fail on the note itself, which is why this paragraph never s
 |---|---|---|---|
 | 1 | 2026-09-22 11:25-13:05 | Abhi + Claude | `/kickoff` stages 0-5. Filled DAY1 EVENT CONFIG (practice run, Australia, prototype, fallback rubric, freeze 19:30). Ran the Ideation Sprint: 14 candidates scored, finalists were the Simulator and the Ledger, lead picked the Simulator with the Ledger deferred to v2. Locked `docs/CONCEPT.md`, concept gate exit 0. Moved the repo off the template to `abhi9632/newarrival` and force-reset the template's main back to a201104. Installed GSD, wrote PROJECT.md, config.json, REQUIREMENTS.md (31 v1 reqs) and a 5-phase ROADMAP.md. Roadmap APPROVED by Abhi. Phase plans written by gsd-planner, 2 concurrent (the CLAUDE.md cap). Opened `docs/manual-actions.md` with the Vercel authorisation step. Phases 1 to 4 planned and pushed; a rate limit killed two planners, Phase 3's output was rescued from disk and Phase 5 was re-run. Reconciled a real interface mismatch between the Phase 3 and Phase 4 plans. |
 | 2 | 2026-09-22 | Claude | 01-02 Task 1: ran `design-taste-frontend` as sole authority, wrote the Art direction block (Signature: the dated rail beside the three-step strip), added the 14 tokens to `globals.css` and the two `next/font/google` faces (Space Grotesk display, IBM Plex Sans body) to `layout.tsx`. Task 2: built the intro moment and disclaimer in `page.tsx` against the tokens, no form controls, all acceptance greps pass. Task 3: ran `emil-design-eng`, added `.affordance` (named transition token, hover lift, press scale, focus-visible ring) and a `prefers-reduced-motion` block; code verified by grep and `npm run build`. Visual gate screenshots NOT captured: no live URL yet (Vercel still unauthorised), and `resize_window` would not produce a correct 375/1280 viewport locally after 5+ attempts across two tabs. Did not fabricate a passing gate row. |
+| 3 | 2026-09-22 | Claude | Tried Vercel MCP `create_git_project` on `abhi9632/newarrival`: 403 forbidden, GitHub App access still not granted, confirmed still a human-only step. Recorded the 01-02 Task 3 visual gate: `claude-in-chrome` `resize_window` reproduced last session's bug, switched to Playwright (`browser_resize` + `browser_take_screenshot`) against the local dev server on port 3000, got correct 375 and 1280 viewports first try. Screenshots saved to `docs/visual-gate/01-02-intro-{375,1280}.png`. Verdict: passes, distinct dated-rail motif and warm terracotta/cream/sage palette, no generic template look; the floating "N" circle in the shots is the Next.js dev-mode indicator, not app chrome. |
 
 ## Scope changes
 (none)
