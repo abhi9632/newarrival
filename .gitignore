@@ -68,3 +68,4 @@ npm-debug.log*
 .serena/
 .claude/.headroom_wrap_marker.json
 *.tsbuildinfo
+.playwright-mcp/

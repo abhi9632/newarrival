@@ -19,6 +19,35 @@ One line per screen. If a screen has no line, that screen is not done.
 
 | Screen | 375 checked | 1280 checked | Matches signature? | By |
 |---|---|---|---|---|
+| /timeline (obligation timeline) | yes | yes | yes | Claude |
+
+---
+
+### Obligation timeline
+
+Checked against `docs/visual-gate/03-timeline-375.png` and `03-timeline-1280.png`, captured
+with Playwright against a local production build (`next build && next start -p 3100`); the
+live Vercel URL is still blocked pending the GitHub App authorisation in `HANDOFF.md`. Two
+gate iterations: the first pass had "Standing condition" printed twice per standing card
+(once in the status pill, once again as body text), fixed by dropping the redundant line
+so the pill is the only place that label appears.
+
+1. **Matches the Art direction, specifically the Signature?** Yes. The terracotta vertical
+   rail with ticked dots beside the dated obligations is the recorded Signature directly,
+   now doing its named job as "the obligation timeline's spine." The burnt terracotta
+   accent carries the status pills, the rail, the source links and the preset buttons; the
+   background stays ink on eucalyptus-washed bone; headings run in Space Grotesk, body and
+   card copy in IBM Plex Sans.
+2. **Could this be any other team's project with the logo swapped?** No. The combination of
+   the dated rail, the terracotta status pills and the warm cream palette is specific to
+   this concept; nothing on screen is a stock Tailwind or shadcn card grid on white.
+3. **Would this pass as a paying client's shipped deliverable?** Yes. Typography hierarchy,
+   spacing and the status colour system read as finished. The native select and date
+   controls render with the browser's own chrome rather than a custom skin; that is the
+   scope's explicit choice (native elements, zero new dependencies), not an oversight.
+4. **At 375, reachable, legible, does the dated axis survive?** Yes. Every control stacks to
+   full width and stays reachable, every card is legible with no clipped text, and the rail
+   with its dated ticks survives the narrow viewport without collapsing or overlapping.
 
 ---
 

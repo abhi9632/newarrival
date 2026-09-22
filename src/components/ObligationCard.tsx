@@ -47,16 +47,12 @@ export function ObligationCard({ obligation }: { obligation: Obligation }) {
         {STATUS_LABEL[obligation.status]}
       </span>
 
-      <p className="mt-3 font-body text-sm text-[var(--color-muted)]">
-        {obligation.dueDate ? (
-          <>
-            {formatDate(obligation.dueDate)}
-            {phrase ? ` · ${phrase}` : null}
-          </>
-        ) : (
-          STATUS_LABEL.standing
-        )}
-      </p>
+      {obligation.dueDate && (
+        <p className="mt-3 font-body text-sm text-[var(--color-muted)]">
+          {formatDate(obligation.dueDate)}
+          {phrase ? ` · ${phrase}` : null}
+        </p>
+      )}
 
       <h3 className="mt-2 font-display text-lg text-[var(--color-text)]">{obligation.title}</h3>
 

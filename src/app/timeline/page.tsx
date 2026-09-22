@@ -20,7 +20,7 @@ function todayIso(): string {
 }
 
 const CONTROL_CLASS =
-  "mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 font-body text-sm text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
+  "affordance mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 font-body text-sm text-[var(--color-text)] hover:border-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
 const LABEL_CLASS = "font-body text-sm font-medium text-[var(--color-text)]";
 
 export default function TimelinePage() {
@@ -31,6 +31,9 @@ export default function TimelinePage() {
   const needsCourseEnd = obligations.some((obligation) => obligation.anchor === "courseEnd");
   const dated = obligations.filter((obligation) => obligation.dueDate !== null);
   const standing = obligations.filter((obligation) => obligation.dueDate === null);
+  const urgentCount = obligations.filter(
+    (obligation) => obligation.status === "overdue" || obligation.status === "due-soon"
+  ).length;
 
   function updateProfile(patch: Partial<Profile>) {
     setProfile((prev) => ({ ...prev, ...patch }));
@@ -160,6 +163,9 @@ export default function TimelinePage() {
         <h2 id="dated-heading" className="font-display text-xl text-[var(--color-text)]">
           Your dated timeline
         </h2>
+        <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
+          {urgentCount} of {obligations.length} obligations are overdue or due soon.
+        </p>
         <ol className="mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-accent)] pl-6">
           {dated.map((obligation) => (
             <li key={obligation.id} className="relative">

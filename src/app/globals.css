@@ -44,7 +44,8 @@ body {
   }
 
   .affordance:active,
-  .affordance:hover {
+  .affordance:hover,
+  details[open] .group-open\:rotate-90 {
     transform: none;
   }
 }
