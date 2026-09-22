@@ -37,6 +37,30 @@ export default function TimelinePage() {
     <main className="mx-auto w-full max-w-4xl px-6 py-16 md:px-8 md:py-20">
       <h1 className="font-display text-3xl text-[var(--color-text)]">Your timeline</h1>
 
+      <section aria-labelledby="examples-heading" className="mt-8">
+        <h2 id="examples-heading" className={LABEL_CLASS}>
+          Load a worked example
+        </h2>
+        <div className="mt-3 flex flex-wrap gap-3">
+          {EXAMPLE_PROFILES.map((example) => {
+            const fields = Object.keys(example.profile) as (keyof Profile)[];
+            const isLoaded = fields.every((field) => example.profile[field] === profile[field]);
+            return (
+              <button
+                key={example.id}
+                type="button"
+                data-profile-preset={example.id}
+                aria-pressed={isLoaded}
+                onClick={() => setProfile(example.profile)}
+                className="affordance rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-2 font-body text-sm font-medium text-[var(--color-text)] aria-pressed:border-[var(--color-accent)] aria-pressed:text-[var(--color-accent)] hover:-translate-y-px focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+              >
+                {example.label}
+              </button>
+            );
+          })}
+        </div>
+      </section>
+
       <section aria-labelledby="facts-heading" className="mt-8 grid gap-4 sm:grid-cols-2">
         <h2 id="facts-heading" className="sr-only">
           Your four facts
