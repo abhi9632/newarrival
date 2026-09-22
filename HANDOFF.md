@@ -35,13 +35,19 @@ actioned in parallel with the build.
 ## Code failures & fixes
 (none -- permanent log, never pruned)
 
-**Tooling trap found during Phase 1 planning (2026-09-22):** the long-dash check nearly shipped
-broken on this machine. `grep -P` exits 2 ("supports only unibyte and UTF-8 locales"), and
-`$'[—–]'` expanded correctly in one invocation but silently failed to expand in a
-chained one, where it then matched almost every line and would have failed the gate on a clean
-file. The working form, used in all plans, is:
-`grep -rIn -e "$(printf 'â')" -e "$(printf 'â')" src/`
-Do not "simplify" it back.
+**Tooling trap found during Phase 1 planning (2026-09-22):** the long-dash sweep nearly
+shipped broken on this machine. `grep -P` exits 2 ("supports only unibyte and UTF-8
+locales"). The shell dollar-quote escape form expanded correctly in one invocation but
+silently failed to expand in a chained one, where it then matched almost every line and
+would have failed the gate on a clean file. The working form, used in every plan, builds
+each dash from its UTF-8 bytes with printf octal escapes:
+
+    grep -rIn -e "$(printf '\342\200\224')" -e "$(printf '\342\200\223')" src/
+
+Do not "simplify" it back. Two further traps, both hit while writing this note: those octal
+escapes are consumed if the command is authored through a shell heredoc, so edit that line
+with a file-editing tool instead; and a note that quotes the literal dash characters makes
+the repo-wide sweep fail on the note itself, which is why this paragraph never shows them.
 
 ## Session log
 | # | Date/Time | Owner | Summary |
