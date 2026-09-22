@@ -132,7 +132,7 @@ Plans:
 **Plans**: 1 plan
 
 Plans:
-- [ ] 05-01: `emil-design-eng` polish pass, mobile verification at 375, visual gate screenshots and written judgement, em dash sweep, final deploy
+- [ ] 05-01-PLAN.md: Cold start walk of the whole demo path on the live URL at 375 and 1280 with eleven committed screenshots, `scripts/check-demo.sh` as the one runnable sweep (dashes, advice framing, secrets, persistence, gate evidence pairing), then independent `visual-gate-reviewer` judgement with written answers, remediation of any failing screen, and the final `emil-design-eng` polish pass (SHIP-02)
 
 **Notes**: A generic screen is a bug, not a cosmetic issue. If the gate fails on a screen, that screen gets a fresh single-authority pass, which is explicitly allowed and encouraged. Feature freeze is 19:30; this phase is the last thing that may touch feature code.
 
