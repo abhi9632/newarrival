@@ -10,6 +10,7 @@ import {
   type Profile,
 } from "@/lib/profile";
 import { derive } from "@/lib/derive";
+import { ObligationCard } from "@/components/ObligationCard";
 
 // ponytail: a build viewed across local midnight re-renders with the new date on the
 // client; this is the only clock read in the app, which is what keeps the negative
@@ -28,6 +29,8 @@ export default function TimelinePage() {
 
   const obligations = React.useMemo(() => derive(rules, profile, today), [profile, today]);
   const needsCourseEnd = obligations.some((obligation) => obligation.anchor === "courseEnd");
+  const dated = obligations.filter((obligation) => obligation.dueDate !== null);
+  const standing = obligations.filter((obligation) => obligation.dueDate === null);
 
   function updateProfile(patch: Partial<Profile>) {
     setProfile((prev) => ({ ...prev, ...patch }));
@@ -153,21 +156,35 @@ export default function TimelinePage() {
         )}
       </section>
 
-      <ul className="mt-8 flex flex-col gap-4">
-        {obligations.map((obligation) => (
-          <li
-            key={obligation.id}
-            data-obligation-id={obligation.id}
-            className="rounded-[var(--radius-md)] border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
-          >
-            <p className="font-display text-base text-[var(--color-text)]">{obligation.title}</p>
-            <p className="mt-1 font-body text-sm text-[var(--color-muted)]">{obligation.agency}</p>
-            <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
-              {obligation.dueDate ?? "Standing condition"}
-            </p>
-          </li>
-        ))}
-      </ul>
+      <section aria-labelledby="dated-heading" className="mt-10">
+        <h2 id="dated-heading" className="font-display text-xl text-[var(--color-text)]">
+          Your dated timeline
+        </h2>
+        <ol className="mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-accent)] pl-6">
+          {dated.map((obligation) => (
+            <li key={obligation.id} className="relative">
+              <span
+                aria-hidden="true"
+                className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]"
+              />
+              <ObligationCard obligation={obligation} />
+            </li>
+          ))}
+        </ol>
+      </section>
+
+      <section aria-labelledby="standing-heading" className="mt-10">
+        <h2 id="standing-heading" className="font-display text-xl text-[var(--color-text)]">
+          Standing conditions for your whole stay
+        </h2>
+        <ul className="mt-6 flex flex-col gap-6">
+          {standing.map((obligation) => (
+            <li key={obligation.id}>
+              <ObligationCard obligation={obligation} />
+            </li>
+          ))}
+        </ul>
+      </section>
     </main>
   );
 }
