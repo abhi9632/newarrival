@@ -37,8 +37,8 @@ Total estimate: **4 hours 36 minutes** against **5 hours 45 minutes** of build t
 **Plans**: 2 plans
 
 Plans:
-- [ ] 01-01: Next.js App Router + TypeScript + Tailwind scaffold, Vercel project connected, first deploy green
-- [ ] 01-02: `design-taste-frontend` single-authority pass, Art direction block and tokens written, intro moment and disclaimer built against them
+- [ ] 01-01-PLAN.md: Next.js App Router + TypeScript + Tailwind scaffold at the repo root, intro copy rendering through the real build, Vercel project connected, public production URL live and redeploying on push (SHIP-03)
+- [ ] 01-02-PLAN.md: `design-taste-frontend` single-authority pass, Art direction block written ahead of the tokens, intro moment and disclaimer built against them, `emil-design-eng` polish pass and the visual gate at 375 and 1280 (INTAKE-01, SRC-04, SHIP-01)
 
 **Notes**: Rule 0 applies. `design-taste-frontend` is the locked authority from `docs/CONCEPT.md`; this phase does not re-derive the choice. `emil-design-eng` runs after the layout is on screen, sequentially, never alongside. Deploy is in this phase deliberately: a past event deployed in the final five minutes under time pressure.
 
