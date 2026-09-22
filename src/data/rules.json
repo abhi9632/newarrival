@@ -1,0 +1,285 @@
+[
+  {
+    "id": "visa-500-8533-address",
+    "module": "visa",
+    "title": "Tell your provider your address within 7 days",
+    "detail": "Condition 8533 requires notifying the education provider of a residential address within 7 days of arriving in Australia, and within 7 days of any later change of address. Failing to notify is a breach of a visa condition and can lead to visa cancellation under section 116 of the Migration Act 1958.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8533",
+    "sourceUrl": "https://www.studyaustralia.gov.au/en/plan-your-move/your-first-week-in-australia",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["500"]
+    },
+    "due": {
+      "anchor": "arrival",
+      "offsetDays": 7
+    }
+  },
+  {
+    "id": "visa-500-8105-work-limit",
+    "module": "work",
+    "title": "Work no more than 48 hours a fortnight",
+    "detail": "Condition 8105 limits work to 48 hours in any fortnight while the course is in session, counted across every job held rather than per employer. Exceeding the cap is a breach of a visa condition and can lead to visa cancellation.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8105",
+    "sourceUrl": "https://www.studyaustralia.gov.au/en/work-in-australia/work-rights-and-responsibilities/your-work-rights-explained",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["500"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "visa-500-8202-enrolment",
+    "module": "visa",
+    "title": "Stay enrolled with satisfactory course progress",
+    "detail": "Condition 8202 requires remaining enrolled in a registered course and maintaining satisfactory attendance and course progress. An education provider that reports non compliance can trigger visa cancellation under section 116 of the Migration Act 1958.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8202",
+    "sourceUrl": "https://www.studyaustralia.gov.au/en/plan-your-move/your-guide-to-visas/student-visa-subclass-500",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["500"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "visa-500-8501-health-cover",
+    "module": "health",
+    "title": "Maintain health insurance for the whole stay",
+    "detail": "Condition 8501 requires maintaining adequate health insurance arrangements for the entire stay in Australia. Letting cover lapse is a breach of a visa condition and can lead to visa cancellation.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8501",
+    "sourceUrl": "https://www.studyaustralia.gov.au/en/plan-your-move/your-guide-to-visas/student-visa-subclass-500",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["500"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "visa-485-window",
+    "module": "visa",
+    "title": "Apply for the graduate visa within 6 months of finishing",
+    "detail": "A Temporary Graduate visa, subclass 485, application must meet the study requirement within 6 months of completing the course, while still holding a student visa. Applying after this window closes the pathway, with no exception.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Temporary Graduate visa (subclass 485) study requirement",
+    "sourceUrl": "https://www.homeaffairs.gov.au/research-and-stats/files/student-temporary-grad-program-report-dec-2025.pdf",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["500"]
+    },
+    "due": {
+      "anchor": "courseEnd",
+      "offsetDays": 183
+    }
+  },
+  {
+    "id": "visa-482-sponsor-obligations",
+    "module": "visa",
+    "title": "Work only for the approved sponsor, in the nominated role",
+    "detail": "Condition 8607 restricts work to the approved sponsor and the nominated occupation. Working outside that scope without approval is a breach of a visa condition and can lead to visa cancellation.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8607",
+    "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/skills-in-demand-visa-subclass-482",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["482"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "visa-482-cease-employment",
+    "module": "visa",
+    "title": "180 days to find a new sponsor after ceasing employment",
+    "detail": "Condition 8607 allows up to 180 consecutive days without an approved sponsor, and no more than 365 days in total across the visa. Going over the limit without a new nomination or visa in place is a breach that can lead to visa cancellation.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Schedule 8, condition 8607(5)",
+    "sourceUrl": "https://olsc.nsw.gov.au/content/dam/dcj/dcj-website/documents/legal-and-justice/anti-slavery-commissioner/fact-sheet-new-visa-protections-for-migrant-workers-who-are-subject-to-a-workplace-violation.pdf",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["482"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "visa-482-pr-pathway",
+    "module": "visa",
+    "title": "Two years with a sponsor opens the permanent residence pathway",
+    "detail": "The Employer Nomination Scheme, subclass 186, Temporary Residence Transition stream requires at least 2 years of full time work in the nominated occupation with an approved sponsor before the nomination is lodged. Part time and casual work do not count toward the 2 years.",
+    "agency": "Department of Home Affairs",
+    "instrument": "Migration Regulations 1994, Employer Nomination Scheme subclass 186, Temporary Residence Transition stream",
+    "sourceUrl": "https://immi.homeaffairs.gov.au/visas/getting-a-visa/visa-listing/employer-nomination-scheme-186",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "subclass": ["482"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "health-rhca-italy",
+    "module": "health",
+    "title": "Italy holds a Reciprocal Health Care Agreement with Australia",
+    "detail": "Italy is one of 11 countries with a Reciprocal Health Care Agreement, giving access to Medicare for medically necessary care. The agreement does not replace private health insurance and does not cover everything a visa condition may require.",
+    "agency": "Services Australia",
+    "instrument": "Reciprocal Health Care Agreements country list",
+    "sourceUrl": "https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements-visiting-from-italy?context=22481",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "citizenship": ["IT"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "health-no-rhca-india",
+    "module": "health",
+    "title": "India has no Reciprocal Health Care Agreement with Australia",
+    "detail": "India is not among the 11 countries with a Reciprocal Health Care Agreement, so Medicare access under that agreement is not available. Cover instead depends entirely on the visa's own health insurance condition.",
+    "agency": "Services Australia",
+    "instrument": "Reciprocal Health Care Agreements country list",
+    "sourceUrl": "https://www.servicesaustralia.gov.au/reciprocal-health-care-agreements",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "citizenship": ["IN"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tax-tfn",
+    "module": "tax",
+    "title": "A tax file number is free to apply for",
+    "detail": "The Australian Taxation Office issues a tax file number at no cost. Working without one means an employer must withhold tax at the top marginal rate instead of the normal rate.",
+    "agency": "Australian Taxation Office",
+    "instrument": "Apply for a TFN, Australian Taxation Office",
+    "sourceUrl": "https://www.ato.gov.au/individuals-and-families/tax-file-number/apply-for-a-tfn",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {},
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tax-tfn-declaration-residency",
+    "module": "tax",
+    "title": "The tax file number declaration asks a residency question",
+    "detail": "Question 9 on the tax file number declaration asks whether the tax free threshold is claimed from that payer, which turns on tax residency. Ticking the foreign resident box when actually an Australian tax resident loses the tax free threshold and increases the amount withheld from every payment.",
+    "agency": "Australian Taxation Office",
+    "instrument": "Tax file number declaration, Australian Taxation Office",
+    "sourceUrl": "https://www.ato.gov.au/individuals-and-families/jobs-and-employment-types/tax-free-threshold/how-to-claim-the-tax-free-threshold",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {},
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tax-return-deadline",
+    "module": "tax",
+    "title": "Self lodged tax returns are due 2 November 2026",
+    "detail": "A tax return covering the year to 30 June must be self lodged by 31 October, moved to the next business day when that date falls on a weekend, which makes the 2025 to 2026 income year deadline 2 November 2026. Lodging late can attract a penalty.",
+    "agency": "Australian Taxation Office",
+    "instrument": "Lodge your tax return, Australian Taxation Office",
+    "sourceUrl": "https://www.ato.gov.au/media-centre/time-is-running-out-to-lodge-your-own-tax-return",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {},
+    "due": {
+      "anchor": "fixed",
+      "date": "2026-11-02"
+    }
+  },
+  {
+    "id": "tax-super-guarantee",
+    "module": "tax",
+    "title": "Employers must pay 12 percent superannuation guarantee",
+    "detail": "The superannuation guarantee rate is 12 percent of ordinary time earnings, the final step of a scheduled increase that took effect on 1 July 2025. An eligible employee not receiving this is missing part of their pay.",
+    "agency": "Australian Taxation Office",
+    "instrument": "Super guarantee, Australian Taxation Office key superannuation rates and thresholds",
+    "sourceUrl": "https://www.ato.gov.au/tax-rates-and-codes/key-superannuation-rates-and-thresholds/super-guarantee",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {},
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tenancy-vic-bond",
+    "module": "tenancy",
+    "title": "Bond in Victoria is capped at one month's rent",
+    "detail": "The Residential Tenancies Bond Authority holds Victorian bonds, capped at one month's rent where weekly rent is 900 dollars or less. Above that weekly rent there is no fixed cap. Asking for more than the cap without VCAT approval is not allowed.",
+    "agency": "Consumer Affairs Victoria",
+    "instrument": "Residential Tenancies Act 1997 (Vic), bond amounts and payments",
+    "sourceUrl": "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/bond/bond-amounts-and-paying-a-bond",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "state": ["VIC"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tenancy-vic-rent-advance",
+    "module": "tenancy",
+    "title": "Rent in advance in Victoria is capped at one month",
+    "detail": "A Victorian rental provider cannot ask for more than one month's rent in advance, or 14 days where rent is paid weekly, except where weekly rent exceeds 900 dollars. Asking for more than the cap is not allowed.",
+    "agency": "Consumer Affairs Victoria",
+    "instrument": "Residential Tenancies Act 1997 (Vic), rent payments and rent in advance",
+    "sourceUrl": "https://www.consumer.vic.gov.au/housing/renting/rent-bond-bills-and-condition-reports/rent/rent-payments-and-rent-in-advance",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "state": ["VIC"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tenancy-nsw-bond",
+    "module": "tenancy",
+    "title": "Bond in New South Wales is capped at 4 weeks rent",
+    "detail": "New South Wales caps a residential bond at 4 weeks rent for every tenancy, with no higher cap for expensive properties, and it must be lodged with Rental Bonds Online. Asking for more than 4 weeks rent is not allowed.",
+    "agency": "NSW Fair Trading",
+    "instrument": "Residential Tenancies Act 2010 (NSW), Rental Bonds Online",
+    "sourceUrl": "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live/residential-rental-bonds/rental-bonds-online-for-tenants",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "state": ["NSW"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  },
+  {
+    "id": "tenancy-nsw-rent-advance",
+    "module": "tenancy",
+    "title": "Rent in advance in New South Wales is capped at 2 weeks",
+    "detail": "New South Wales caps rent in advance at 2 weeks rent, with the next payment due only after that period passes. Asking for more than 2 weeks in advance is not allowed.",
+    "agency": "NSW Fair Trading",
+    "instrument": "Residential Tenancies Act 2010 (NSW), standard residential tenancy agreement",
+    "sourceUrl": "https://www.nsw.gov.au/housing-and-construction/renting-a-place-to-live/residential-rental-bonds/rental-bonds-online-for-tenants",
+    "verifiedOn": "2026-09-22",
+    "appliesTo": {
+      "state": ["NSW"]
+    },
+    "due": {
+      "anchor": "ongoing"
+    }
+  }
+]

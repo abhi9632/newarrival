@@ -1,0 +1,33 @@
+[
+  {
+    "id": "dup-id",
+    "module": "not-a-module",
+    "title": "Bad title — with dash",
+    "detail": "You should apply now, this record breaks several gates at once.",
+    "sourceUrl": "https://example.com/page",
+    "verifiedOn": "2099-01-01",
+    "appliesTo": {
+      "subclass": ["999"]
+    },
+    "due": {
+      "anchor": "arrival"
+    }
+  },
+  {
+    "id": "dup-id",
+    "module": "visa",
+    "title": "Second bad record",
+    "detail": "This one has markup <b>bold</b> in it and no source at all.",
+    "agency": "Nobody",
+    "instrument": "Nothing",
+    "sourceUrl": "not-a-url",
+    "verifiedOn": "not-a-date",
+    "appliesTo": {
+      "state": ["QLD"]
+    },
+    "due": {
+      "anchor": "fixed",
+      "offsetDays": 5
+    }
+  }
+]
