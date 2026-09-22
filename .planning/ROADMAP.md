@@ -60,8 +60,8 @@ Plans:
 **Plans**: 2 plans
 
 Plans:
-- [ ] 02-01: Schema for a rule record (instrument, source URL, checked date, applicability predicate, date derivation), plus the validation script
-- [ ] 02-02: Populate and verify the corpus: visa conditions, health and RHCA, tax, tenancy
+- [ ] 02-01-PLAN.md: Rule record schema and typed corpus entry point, the eleven gate validator that makes an unsourced record uncommittable, proven end to end by one live verified subclass 500 condition
+- [ ] 02-02-PLAN.md: Populate and live verify the corpus: subclass 500 conditions and the 485 window, subclass 482 obligations and PR pathway, the RHCA health branch, then tax and state tenancy under the cut order
 
 **Notes**: This is the highest-risk phase and the one most likely to overrun, because verifying real legal figures against live sources is slower than writing JSON. If it runs long, cut RULE-05 (tax) and RULE-06 (tenancy) first; they are tagged nice-to-have. RULE-02, RULE-03 and RULE-04 are demo-critical and cannot be cut, because the two-profile divergence depends on them.
 
