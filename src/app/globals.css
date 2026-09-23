@@ -20,6 +20,9 @@
   --radius-sm: 0.25rem;
   --radius-md: 0.5rem;
   --radius-lg: 1rem;
+  --cascade-duration: 320ms;
+  --cascade-stagger: 40ms;
+  --cascade-max-steps: 10;
 }
 
 body {
@@ -38,6 +41,18 @@ body {
   transform: scale(0.97);
 }
 
+.cascade-card[data-change-kind="moved"] {
+  transition: transform var(--cascade-duration) var(--ease-out),
+    opacity var(--cascade-duration) var(--ease-out);
+  transition-delay: calc(min(var(--cascade-index), var(--cascade-max-steps)) * var(--cascade-stagger));
+}
+
+.cascade-card[data-change-kind="restatused"] {
+  transition: color var(--cascade-duration) var(--ease-out),
+    background-color var(--cascade-duration) var(--ease-out);
+  transition-delay: calc(min(var(--cascade-index), var(--cascade-max-steps)) * var(--cascade-stagger));
+}
+
 @media (prefers-reduced-motion: reduce) {
   .affordance {
     transition: none;
@@ -47,5 +62,15 @@ body {
   .affordance:hover,
   details[open] .group-open\:rotate-90 {
     transform: none;
+  }
+
+  .cascade-card[data-change-kind="moved"],
+  .cascade-card[data-change-kind="restatused"] {
+    transition: none;
+  }
+
+  :root {
+    --cascade-duration: 0ms;
+    --cascade-stagger: 0ms;
   }
 }

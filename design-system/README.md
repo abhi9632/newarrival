@@ -20,6 +20,7 @@ One line per screen. If a screen has no line, that screen is not done.
 | Screen | 375 checked | 1280 checked | Matches signature? | By |
 |---|---|---|---|---|
 | /timeline (obligation timeline) | yes | yes | yes | Claude |
+| /timeline (perturbation cascade, settled) | yes | yes | yes | Claude |
 
 ---
 
@@ -48,6 +49,47 @@ so the pill is the only place that label appears.
 4. **At 375, reachable, legible, does the dated axis survive?** Yes. Every control stacks to
    full width and stays reachable, every card is legible with no clipped text, and the rail
    with its dated ticks survives the narrow viewport without collapsing or overlapping.
+
+---
+
+### Perturbation cascade
+
+Assumption: PASS 2026-09-23
+
+Checked against `docs/visual-gate/04-cascade-375.png` and `04-cascade-1280.png`, captured
+with Playwright against a local production build (`next build && next start -p 3100`); the
+live Vercel URL is still blocked pending the GitHub App authorisation in `HANDOFF.md`. Priya's
+profile, course end date dragged three months earlier and released.
+
+1. **The assumption.** Does the cascade read as a single legible event rather than visual
+   noise? Yes. Every changed card carries a short, plainly worded marker directly under its
+   date line ("Moved minus 92 days, was May 27, 2028" or "Runs until August 26, 2027"), so the
+   change is legible from the text alone even without watching the motion happen. At 375 the
+   cards stack to one column and the markers stay attached to the date they annotate rather
+   than floating loose.
+2. **The holds.** In the settled 375 screenshot, can you tell which obligations did not
+   change? Yes. Every one of the 9 held cards carries "Held, this date does not move" in the
+   same position the movers carry their marker, so the absence of change is a stated fact
+   rather than an absence of information. The summary line above the rail ("3 obligations
+   moved, across 4 agencies") gives the same claim as one on-stage sentence.
+3. **The Signature.** Does this screen still match the Art direction block? Yes. The terracotta
+   dated rail from the timeline is unchanged and still carries the Signature; the new rail
+   control and its markers use the same accent and muted tokens, no new colour was introduced.
+   Could this be any other team's project with the logo swapped? No, same reasoning as the
+   Phase 3 entry.
+4. **The client bar.** Would this pass as a paying client's shipped deliverable? Yes. The
+   native range control renders with browser chrome by design (zero new dependency), the
+   reset control disables itself correctly at the baseline, and no marker text reads as
+   internal debug output.
+
+Reduced motion verified separately: with `prefers-reduced-motion: reduce` forced via Playwright,
+the same drag produces the same state, summary line and 12 markers with no difference in
+outcome, only the animation is absent, confirmed by reading the DOM after the commit rather
+than by eye.
+
+Repeatability verified: pressed reset (slider back to 0, readout back to the original date,
+0 markers, reset button disabled again), then ran the same drag a second time with no page
+reload; it produced the identical 3 moved, 4 agencies result.
 
 ---
 

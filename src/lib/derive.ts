@@ -18,6 +18,7 @@ export interface Obligation {
   dueDate: string | null;
   status: ObligationStatus;
   daysUntilDue: number | null;
+  activeUntil: string | null;
 }
 
 const ANCHOR_FIELD: Record<"arrival" | "courseEnd", keyof Profile> = {
@@ -33,6 +34,12 @@ export function toUtcDays(iso: string): number {
 export function addDays(iso: string, n: number): string {
   const days = toUtcDays(iso) + n;
   return new Date(days * 86400000).toISOString().slice(0, 10);
+}
+
+export function addMonths(iso: string, n: number): string {
+  const [year, month, day] = iso.split("-").map(Number);
+  const date = new Date(Date.UTC(year, month - 1 + n, day));
+  return date.toISOString().slice(0, 10);
 }
 
 export function applies(record: RuleRecord, profile: Profile): boolean {
@@ -80,6 +87,7 @@ export function derive(records: RuleRecord[], profile: Profile, today: string): 
         dueDate,
         status: statusFor(dueDate, today),
         daysUntilDue: dueDate === null ? null : toUtcDays(dueDate) - toUtcDays(today),
+        activeUntil: record.courseScoped ? profile.courseEndDate : null,
       };
     });
 

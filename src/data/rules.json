@@ -28,6 +28,7 @@
     "appliesTo": {
       "subclass": ["500"]
     },
+    "courseScoped": true,
     "due": {
       "anchor": "ongoing"
     }
@@ -44,6 +45,7 @@
     "appliesTo": {
       "subclass": ["500"]
     },
+    "courseScoped": true,
     "due": {
       "anchor": "ongoing"
     }

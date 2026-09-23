@@ -26,6 +26,9 @@ export interface RuleRecord {
     | { anchor: "arrival" | "courseEnd"; offsetDays: number }
     | { anchor: "fixed"; date: string }
     | { anchor: "ongoing" };
+  // Structural classification, same kind as appliesTo and due.anchor: the obligation's
+  // active period is bounded by the course end date. Not a new legal figure.
+  courseScoped?: boolean;
 }
 
 // ponytail: scripts/check-rules.mjs is the real gate on the union valued
