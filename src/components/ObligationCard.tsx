@@ -124,16 +124,18 @@ export function ObligationCard({
             </span>
             Details
           </summary>
-          <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">{obligation.detail}</p>
-          {obligation.activeUntil && (
-            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
-              Runs until {formatDate(obligation.activeUntil)}
+          <div className="disclosure-reveal">
+            <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">{obligation.detail}</p>
+            {obligation.activeUntil && (
+              <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
+                Runs until {formatDate(obligation.activeUntil)}
+              </p>
+            )}
+            {sourceLink}
+            <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
+              Checked against its source on {formatDate(obligation.verifiedOn)}
             </p>
-          )}
-          {sourceLink}
-          <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
-            Checked against its source on {formatDate(obligation.verifiedOn)}
-          </p>
+          </div>
         </details>
       </article>
     );
@@ -193,9 +195,11 @@ export function ObligationCard({
           </span>
           Details
         </summary>
-        <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">
-          {obligation.detail}
-        </p>
+        <div className="disclosure-reveal">
+          <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">
+            {obligation.detail}
+          </p>
+        </div>
       </details>
     </article>
   );

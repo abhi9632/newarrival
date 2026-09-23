@@ -73,6 +73,19 @@ p {
   transform: scale(0.97);
 }
 
+/* Disclosure content settles in on open; native <details> has no exit transition to match,
+   so only the reveal is animated, kept under the UI duration cap. */
+details[open] > .disclosure-reveal {
+  animation: disclosure-reveal 180ms var(--ease-out) backwards;
+}
+
+@keyframes disclosure-reveal {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+}
+
 .cascade-card[data-change-kind="moved"] {
   transition: transform var(--cascade-duration) var(--ease-out),
     opacity var(--cascade-duration) var(--ease-out);
@@ -186,6 +199,10 @@ p {
   .affordance:hover,
   details[open] .group-open\:rotate-90 {
     transform: none;
+  }
+
+  details[open] > .disclosure-reveal {
+    animation: none;
   }
 
   .cascade-card[data-change-kind="moved"],
