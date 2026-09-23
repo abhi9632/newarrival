@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Space_Grotesk, IBM_Plex_Sans } from "next/font/google";
+import { ConsoleEasterEgg } from "@/components/ConsoleEasterEgg";
 import "./globals.css";
 
 const displayFace = Space_Grotesk({
@@ -25,7 +26,10 @@ export default function RootLayout({ children }: LayoutProps<"/">) {
       lang="en"
       className={`${displayFace.variable} ${bodyFace.variable} h-full antialiased`}
     >
-      <body className="min-h-full flex flex-col">{children}</body>
+      <body className="min-h-full flex flex-col">
+        {children}
+        <ConsoleEasterEgg />
+      </body>
     </html>
   );
 }

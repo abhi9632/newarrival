@@ -44,7 +44,10 @@ for a 2-minute slot use the cut-down table in `docs/pitch-playbook.md`.
 ### 3-minute shape
 Full script structure, click-path template, and deck spec: `docs/pitch-playbook.md` (P1, P2).
 1. **Hook + problem** (40s): one specific persona pain point, told as a human story
-2. **Live demo** (90s): click through the primary flow live -- no slides, just the product
+2. **Live demo** (90s): click through the primary flow live -- no slides, just the product.
+   Last click before moving on: drag Priya's course end date on `/timeline` to the far
+   right, letting her line reach the graduation reveal (`design-system/README.md`
+   Easter egg). Land it, do not explain it.
 3. **How it works + feasibility** (40s): architecture in plain language, path to production
 4. **Close** (10s): memorable line, what you want from judges
 

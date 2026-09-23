@@ -62,6 +62,28 @@ export function WhatIfRail({
     onReset();
   }
 
+  // Easter egg: dragging all the way to the maximum offset reveals Priya's line
+  // reaching a graduation marker. Reversible by dragging back or pressing Escape.
+  const atMax = draftOffset === MAX_OFFSET_MONTHS;
+  const eggFiredRef = React.useRef(false);
+
+  React.useEffect(() => {
+    if (atMax && !eggFiredRef.current) {
+      haptic("success");
+      eggFiredRef.current = true;
+    } else if (!atMax) {
+      eggFiredRef.current = false;
+    }
+  }, [atMax]);
+
+  function handleKeyDown(event: React.KeyboardEvent<HTMLInputElement>) {
+    if (event.key === "Escape" && atMax) {
+      const next = MAX_OFFSET_MONTHS - 1;
+      setDraftOffset(next);
+      onCommit(next);
+    }
+  }
+
   const readoutDate = shiftMonths(courseEndDate, draftOffset);
 
   return (
@@ -91,10 +113,23 @@ export function WhatIfRail({
           onChange={handleChange}
           onPointerUp={commit}
           onKeyUp={commit}
+          onKeyDown={handleKeyDown}
           onBlur={commit}
           className="affordance w-full accent-[var(--color-accent)]"
         />
       </div>
+
+      {atMax && (
+        <div aria-live="polite" className="fade-up mt-4 rounded-[var(--radius-md)] border border-[var(--color-accent)] bg-[var(--color-bg)] p-4">
+          <div className="relative h-1.5 overflow-hidden rounded-full bg-[var(--color-border)]">
+            <span aria-hidden="true" className="egg-fill absolute inset-y-0 left-0 block h-full rounded-full bg-[var(--color-accent)]" />
+          </div>
+          <p className="mt-3 flex items-center gap-2 font-body text-sm font-medium text-[var(--color-text)]">
+            <span aria-hidden="true" className="inline-block h-3 w-3 shrink-0 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)]" />
+            Priya&apos;s line reaches graduation. Every dated obligation resettles around her, on time.
+          </p>
+        </div>
+      )}
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <button
