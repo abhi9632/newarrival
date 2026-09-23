@@ -89,12 +89,62 @@ export function ObligationCard({
     "--cascade-index": cascadeIndex,
   } as unknown as CSSProperties;
 
+  const sourceLink = (
+    <a
+      href={obligation.sourceUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      aria-label={`Open the source page for ${obligation.title}`}
+      className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+    >
+      Source <span aria-hidden="true">↗</span>
+    </a>
+  );
+
+  if (compact) {
+    return (
+      <article
+        data-obligation-id={obligation.id}
+        data-change-kind={change?.kind ?? "none"}
+        style={cardStyle}
+        className="cascade-card border-b border-[var(--color-border)] pb-3 last:border-b-0 last:pb-0"
+      >
+        {change && (
+          <p className={`font-body text-xs font-medium ${CHANGE_MARKER_CLASS[change.kind]}`}>
+            {changeMarkerText(change)}
+          </p>
+        )}
+        <h3 className="font-display text-base text-[var(--color-text)]">{obligation.title}</h3>
+        <p className="mt-0.5 truncate font-body text-sm text-[var(--color-muted)]">{obligation.instrument}</p>
+
+        <details className="group mt-1.5">
+          <summary className="affordance inline-flex cursor-pointer items-center gap-1 font-body text-xs font-medium text-[var(--color-accent)] [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">
+            <span aria-hidden="true" className="affordance inline-block group-open:rotate-90">
+              {"›"}
+            </span>
+            Details
+          </summary>
+          <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">{obligation.detail}</p>
+          {obligation.activeUntil && (
+            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
+              Runs until {formatDate(obligation.activeUntil)}
+            </p>
+          )}
+          {sourceLink}
+          <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
+            Checked against its source on {formatDate(obligation.verifiedOn)}
+          </p>
+        </details>
+      </article>
+    );
+  }
+
   return (
     <article
       data-obligation-id={obligation.id}
       data-change-kind={change?.kind ?? "none"}
       style={cardStyle}
-      className={`cascade-card rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm ${compact ? "p-4" : "p-5"}`}
+      className="cascade-card rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm"
     >
       <span
         className={`inline-flex items-center rounded-full border px-3 py-1 font-body text-xs font-medium uppercase tracking-wide ${STATUS_CLASS[obligation.status]}`}
@@ -121,30 +171,17 @@ export function ObligationCard({
         </p>
       )}
 
-      <h3 className={`mt-2 font-display text-[var(--color-text)] ${compact ? "text-base" : "text-lg"}`}>
-        {obligation.title}
-      </h3>
+      <h3 className="mt-2 font-display text-lg text-[var(--color-text)]">{obligation.title}</h3>
 
       {!hideAgency && <p className="mt-1 font-body text-sm text-[var(--color-muted)]">{obligation.agency}</p>}
 
       <p className="mt-2 font-body text-sm text-[var(--color-text)]">{obligation.instrument}</p>
 
-      {!compact && (
-        <a
-          href={obligation.sourceUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-        >
-          Open the source page for {obligation.title}
-        </a>
-      )}
+      {sourceLink}
 
-      {!compact && (
-        <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
-          Checked against its source on {formatDate(obligation.verifiedOn)}
-        </p>
-      )}
+      <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
+        Checked against its source on {formatDate(obligation.verifiedOn)}
+      </p>
 
       <details className="group mt-3">
         <summary className="affordance flex cursor-pointer items-center gap-2 font-body text-sm font-medium text-[var(--color-accent)] [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">
@@ -154,26 +191,11 @@ export function ObligationCard({
           >
             {"›"}
           </span>
-          What this requires and what happens if it is missed
+          Details
         </summary>
         <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">
           {obligation.detail}
         </p>
-        {compact && (
-          <>
-            <a
-              href={obligation.sourceUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-            >
-              Open the source page for {obligation.title}
-            </a>
-            <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
-              Checked against its source on {formatDate(obligation.verifiedOn)}
-            </p>
-          </>
-        )}
       </details>
     </article>
   );

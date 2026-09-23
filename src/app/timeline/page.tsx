@@ -124,7 +124,8 @@ export default function TimelinePage() {
       if (group) group.push(obligation);
       else map.set(obligation.agency, [obligation]);
     }
-    return [...map.entries()];
+    // Largest groups first so a lone 1-item group never sits alone against empty space.
+    return [...map.entries()].sort((a, b) => b[1].length - a[1].length || a[0].localeCompare(b[0]));
   }, [standing]);
   const agencyCount = new Set(obligations.map((obligation) => obligation.agency)).size;
   const urgentCount = obligations.filter(
@@ -168,9 +169,7 @@ export default function TimelinePage() {
   return (
     <>
       <SiteHeader current="timeline" />
-      <main className="mx-auto w-full max-w-[2200px] px-6 py-14 md:px-8 md:py-20 xl:px-12 2xl:px-16">
-      <div className="xl:grid xl:grid-cols-[minmax(0,1fr)_20rem] xl:items-start xl:gap-12 2xl:grid-cols-[minmax(0,1fr)_22rem] 2xl:gap-16">
-      <div className="w-full max-w-4xl xl:max-w-none">
+      <main className="content-container py-14 md:py-20">
         <h1 className="font-display text-[clamp(2.6rem,6vw,4.5rem)] leading-[0.98] tracking-[-0.035em] text-[var(--color-text)]">
           <span className="mask-line">
             <span>
@@ -201,7 +200,9 @@ export default function TimelinePage() {
           ))}
         </dl>
 
-        <div className="mt-8 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 md:p-6">
+        <div className="mt-8 xl:grid xl:grid-cols-12 xl:items-start xl:gap-10">
+        <div className="xl:sticky xl:top-24 xl:col-span-4 xl:self-start">
+        <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 md:p-6">
         <section aria-labelledby="examples-heading" className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
           <h2 id="examples-heading" className="font-body text-sm text-[var(--color-muted)]">
             Load a worked example
@@ -226,7 +227,7 @@ export default function TimelinePage() {
           </div>
         </section>
 
-        <section aria-labelledby="facts-heading" className="mt-5 grid gap-4 border-t border-[var(--color-border)] pt-5 sm:grid-cols-2 md:grid-cols-3 2xl:grid-cols-5">
+        <section aria-labelledby="facts-heading" className="mt-5 grid gap-4 border-t border-[var(--color-border)] pt-5 sm:grid-cols-2">
           <h2 id="facts-heading" className="sr-only">
             Your four facts
           </h2>
@@ -296,81 +297,7 @@ export default function TimelinePage() {
           />
         )}
 
-        <div className="xl:grid xl:grid-cols-[minmax(0,28rem)_minmax(0,1fr)] xl:items-start xl:gap-10 2xl:grid-cols-[minmax(0,32rem)_minmax(0,1fr)] 2xl:gap-14">
-          <section aria-labelledby="dated-heading" className="mt-10 xl:mt-10">
-            <h2 id="dated-heading" className="font-display text-3xl tracking-tight text-[var(--color-text)]">
-              Your dated timeline
-            </h2>
-            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
-              {urgentCount} of {obligations.length} obligations are overdue or due soon.
-            </p>
-            <ol className="relative mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-border)] pl-6">
-              {/* The rail fills in terracotta as the reader travels down it. */}
-              <span aria-hidden="true" className="rail-fill absolute -left-0.5 top-0 h-full w-0.5 bg-[var(--color-accent)]" />
-              {dated.map((obligation, index) => (
-                <li key={obligation.id} className="relative">
-                  <span
-                    aria-hidden="true"
-                    className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]"
-                  />
-                  <ObligationCard
-                    obligation={obligation}
-                    change={changeById.get(obligation.id) ?? null}
-                    cascadeIndex={index}
-                  />
-                </li>
-              ))}
-              {atGraduation && (
-                <li aria-hidden="true" className="fade-up relative">
-                  <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]" />
-                  <p className="font-display text-lg text-[var(--color-text)]">Priya graduates.</p>
-                  <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
-                    Every dated obligation above resettles around this day.
-                  </p>
-                </li>
-              )}
-            </ol>
-          </section>
-
-          <section aria-labelledby="standing-heading" className="mt-10 xl:mt-10">
-            <h2 id="standing-heading" className="font-display text-3xl tracking-tight text-[var(--color-text)]">
-              Standing conditions for your whole stay
-            </h2>
-            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
-              {standing.length} condition{standing.length === 1 ? "" : "s"} across {standingByAgency.length}{" "}
-              agenc{standingByAgency.length === 1 ? "y" : "ies"}.
-            </p>
-            <div className="mt-6 grid gap-6 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
-              {standingByAgency.map(([agency, items]) => (
-                <div
-                  key={agency}
-                  className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] p-4"
-                >
-                  <h3 className="font-display text-base text-[var(--color-text)]">{agency}</h3>
-                  <p className="mt-0.5 font-body text-xs text-[var(--color-muted)]">
-                    {items.length} standing condition{items.length === 1 ? "" : "s"}
-                  </p>
-                  <div className="mt-3 grid gap-3">
-                    {items.map((obligation, index) => (
-                      <ObligationCard
-                        key={obligation.id}
-                        obligation={obligation}
-                        change={changeById.get(obligation.id) ?? null}
-                        cascadeIndex={index}
-                        compact
-                        hideAgency
-                      />
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
-      </div>
-
-      <aside className="mt-14 hidden xl:mt-0 xl:block">
-        <div className="sticky top-24 flex flex-col gap-6">
+        <div className="mt-6 hidden flex-col gap-6 xl:flex">
           {next && (
             <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
               <p className="font-body text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
@@ -415,7 +342,79 @@ export default function TimelinePage() {
             </p>
           </div>
         </div>
-      </aside>
+        </div>
+
+        <div className="mt-10 xl:col-span-8 xl:mt-0">
+          <section aria-labelledby="dated-heading">
+            <h2 id="dated-heading" className="font-display text-3xl tracking-tight text-[var(--color-text)]">
+              Your dated timeline
+            </h2>
+            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
+              {urgentCount} of {obligations.length} obligations are overdue or due soon.
+            </p>
+            <ol className="relative mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-border)] pl-6">
+              {/* The rail fills in terracotta as the reader travels down it. */}
+              <span aria-hidden="true" className="rail-fill absolute -left-0.5 top-0 h-full w-0.5 bg-[var(--color-accent)]" />
+              {dated.map((obligation, index) => (
+                <li key={obligation.id} className="relative">
+                  <span
+                    aria-hidden="true"
+                    className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]"
+                  />
+                  <ObligationCard
+                    obligation={obligation}
+                    change={changeById.get(obligation.id) ?? null}
+                    cascadeIndex={index}
+                  />
+                </li>
+              ))}
+              {atGraduation && (
+                <li aria-hidden="true" className="fade-up relative">
+                  <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]" />
+                  <p className="font-display text-lg text-[var(--color-text)]">Priya graduates.</p>
+                  <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
+                    Every dated obligation above resettles around this day.
+                  </p>
+                </li>
+              )}
+            </ol>
+          </section>
+
+          <section aria-labelledby="standing-heading" className="mt-10 xl:mt-10">
+            <h2 id="standing-heading" className="font-display text-3xl tracking-tight text-[var(--color-text)]">
+              Standing conditions for your whole stay
+            </h2>
+            <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
+              {standing.length} condition{standing.length === 1 ? "" : "s"} across {standingByAgency.length}{" "}
+              agenc{standingByAgency.length === 1 ? "y" : "ies"}.
+            </p>
+            <div className="mt-6 grid items-start gap-6 sm:grid-cols-2 xl:grid-cols-1 2xl:grid-cols-2">
+              {standingByAgency.map(([agency, items]) => (
+                <div
+                  key={agency}
+                  className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-bg)] p-4"
+                >
+                  <h3 className="font-display text-base text-[var(--color-text)]">{agency}</h3>
+                  <p className="mt-0.5 font-body text-xs text-[var(--color-muted)]">
+                    {items.length} standing condition{items.length === 1 ? "" : "s"}
+                  </p>
+                  <div className="mt-3 flex flex-col gap-3">
+                    {items.map((obligation, index) => (
+                      <ObligationCard
+                        key={obligation.id}
+                        obligation={obligation}
+                        change={changeById.get(obligation.id) ?? null}
+                        cascadeIndex={index}
+                        compact
+                        hideAgency
+                      />
+                    ))}
+                  </div>
+                </div>
+              ))}
+            </div>
+          </section>
+        </div>
       </div>
       </main>
     </>
