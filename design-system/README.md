@@ -8,7 +8,16 @@ Reference: the London Underground line diagram, taken for its tick rhythm and on
 Anti-reference: a centered blue or purple SaaS hero with a gradient blob, three equal icon-feature cards, and a stock Tailwind or shadcn card grid on white
 Type stance: Space Grotesk display for civic geometric warmth rather than corporate Inter, paired with IBM Plex Sans body for institutional clarity at small disclaimer sizes
 Colour world: ink on eucalyptus-washed bone, one burnt terracotta accent carrying the rail and the call to action, never blue or purple
-Motion stance: restrained here, one hover, press and focus cycle on the single anchor; full reflow motion is reserved for the Perturbation in Phase 4
+Motion stance: CSS only, one easing family (--ease-out for entrances, --ease-in-out for on-screen morphs). Landing: the route diagram draws on load and re-routes on fact switches; timeline: the Perturbation cascade. Everything else stays still
+Concept: This is about the four facts that decide an arrival's obligations; it feels like a transit map because every obligation is a stop on a dated line from arrival
+Signature moment spec (landing, marketing / explanatory, exempt from the 300ms UI cap):
+- Trigger: page load, then any fact pill switch (visa, citizenship, state)
+- Phases: lines draw left to right 900ms, lanes 90ms apart; each station pops 260ms as the line passes it; labels fade 320ms after. Switch: stations leave 150ms / arrive 220ms, spans re-scale 280ms, standing conditions fade 240ms
+- Input: three two-way radio pills; the readout line names what fell away, appeared and held
+- Fallback: server-rendered static diagram, no JS needed to read it
+- Mobile: same diagram, labels narrowed, span captions dropped (listed beside each lane instead); Visa rail above the fold at 375
+- Reduced motion: no draw or pop; stations and text cross-fade at 150ms, state is identical
+- First 3 seconds at 1280: four terracotta lines drawing across a dated axis beside the headline
 
 ---
 
@@ -26,8 +35,35 @@ One line per screen. If a screen has no line, that screen is not done.
 | Derived timeline (05-timeline) | yes | yes | yes | Claude |
 | Cascade mid pass (05-cascade-mid) | yes | yes | yes | Claude |
 | Cascade settled (05-cascade-settled) | yes | yes | yes | Claude |
+| Landing live route (06-landing) | yes | yes | yes | Claude + visual-gate-reviewer PASS (2nd round) |
+
+## Pipeline state
+
+| Screen | Stage | Last skill run | Next | By |
+|---|---|---|---|---|
+| Landing (/) | D4 passed | awwwards D0 spec, design-taste-frontend build, emil-design-eng, impeccable detector, visual-gate-reviewer | Awwwards 15-audit perf pass at freeze | Claude |
+| /timeline | D4 passed (pre-pipeline) | design-taste-frontend | D3 liveliness pass: intake still native controls | Claude |
 
 ---
+
+### 06-landing, Live route diagram (landing)
+
+Screenshots: `06-landing-1280-full.png` (1280x1880 viewport, settled), `06-landing-1280-toggled.png`
+(Skilled 482 + Italy, clicks via JS so no hover state), `06-landing-375.png`, `06-landing-375-full.png`,
+`06-landing-320.png`. Local production build on port 3100.
+
+1. Signature: yes. The terracotta rail is now the hero. Every lane carries terracotta in every
+   profile (solid span for conditions with an end date, thin band for whole-stay conditions).
+2. Another team's project? No. Dated transit diagram of real corpus rules, Space Grotesk over Plex.
+3. Paying client bar: yes after round 2. Round 1 FAIL (visual-gate-reviewer): bare lanes, faint
+   Arrived control, rail below the mobile fold, no Italy-fix evidence. All fixed.
+4. Liveliness: signature visible in the first 3 seconds at 1280; hero shows the product computing;
+   switches visibly re-route (482 + Italy: "1 fell away, 1 appeared, 9 held").
+5. Copy: product copy only; "every one checked on" claim is computed from the corpus dates.
+Checks: impeccable detector `[]`; no overflow 320/375/1280/1920; no clipped pill at 320; tap targets
+>= 30px; reduced motion: all stations opaque at load, zero running animations; check:rules,
+check:engine, check:cascade all OK. Known: at 320x700 the card and axis sit above the fold, the
+first line 122px below.
 
 ### Obligation timeline
 
