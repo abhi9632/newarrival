@@ -110,7 +110,11 @@ bar, it only says what is faked behind the screen. Full detail: `rules/frontend-
 
 ---
 
-## NO EM DASHES -- ever. Use comma, colon, semicolon, or split the sentence.
+## NO EM DASHES in anything a user sees
+
+App and site copy, UI labels, alt text, meta, pitch deck, demo video, on-screen text.
+Use a comma, colon, semicolon, or split the sentence. Planning files, docs, code
+comments and commit messages are exempt: do not sweep or rewrite them for dashes.
 
 ---
 
