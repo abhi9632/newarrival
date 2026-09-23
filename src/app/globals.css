@@ -354,10 +354,16 @@ a:focus-visible .nudge-up {
 }
 
 .route-knockout {
-  position: relative;
   z-index: 1;
   background: var(--color-surface);
   box-shadow: 0 0 0 3px var(--color-surface);
+}
+
+/* Nested station labels have no positioning utility of their own; give them one so the
+   halo above still stacks. Elements that carry Tailwind's `absolute` utility (the
+   whole-stay and until labels) must keep that, or they collapse into normal flow. */
+.route-knockout:not(.absolute) {
+  position: relative;
 }
 
 .route-station .route-dot {

@@ -339,7 +339,9 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
                   )}
                   {until && (
                     <span
-                      className="route-fade route-knockout absolute top-6 hidden -translate-x-full pr-1 font-body text-xs text-[var(--color-accent)] md:block"
+                      className={`route-fade route-knockout absolute top-6 hidden font-body text-xs text-[var(--color-accent)] md:block ${
+                        axisT(until) < 0.15 ? "pl-1" : "-translate-x-full pr-1"
+                      }`}
                       style={{ left: `${axisT(until) * 100}%` }}
                     >
                       Study conditions end {shortDate(until)}
