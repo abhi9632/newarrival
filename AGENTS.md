@@ -3,15 +3,15 @@
 ## IDENTITY
 | Field | Value |
 |---|---|
-| Project | [fill Day 1 -- see DAY1.md EVENT CONFIG] |
-| Repo | [fill Day 1] |
-| Problem domain | [fill Day 1 during planning] |
-| Framework | [fill Day 1 during planning] |
-| Styling | [fill Day 1 during planning] |
-| Deployment | [fill Day 1 -- see DAY1.md EVENT CONFIG deploy target] |
-| Live URL | [fill once T1 deploys -- the actual deployed URL, not the platform name. `scripts/check-freeze.sh` reads this field and fails the freeze gate if it is still `[fill]` or does not respond] |
-| Backend | [fill Day 1 -- None if scope mode is prototype; see DAY1.md EVENT CONFIG] |
-| Auth | [fill Day 1 -- None for prototype] |
+| Project | NewArrival, a live model of a new arrival's legal status in Australia |
+| Repo | abhi9632/newarrival |
+| Problem domain | Australian visa, tax, health and tenancy obligations derived from four facts |
+| Framework | Next.js (App Router) + TypeScript + Tailwind |
+| Styling | Tailwind v4 tokens in src/app/globals.css, design-taste-frontend authority |
+| Deployment | Vercel |
+| Live URL | [blocked: GitHub App not authorised on this private repo, see docs/manual-actions.md. `scripts/check-freeze.sh` will fail on this field until a human completes that authorisation and a deploy exists] |
+| Backend | None, scope is prototype, every data path is static JSON in src/data/rules.json |
+| Auth | None |
 
 ## TEAM & AGENTS
 | Person | GitHub | Role |
@@ -78,11 +78,11 @@ bash scripts/next-task.sh               # see what is claimable right now
 ## DESIGN TOKENS
 | Token | Value |
 |---|---|
-| Palette | [fill after Rule 0] |
-| Fonts | [fill after Rule 0] |
+| Palette | Ink on eucalyptus-washed bone, one burnt terracotta accent, never blue or purple |
+| Fonts | Space Grotesk (display), IBM Plex Sans (body) |
 | Spacing | 4px base |
-| Radius | [fill after Rule 0] |
-| Icons | [fill Day 1] |
+| Radius | --radius-sm 0.25rem / --radius-md 0.5rem / --radius-lg 1rem |
+| Icons | None, native browser chrome only |
 
 Full reference: `design-system/README.md` (filled by planner during Phase A after Rule 0)
 

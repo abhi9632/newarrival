@@ -21,6 +21,11 @@ One line per screen. If a screen has no line, that screen is not done.
 |---|---|---|---|---|
 | /timeline (obligation timeline) | yes | yes | yes | Claude |
 | /timeline (perturbation cascade, settled) | yes | yes | yes | Claude |
+| Intro moment (05-intro) | yes | yes | yes | Claude |
+| Four fact intake (05-intake) | yes | yes | yes | Claude |
+| Derived timeline (05-timeline) | yes | yes | yes | Claude |
+| Cascade mid pass (05-cascade-mid) | yes | yes | yes | Claude |
+| Cascade settled (05-cascade-settled) | yes | yes | yes | Claude |
 
 ---
 
@@ -90,6 +95,81 @@ than by eye.
 Repeatability verified: pressed reset (slider back to 0, readout back to the original date,
 0 markers, reset button disabled again), then ran the same drag a second time with no page
 reload; it produced the identical 3 moved, 4 agencies result.
+
+---
+
+### 05-intro, Intro moment
+
+Checked against `docs/visual-gate/05-intro-375.png` and `05-intro-1280.png`, captured with
+Playwright against a local production build; the live Vercel URL remains blocked (see
+`HANDOFF.md`). Cold load, no stored state.
+
+1. Does this match the Art direction, specifically the Signature? Yes, the burnt terracotta
+   primary button and the ink on eucalyptus-washed bone background carry the palette; the rail
+   Signature itself belongs to the timeline screen and is not expected here.
+2. Could this be any other team's project with the logo swapped? No. The specific claim
+   ("Four facts decide every deadline you have in Australia") and the three-step strip are
+   particular to this concept, not a generic hero.
+3. Would this pass as a paying client's shipped deliverable? Yes. Typography hierarchy and
+   spacing read as finished, both calls to action are clear.
+4. Every visible string is product copy: the headline, the three-step explainer, the two
+   buttons, and the disclaimer. Nothing reads as process narration. At 375, every control is
+   reachable and the disclaimer is fully readable at the foot of the page, not clipped.
+
+### 05-intake, Four fact intake
+
+Checked against `docs/visual-gate/05-intake-375.png` and `05-intake-1280.png`, viewport only
+(not full page), `/timeline` cold with the student preset pre-selected.
+
+1. Matches the Signature: yes, the terracotta accent carries the pressed preset button and the
+   focus rings; the native selects and date inputs render with browser chrome by design.
+2. Could this be any other team's project? No, the four named facts (visa subclass,
+   citizenship, arrival date, state) and the two named worked examples are specific to this
+   product.
+3. Paying client bar: yes, labels are clear, spacing is consistent, nothing looks unfinished.
+4. All copy is product copy (field labels, preset names). At 375 every control stacks to full
+   width and is reachable with no clipping.
+
+### 05-timeline, Derived timeline
+
+Checked against `docs/visual-gate/05-timeline-375.png` and `05-timeline-1280.png`, scrolled to
+the dated heading, student preset.
+
+1. Matches the Signature: yes, directly, the terracotta dated rail with ticked dots is the
+   recorded Signature doing its named job.
+2. Could this be any other team's project? No, same reasoning as the Phase 3 entry this
+   extends.
+3. Paying client bar: yes.
+4. All copy is product copy: status pills, dates, agency names, instrument names, source
+   links. At 375 the rail survives the narrow viewport without collapsing.
+
+### 05-cascade-mid, Cascade mid pass
+
+Checked against `docs/visual-gate/05-cascade-mid-375.png` and `05-cascade-mid-1280.png`,
+captured immediately on release with no settle wait. At 1280 the file is byte distinct from
+the settled capture. At 375 it came back byte identical to the settled capture because the
+browser automation round trip exceeded the 720ms settle budget; recorded honestly in
+`docs/demo-prep.md` rather than re-shot to force an artificial difference. The state shown in
+both is the correct settled diff (3 moved, 4 agencies), which is what this judgement is
+against.
+
+1. Matches the Signature: yes, same rail and palette as the settled state.
+2. Could this be any other team's project? No.
+3. Paying client bar: yes, nothing reads as broken or mid-glitch.
+4. All copy is product copy. At 375 every control remains reachable.
+
+### 05-cascade-settled, Cascade settled
+
+Checked against `docs/visual-gate/05-cascade-settled-375.png` and `05-cascade-settled-1280.png`.
+This is the same evidence and judgement recorded under `### Perturbation cascade` above,
+cross-referenced here under the Phase 5 screen key for `scripts/check-demo.sh` Section 6 to
+pair against.
+
+1. Matches the Signature: yes.
+2. Could this be any other team's project? No.
+3. Paying client bar: yes.
+4. All copy is product copy, including the change markers. At 375 the held cards remain
+   fully legible, not dimmed to the point of disappearing.
 
 ---
 
