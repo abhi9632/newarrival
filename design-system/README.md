@@ -55,6 +55,19 @@ One line per screen. If a screen has no line, that screen is not done.
 | Cascade mid pass (05-cascade-mid) | yes | yes | yes | Claude |
 | Cascade settled (05-cascade-settled) | yes | yes | yes | Claude |
 | Landing live route (06-landing) | yes | yes | yes | Claude + visual-gate-reviewer PASS (2nd round) |
+| Landing, gutters + egg pass (07-landing) | yes | yes | yes | Claude + visual-gate-reviewer PASS (1st round) |
+| /timeline, gutters + egg pass (07-timeline) | yes | yes | yes | Claude + visual-gate-reviewer PASS (1st round) |
+
+### Gutter + egg gate pass (2026-09-23)
+
+Routes: `/` and `/timeline`, shot at 375/1280/1440/1920 (`docs/gate/`). visual-gate-reviewer: PASS
+on both, 1st round, no re-fix needed. Finder (`rules/craft-and-delight.md` section 3) re-run at
+1440 and 1920 on both routes after the fixes: `[]` on all four, plus zero horizontal overflow at
+375/1280, zero console errors, zero running animations under forced `prefers-reduced-motion`.
+`haptic map: 5 events | egg: drag course-end slider to max offset (or Escape/drag-back to reverse) | gutters: finder clean at 1440 + 1920 | details: 6/10`
+Detail list gaps still open: overscroll-behavior (no inner scrollers to apply it to), in-place
+save confirmation (no save/submit action exists yet), optional sound toggle (not built), designed
+favicon/OG image (tracked in `HANDOFF.md`, not this pass's scope).
 
 ## Pipeline state
 
