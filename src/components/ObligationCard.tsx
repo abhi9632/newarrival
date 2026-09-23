@@ -70,9 +70,19 @@ interface ObligationCardProps {
   obligation: Obligation;
   change?: ObligationChange | null;
   cascadeIndex?: number;
+  /** Denser chrome for grid contexts: source link and verified-on fold into the disclosure. */
+  compact?: boolean;
+  /** Omit the standalone agency line when a group heading already states it. */
+  hideAgency?: boolean;
 }
 
-export function ObligationCard({ obligation, change = null, cascadeIndex = 0 }: ObligationCardProps) {
+export function ObligationCard({
+  obligation,
+  change = null,
+  cascadeIndex = 0,
+  compact = false,
+  hideAgency = false,
+}: ObligationCardProps) {
   const phrase = relativePhrase(obligation.daysUntilDue);
   const cardStyle = {
     viewTransitionName: `obligation-${obligation.id}`,
@@ -84,7 +94,7 @@ export function ObligationCard({ obligation, change = null, cascadeIndex = 0 }: 
       data-obligation-id={obligation.id}
       data-change-kind={change?.kind ?? "none"}
       style={cardStyle}
-      className="cascade-card rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 shadow-sm"
+      className={`cascade-card rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] shadow-sm ${compact ? "p-4" : "p-5"}`}
     >
       <span
         className={`inline-flex items-center rounded-full border px-3 py-1 font-body text-xs font-medium uppercase tracking-wide ${STATUS_CLASS[obligation.status]}`}
@@ -111,24 +121,30 @@ export function ObligationCard({ obligation, change = null, cascadeIndex = 0 }: 
         </p>
       )}
 
-      <h3 className="mt-2 font-display text-lg text-[var(--color-text)]">{obligation.title}</h3>
+      <h3 className={`mt-2 font-display text-[var(--color-text)] ${compact ? "text-base" : "text-lg"}`}>
+        {obligation.title}
+      </h3>
 
-      <p className="mt-1 font-body text-sm text-[var(--color-muted)]">{obligation.agency}</p>
+      {!hideAgency && <p className="mt-1 font-body text-sm text-[var(--color-muted)]">{obligation.agency}</p>}
 
       <p className="mt-2 font-body text-sm text-[var(--color-text)]">{obligation.instrument}</p>
 
-      <a
-        href={obligation.sourceUrl}
-        target="_blank"
-        rel="noopener noreferrer"
-        className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
-      >
-        Open the source page for {obligation.title}
-      </a>
+      {!compact && (
+        <a
+          href={obligation.sourceUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+        >
+          Open the source page for {obligation.title}
+        </a>
+      )}
 
-      <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
-        Checked against its source on {formatDate(obligation.verifiedOn)}
-      </p>
+      {!compact && (
+        <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
+          Checked against its source on {formatDate(obligation.verifiedOn)}
+        </p>
+      )}
 
       <details className="group mt-3">
         <summary className="affordance flex cursor-pointer items-center gap-2 font-body text-sm font-medium text-[var(--color-accent)] [&::-webkit-details-marker]:hidden focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]">
@@ -143,6 +159,21 @@ export function ObligationCard({ obligation, change = null, cascadeIndex = 0 }: 
         <p className="mt-2 font-body text-sm leading-relaxed text-[var(--color-muted)]">
           {obligation.detail}
         </p>
+        {compact && (
+          <>
+            <a
+              href={obligation.sourceUrl}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="affordance mt-2 inline-flex items-center gap-1 font-body text-sm font-medium text-[var(--color-accent)] underline decoration-1 underline-offset-2 hover:text-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+            >
+              Open the source page for {obligation.title}
+            </a>
+            <p className="mt-2 font-body text-xs text-[var(--color-muted)]">
+              Checked against its source on {formatDate(obligation.verifiedOn)}
+            </p>
+          </>
+        )}
       </details>
     </article>
   );
