@@ -98,10 +98,13 @@ judge, this lists suspects):
   s.querySelectorAll('*').forEach(e => { const b = e.getBoundingClientRect();
     if (b.width && b.height && b.width < innerWidth * 0.98) { l = Math.min(l, b.left); r = Math.max(r, b.right); } });
   return { el: s.id || s.tagName, leftGap: Math.round(l / innerWidth * 100), rightGap: Math.round((innerWidth - r) / innerWidth * 100) };
-}).filter(x => x.leftGap > 18 && x.rightGap > 18)
+}).filter(x => x.leftGap + x.rightGap > 20)
 ```
 
-Any section listed needs a full-bleed element, a rail, or an asymmetric layout.
+Any section listed needs a full-bleed element, a rail, or an asymmetric layout. The threshold
+(more than 20% of the width empty across both sides) catches a bare `max-w-7xl` at 1920. The
+finder judges a section by the union of its children, so one full-bleed child clears the
+whole section; the screenshot still has to show the text block is not floating.
 
 ## 4. The detail list -- the things nobody asks for and everybody feels
 
