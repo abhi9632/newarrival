@@ -432,20 +432,6 @@ a:focus-visible .nudge-up {
   }
 }
 
-/* Easter egg: the course-end offset reaching its maximum fills a bar the same way the
-   dated rail fills on scroll, the app's one visual metaphor for a line reaching its end. */
-.egg-fill {
-  transform-origin: left center;
-  transform: scaleX(0);
-  animation: egg-grow 480ms var(--ease-out) forwards;
-}
-
-@keyframes egg-grow {
-  to {
-    transform: scaleX(1);
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   /* The ride becomes a static dated list: no sticky scene, no ticking date. */
   .ride {
@@ -482,12 +468,6 @@ a:focus-visible .nudge-up {
   [data-reveal],
   .page-progress {
     animation: none !important;
-  }
-
-  /* Reduced motion: the egg reward shows already filled, not mid-grow. */
-  .egg-fill {
-    animation: none;
-    transform: scaleX(1);
   }
 
   .page-progress {

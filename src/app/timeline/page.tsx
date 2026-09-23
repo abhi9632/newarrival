@@ -12,7 +12,7 @@ import {
 import { derive, addMonths } from "@/lib/derive";
 import { diffObligations, summariseCascade } from "@/lib/perturb";
 import { ObligationCard, STATUS_CLASS, STATUS_LABEL, formatDate, relativePhrase } from "@/components/ObligationCard";
-import { WhatIfRail } from "@/components/WhatIfRail";
+import { WhatIfRail, MAX_OFFSET_MONTHS } from "@/components/WhatIfRail";
 import { SiteHeader } from "@/components/SiteHeader";
 import { haptic } from "@/lib/haptics";
 
@@ -88,6 +88,7 @@ export default function TimelinePage() {
   const [profile, setProfile] = React.useState<Profile>(EXAMPLE_PROFILES[0].profile);
   const [today] = React.useState(todayIso);
   const [offsetMonths, setOffsetMonths] = React.useState(0);
+  const [draftOffsetMonths, setDraftOffsetMonths] = React.useState(0);
   const cascadeInFlight = React.useRef(false);
 
   const baseline = React.useMemo(() => derive(rules, profile, today), [profile, today]);
@@ -121,6 +122,7 @@ export default function TimelinePage() {
     (obligation) => obligation.status === "overdue" || obligation.status === "due-soon"
   ).length;
   const next = dated[0] ?? null;
+  const atGraduation = needsCourseEnd && draftOffsetMonths === MAX_OFFSET_MONTHS;
 
   function updateProfile(patch: Partial<Profile>) {
     setProfile((prev) => ({ ...prev, ...patch }));
@@ -280,6 +282,7 @@ export default function TimelinePage() {
             totals={cascadeSummary ? { moved: cascadeSummary.moved, agencies: cascadeSummary.agencies.length } : null}
             onCommit={runCascade}
             onReset={() => runCascade(0)}
+            onDraftChange={setDraftOffsetMonths}
           />
         )}
 
@@ -306,6 +309,15 @@ export default function TimelinePage() {
                 />
               </li>
             ))}
+            {atGraduation && (
+              <li aria-hidden="true" className="fade-up relative">
+                <span className="absolute -left-6 top-1.5 h-2.5 w-2.5 -translate-x-1/2 rounded-full border-2 border-[var(--color-surface)] bg-[var(--color-accent)]" />
+                <p className="font-display text-lg text-[var(--color-text)]">Priya graduates.</p>
+                <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
+                  Every dated obligation above resettles around this day.
+                </p>
+              </li>
+            )}
           </ol>
         </section>
 

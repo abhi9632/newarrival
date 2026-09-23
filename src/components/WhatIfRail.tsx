@@ -7,6 +7,8 @@ import { pressPulse } from "@/lib/pressPulse";
 const MIN_OFFSET_MONTHS = -12;
 const MAX_OFFSET_MONTHS = 12;
 
+export { MAX_OFFSET_MONTHS };
+
 // Local date arithmetic rather than an import from lib/derive: this component takes
 // its inputs as props and stays free of any dependency outside react, matching the
 // zero new dependency stance for the native range control.
@@ -26,6 +28,7 @@ interface WhatIfRailProps {
   totals: CascadeTotals | null;
   onCommit: (offsetMonths: number) => void;
   onReset: () => void;
+  onDraftChange?: (offsetMonths: number) => void;
 }
 
 export function WhatIfRail({
@@ -34,6 +37,7 @@ export function WhatIfRail({
   totals,
   onCommit,
   onReset,
+  onDraftChange,
 }: WhatIfRailProps) {
   const [draftOffset, setDraftOffset] = React.useState(committedOffsetMonths);
   const rangeRef = React.useRef<HTMLInputElement>(null);
@@ -42,7 +46,8 @@ export function WhatIfRail({
   React.useEffect(() => {
     setDraftOffset(committedOffsetMonths);
     prevOffsetRef.current = committedOffsetMonths;
-  }, [committedOffsetMonths]);
+    onDraftChange?.(committedOffsetMonths);
+  }, [committedOffsetMonths, onDraftChange]);
 
   function commit() {
     onCommit(draftOffset);
@@ -55,6 +60,7 @@ export function WhatIfRail({
       prevOffsetRef.current = next;
     }
     setDraftOffset(next);
+    onDraftChange?.(next);
   }
 
   function handleReset() {
@@ -80,6 +86,7 @@ export function WhatIfRail({
     if (event.key === "Escape" && atMax) {
       const next = MAX_OFFSET_MONTHS - 1;
       setDraftOffset(next);
+      onDraftChange?.(next);
       onCommit(next);
     }
   }
@@ -119,17 +126,11 @@ export function WhatIfRail({
         />
       </div>
 
-      {atMax && (
-        <div aria-live="polite" className="fade-up mt-4 rounded-[var(--radius-md)] border border-[var(--color-accent)] bg-[var(--color-bg)] p-4">
-          <div className="relative h-1.5 overflow-hidden rounded-full bg-[var(--color-border)]">
-            <span aria-hidden="true" className="egg-fill absolute inset-y-0 left-0 block h-full rounded-full bg-[var(--color-accent)]" />
-          </div>
-          <p className="mt-3 flex items-center gap-2 font-body text-sm font-medium text-[var(--color-text)]">
-            <span aria-hidden="true" className="inline-block h-3 w-3 shrink-0 rounded-full border-2 border-[var(--color-accent)] bg-[var(--color-accent)]" />
-            Priya&apos;s line reaches graduation. Every dated obligation resettles around her, on time.
-          </p>
-        </div>
-      )}
+      {/* The reveal lives on the dated timeline's own rail, in its visual language. This
+          announces it for screen reader users who may not reach that rail right away. */}
+      <p aria-live="polite" className="sr-only">
+        {atMax ? "Priya's line reaches graduation. Every dated obligation resettles around her, on time." : ""}
+      </p>
 
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <button
