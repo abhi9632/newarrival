@@ -11,7 +11,7 @@ import {
 } from "@/lib/profile";
 import { derive, addMonths } from "@/lib/derive";
 import { diffObligations, summariseCascade } from "@/lib/perturb";
-import { ObligationCard } from "@/components/ObligationCard";
+import { ObligationCard, STATUS_CLASS, STATUS_LABEL, formatDate, relativePhrase } from "@/components/ObligationCard";
 import { WhatIfRail } from "@/components/WhatIfRail";
 import { SiteHeader } from "@/components/SiteHeader";
 import { haptic } from "@/lib/haptics";
@@ -120,6 +120,7 @@ export default function TimelinePage() {
   const urgentCount = obligations.filter(
     (obligation) => obligation.status === "overdue" || obligation.status === "due-soon"
   ).length;
+  const next = dated[0] ?? null;
 
   function updateProfile(patch: Partial<Profile>) {
     setProfile((prev) => ({ ...prev, ...patch }));
@@ -156,7 +157,8 @@ export default function TimelinePage() {
   return (
     <>
       <SiteHeader current="timeline" />
-      <main className="mx-auto w-full max-w-4xl px-6 py-14 md:px-8 md:py-20">
+      <main className="mx-auto w-full max-w-[1800px] px-6 py-14 md:px-8 md:py-20 xl:grid xl:grid-cols-[minmax(0,56rem)_18rem] xl:justify-center xl:gap-16 2xl:grid-cols-[minmax(0,56rem)_20rem] 2xl:gap-24">
+      <div className="w-full max-w-4xl xl:max-w-none">
         <h1 className="font-display text-[clamp(2.6rem,6vw,4.5rem)] leading-[0.98] tracking-[-0.035em] text-[var(--color-text)]">
           <span className="mask-line">
             <span>
@@ -323,6 +325,55 @@ export default function TimelinePage() {
             ))}
           </ul>
         </section>
+      </div>
+
+      <aside className="mt-14 hidden xl:mt-0 xl:block">
+        <div className="sticky top-24 flex flex-col gap-6">
+          {next && (
+            <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+              <p className="font-body text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                Next obligation
+              </p>
+              <p
+                className={`mt-3 inline-flex items-center rounded-full border px-3 py-1 font-body text-xs font-medium uppercase tracking-wide ${STATUS_CLASS[next.status]}`}
+              >
+                {STATUS_LABEL[next.status]}
+              </p>
+              <h3 className="mt-3 font-display text-lg leading-snug text-[var(--color-text)]">{next.title}</h3>
+              <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
+                {next.dueDate && formatDate(next.dueDate)}
+                {relativePhrase(next.daysUntilDue) ? ` · ${relativePhrase(next.daysUntilDue)}` : null}
+              </p>
+            </div>
+          )}
+
+          {needsCourseEnd && (
+            <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+              <p className="font-body text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+                Course ends
+              </p>
+              <h3 className="mt-3 font-display text-lg leading-snug text-[var(--color-text)]">
+                {formatDate(perturbedProfile.courseEndDate)}
+              </h3>
+              <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
+                {offsetMonths === 0 ? "Your enrolment end date" : `${offsetMonths > 0 ? "+" : ""}${offsetMonths} ${Math.abs(offsetMonths) === 1 ? "month" : "months"} from your enrolment end date`}
+              </p>
+            </div>
+          )}
+
+          <div className="rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5">
+            <p className="font-body text-xs font-medium uppercase tracking-wide text-[var(--color-muted)]">
+              This line
+            </p>
+            <h3 className="mt-3 font-display text-lg leading-snug text-[var(--color-text)]">
+              {dated.length} dated, {standing.length} standing
+            </h3>
+            <p className="mt-1 font-body text-sm text-[var(--color-muted)]">
+              Across {agencyCount} {agencyCount === 1 ? "agency" : "agencies"}
+            </p>
+          </div>
+        </div>
+      </aside>
       </main>
     </>
   );

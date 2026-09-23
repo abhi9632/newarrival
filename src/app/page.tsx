@@ -66,8 +66,15 @@ export default function Home() {
 
         <RideTheLine />
 
-        <section aria-labelledby="sources-heading" className="border-t border-[var(--color-border)] bg-[var(--color-surface)]">
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-20 md:grid-cols-12 md:gap-8 md:px-8 md:py-32">
+        <section aria-labelledby="sources-heading" className="relative border-t border-[var(--color-border)] bg-[var(--color-surface)]">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute left-6 top-20 hidden font-body text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] xl:block xl:left-10 2xl:left-16"
+            style={{ writingMode: "vertical-rl" }}
+          >
+            03 / Sources
+          </span>
+          <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-20 md:grid-cols-12 md:gap-8 md:px-8 md:py-32 2xl:max-w-[1440px]">
             <div data-reveal className="md:col-span-5">
               <p className="font-display text-[clamp(5rem,14vw,11rem)] leading-[0.8] tracking-[-0.05em] tabular-nums text-[var(--color-accent)]">
                 {rules.length}
@@ -107,8 +114,15 @@ export default function Home() {
           </div>
         </section>
 
-        <section aria-labelledby="close-heading" className="bg-[var(--color-text)] text-[var(--color-surface)]">
-          <div className="mx-auto w-full max-w-6xl px-6 pt-20 pb-10 md:px-8 md:pt-32">
+        <section aria-labelledby="close-heading" className="relative bg-[var(--color-text)] text-[var(--color-surface)]">
+          <span
+            aria-hidden="true"
+            className="pointer-events-none absolute right-6 top-20 hidden font-body text-xs uppercase tracking-[0.2em] text-[var(--color-surface)]/50 xl:block xl:right-10 2xl:right-16"
+            style={{ writingMode: "vertical-rl" }}
+          >
+            04 / Your line
+          </span>
+          <div className="mx-auto w-full max-w-6xl px-6 pt-20 pb-10 md:px-8 md:pt-32 2xl:max-w-[1440px]">
             <div data-reveal className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
               <h2 id="close-heading" className="max-w-[14ch] font-display text-[clamp(2.4rem,6vw,5rem)] leading-[0.98] tracking-[-0.035em]">
                 Your line starts the day you <span className="text-[var(--color-accent-on-ink)]">land.</span>
@@ -121,10 +135,13 @@ export default function Home() {
                 <span aria-hidden="true" className="nudge">→</span>
               </Link>
             </div>
-            <div aria-hidden="true" className="relative mt-16 h-3 md:mt-24">
-              <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 bg-[var(--color-surface)]/30" />
-              <span className="absolute left-0 top-0 h-3 w-3 rounded-full bg-[var(--color-accent-on-ink)]" />
-              <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-[var(--color-surface)]/50 bg-[var(--color-text)]" />
+            <div
+              aria-hidden="true"
+              className="relative mt-16 h-3 md:mt-24 xl:relative xl:left-1/2 xl:right-1/2 xl:-mx-[50vw] xl:w-screen xl:px-10 2xl:px-16"
+            >
+              <div className="absolute inset-x-0 top-1/2 h-0.5 -translate-y-1/2 bg-[var(--color-surface)]/30 xl:inset-x-10 2xl:inset-x-16" />
+              <span className="absolute left-0 top-0 h-3 w-3 rounded-full bg-[var(--color-accent-on-ink)] xl:left-10 2xl:left-16" />
+              <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-[var(--color-surface)]/50 bg-[var(--color-text)] xl:right-10 2xl:right-16" />
             </div>
             <footer className="mt-8 grid gap-4 md:grid-cols-12">
               <p className="font-display text-base md:col-span-3">NewArrival</p>

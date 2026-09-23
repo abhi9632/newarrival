@@ -231,7 +231,7 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
         onPointerDown={(event) => scrubTo(event.clientX)}
         onPointerLeave={endScrub}
         onPointerCancel={endScrub}
-        className="route fade-up relative mt-6 touch-pan-y select-none rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 shadow-[0_1px_0_var(--color-border),0_24px_60px_-40px_rgb(33_30_25/0.35)] md:mt-12 md:px-8"
+        className="route fade-up relative mt-6 touch-pan-y select-none border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 shadow-[0_1px_0_var(--color-border),0_24px_60px_-40px_rgb(33_30_25/0.35)] md:mt-12 md:px-8 rounded-[var(--radius-lg)] xl:relative xl:left-1/2 xl:right-1/2 xl:-mx-[50vw] xl:w-screen xl:rounded-none xl:border-x-0 xl:px-12 2xl:px-20"
         style={{ "--delay": "240ms" } as CSSProperties}
       >
         {/* The scrub layer covers exactly the dated track column, so pointer x maps onto the axis. */}

@@ -180,6 +180,20 @@ export function RideTheLine() {
       className="ride relative border-t border-[var(--color-border)]"
       style={{ "--stops": STOPS.length } as CSSProperties}
     >
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute left-6 top-20 z-10 hidden font-body text-xs uppercase tracking-[0.2em] text-[var(--color-muted)] xl:block xl:left-10 2xl:left-16"
+        style={{ writingMode: "vertical-rl" }}
+      >
+        02 / Ride
+      </span>
+      <span
+        aria-hidden="true"
+        className="pointer-events-none absolute right-6 top-20 z-10 hidden font-body text-xs uppercase tracking-[0.2em] tabular-nums text-[var(--color-muted)] xl:block xl:right-10 2xl:right-16"
+        style={{ writingMode: "vertical-rl" }}
+      >
+        Stop {String(active + 1).padStart(2, "0")} / {String(STOPS.length).padStart(2, "0")}
+      </span>
       <div ref={sceneRef} className="ride-scene sticky top-16 flex h-[calc(100svh-4rem)] flex-col justify-center overflow-hidden">
         <div className="mx-auto w-full max-w-6xl px-6 md:px-8">
           <div className="flex items-baseline justify-between gap-6">

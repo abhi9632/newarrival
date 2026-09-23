@@ -21,12 +21,12 @@ const MONTHS = [
   "July", "August", "September", "October", "November", "December",
 ];
 
-function formatDate(iso: string): string {
+export function formatDate(iso: string): string {
   const [year, month, day] = iso.split("-").map(Number);
   return `${MONTHS[month - 1]} ${day}, ${year}`;
 }
 
-function relativePhrase(daysUntilDue: number | null): string | null {
+export function relativePhrase(daysUntilDue: number | null): string | null {
   if (daysUntilDue === null) return null;
   const magnitude = Math.abs(daysUntilDue);
   const unit = magnitude === 1 ? "day" : "days";
