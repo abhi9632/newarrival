@@ -69,6 +69,17 @@ Detail list gaps still open: overscroll-behavior (no inner scrollers to apply it
 save confirmation (no save/submit action exists yet), optional sound toggle (not built), designed
 favicon/OG image (tracked in `HANDOFF.md`, not this pass's scope).
 
+**Post-pass fix (2026-09-23, same day):** re-shot the full 375/1280/1440/1920 set for `/` and
+`/timeline` and caught a real regression the first pass missed: the `/timeline` sidebar's Visa
+subclass, Citizenship and State fact switches truncated to "Stude...", "Skille...", "New ..." at
+1280 and 1920, because the facts section bumped back to two columns at `2xl` while the rail
+width stays capped by the container regardless of viewport. Fixed in `src/app/timeline/page.tsx`
+by keeping that section single-column from `xl` up with no `2xl` bump-back. Re-verified clean at
+all three widths post-fix. Also confirmed the large blank stretch below the landing "Ride Priya's
+line" scene in full-page captures is a screenshot-tool artifact (sticky scene renders at scrollY 0
+in a one-shot fullPage capture, not a real gap); a mid-scroll capture (`docs/gate/ride-scene-1440.png`)
+shows the scene pinning and updating correctly while scrolling.
+
 ## Pipeline state
 
 | Screen | Stage | Last skill run | Next | By |
