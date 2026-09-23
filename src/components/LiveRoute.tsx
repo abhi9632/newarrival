@@ -231,7 +231,7 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
         onPointerDown={(event) => scrubTo(event.clientX)}
         onPointerLeave={endScrub}
         onPointerCancel={endScrub}
-        className="route fade-up relative mt-6 touch-pan-y select-none border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 shadow-[0_1px_0_var(--color-border),0_24px_60px_-40px_rgb(33_30_25/0.35)] md:mt-12 md:px-8 rounded-[var(--radius-lg)] xl:relative xl:left-1/2 xl:right-1/2 xl:-mx-[50vw] xl:w-screen xl:rounded-none xl:border-x-0 xl:px-12 2xl:px-20"
+        className="route fade-up relative mt-6 touch-pan-y select-none rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 shadow-[0_1px_0_var(--color-border),0_24px_60px_-40px_rgb(33_30_25/0.35)] md:mt-12 md:px-8"
         style={{ "--delay": "240ms" } as CSSProperties}
       >
         {/* The scrub layer covers exactly the dated track column, so pointer x maps onto the axis. */}
@@ -260,8 +260,10 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
           <div aria-hidden="true" className="hidden md:block" />
           <div aria-hidden="true" className="relative h-7">
             <div className="route-axis absolute inset-x-0 bottom-0 h-2" />
+            {/* Arrival sits at the axis start, so this label is always left-anchored: it is
+                too close to the left edge for centering to ever stay on screen. */}
             <span
-              className="absolute bottom-3 -ml-1 font-display text-xs text-[var(--color-accent)] md:ml-0 md:-translate-x-1/2"
+              className="absolute bottom-3 left-0 font-display text-xs text-[var(--color-accent)]"
               style={{ left: `${ARRIVAL_T * 100}%` }}
             >
               Arrive {shortDate(ARRIVAL)}
@@ -338,9 +340,12 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
                     </span>
                   )}
                   {until && (
+                    // "Study conditions end <date>" runs long enough that right-anchoring it
+                    // (text ending at the point) clips past the left edge unless the point is
+                    // well clear of the start of the axis; below that, left-anchor instead.
                     <span
                       className={`route-fade route-knockout absolute top-6 hidden font-body text-xs text-[var(--color-accent)] md:block ${
-                        axisT(until) < 0.15 ? "pl-1" : "-translate-x-full pr-1"
+                        axisT(until) < 0.34 ? "pl-1" : "-translate-x-full pr-1"
                       }`}
                       style={{ left: `${axisT(until) * 100}%` }}
                     >

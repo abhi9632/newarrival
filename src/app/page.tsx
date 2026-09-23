@@ -33,7 +33,7 @@ export default function Home() {
     <>
       <SiteHeader current="home" />
       <main className="flex flex-col">
-        <div className="mx-auto w-full max-w-6xl px-6 pt-7 pb-20 md:px-8 md:pt-12 md:pb-28">
+        <div className="content-container pt-7 pb-20 md:pt-12 md:pb-28">
           <LiveRoute
             headline={
               <h1 className="font-display text-[clamp(2rem,5vw,4.25rem)] leading-[0.98] tracking-[-0.035em] text-[var(--color-text)]">
@@ -74,7 +74,7 @@ export default function Home() {
           >
             03 / Sources
           </span>
-          <div className="mx-auto grid w-full max-w-6xl gap-12 px-6 py-20 md:grid-cols-12 md:gap-8 md:px-8 md:py-32 2xl:max-w-[1440px]">
+          <div className="content-container grid gap-12 py-20 md:grid-cols-12 md:gap-8 md:py-32">
             <div data-reveal className="md:col-span-5">
               <p className="font-display text-[clamp(5rem,14vw,11rem)] leading-[0.8] tracking-[-0.05em] tabular-nums text-[var(--color-accent)]">
                 {rules.length}
@@ -122,7 +122,7 @@ export default function Home() {
           >
             04 / Your line
           </span>
-          <div className="mx-auto w-full max-w-6xl px-6 pt-20 pb-10 md:px-8 md:pt-32 2xl:max-w-[1440px]">
+          <div className="content-container pt-20 pb-10 md:pt-32">
             <div data-reveal className="flex flex-col gap-10 md:flex-row md:items-end md:justify-between">
               <h2 id="close-heading" className="max-w-[14ch] font-display text-[clamp(2.4rem,6vw,5rem)] leading-[0.98] tracking-[-0.035em]">
                 Your line starts the day you <span className="text-[var(--color-accent-on-ink)]">land.</span>
@@ -143,7 +143,7 @@ export default function Home() {
               <span className="absolute left-0 top-0 h-3 w-3 rounded-full bg-[var(--color-accent-on-ink)] xl:left-10 2xl:left-16" />
               <span className="absolute right-0 top-0 h-3 w-3 rounded-full border-2 border-[var(--color-surface)]/50 bg-[var(--color-text)] xl:right-10 2xl:right-16" />
             </div>
-            <footer className="mt-8 grid gap-4 md:grid-cols-12">
+            <footer className="mt-8 grid gap-4 pt-8 md:grid-cols-12">
               <p className="font-display text-base md:col-span-3">NewArrival</p>
               <p className="max-w-[80ch] font-body text-sm leading-relaxed text-[var(--color-surface)]/70 md:col-span-9">
                 NewArrival is not migration advice and not legal advice. It shows published rules and computes dates from them. Only a registered migration agent or an Australian legal practitioner can advise on your individual circumstances.
