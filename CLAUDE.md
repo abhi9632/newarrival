@@ -94,7 +94,7 @@ Sequential after the authority, never loaded alongside it. Full detail and the r
 the `emilkowalski/skills` companions: `rules/frontend-design.md`.
 
 After the polish pass, run `rules/craft-and-delight.md`: haptics, one concept-born
-easter egg, no dead gutters, the detail list. None of the design skills enforce these
+easter egg, contained layout with deliberate full bleed, the detail list. None of the design skills enforce these
 on their own.
 
 V1x and later: read `design-system/README.md` and reinforce the Signature. You do not
