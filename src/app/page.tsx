@@ -36,7 +36,7 @@ export default function Home() {
         <div className="mx-auto w-full max-w-6xl px-6 pt-7 pb-20 md:px-8 md:pt-12 md:pb-28">
           <LiveRoute
             headline={
-              <h1 className="font-display text-[clamp(2rem,6.6vw,5.25rem)] leading-[0.98] tracking-[-0.035em] text-[var(--color-text)]">
+              <h1 className="font-display text-[clamp(2rem,5vw,4.25rem)] leading-[0.98] tracking-[-0.035em] text-[var(--color-text)]">
                 {HEADLINE.map((line, i) => (
                   <span key={line} className="mask-line" style={{ "--i": i } as CSSProperties}>
                     <span>

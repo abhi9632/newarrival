@@ -20,7 +20,7 @@ const AXIS_START = "2026-09-01";
 const AXIS_END = "2028-07-01";
 
 // Work limits are visa conditions (8105), so they ride the visa line.
-const MODULES: { ids: Obligation["module"][]; label: string }[] = [
+export const ROUTE_LANES: { ids: Obligation["module"][]; label: string }[] = [
   { ids: ["visa", "work"], label: "Visa" },
   { ids: ["health"], label: "Health" },
   { ids: ["tax"], label: "Tax" },
@@ -34,7 +34,7 @@ function shortDate(iso: string): string {
   return `${day} ${MONTHS[month - 1]} ${year}`;
 }
 
-function axisT(iso: string): number {
+export function axisT(iso: string): number {
   const start = toUtcDays(AXIS_START);
   return (toUtcDays(iso) - start) / (toUtcDays(AXIS_END) - start);
 }
@@ -150,12 +150,14 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
 
   return (
     <>
-      {headline}
-      <div className="mt-4 grid gap-5 md:mt-10 md:grid-cols-12 md:items-end md:gap-8">
-        <div className="md:col-span-4">{lede}</div>
+      <div className="grid gap-5 md:grid-cols-12 md:items-end md:gap-8">
+        <div className="md:col-span-7">
+          {headline}
+          <div className="mt-4 md:mt-6">{lede}</div>
+        </div>
 
         <div
-          className="fade-up flex flex-col gap-2.5 md:col-span-8 md:grid md:grid-cols-3 md:gap-4"
+          className="fade-up flex flex-col gap-2.5 md:col-span-5 md:gap-3"
           style={{ "--delay": "420ms" } as CSSProperties}
         >
           {FACT_ROWS.map((row) => {
@@ -163,9 +165,9 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
             return (
               <fieldset
                 key={row.key}
-                className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-[4.25rem_1fr] max-[359px]:gap-2 md:grid-cols-1 md:gap-2"
+                className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-[4.25rem_1fr] max-[359px]:gap-2 md:grid-cols-[6.5rem_1fr]"
               >
-                <legend className="float-left font-body text-sm text-[var(--color-muted)] md:mb-2">{row.legend}</legend>
+                <legend className="float-left font-body text-sm text-[var(--color-muted)]">{row.legend}</legend>
                 <div className="relative grid grid-cols-2 rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] p-1">
                   {/* One thumb slides between the two options instead of two fills swapping. */}
                   <span
@@ -192,6 +194,14 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
               </fieldset>
             );
           })}
+          {/* The fourth fact. Fixed on this diagram so every station keeps one position. */}
+          <div className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-[4.25rem_1fr] max-[359px]:gap-2 md:grid-cols-[6.5rem_1fr]">
+            <span className="font-body text-sm text-[var(--color-muted)]">Arrived</span>
+            <span className="flex items-center justify-center gap-2 rounded-full border border-dashed border-[var(--color-border)] px-3 py-2 font-body text-sm font-medium tabular-nums text-[var(--color-text)]">
+              <span aria-hidden="true" className="h-2 w-2 rounded-full bg-[var(--color-accent)]" />
+              {shortDate(ARRIVAL)}
+            </span>
+          </div>
         </div>
       </div>
 
@@ -213,7 +223,7 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
           {scrub !== null && (
             <div className="route-scrub absolute inset-y-0 w-px bg-[var(--color-accent)]" style={{ left: `${scrub * 100}%` }}>
               <span
-                className={`absolute -top-1 whitespace-nowrap rounded-full bg-[var(--color-text)] px-2.5 py-1 font-display text-xs tabular-nums text-[var(--color-surface)] ${
+                className={`absolute -top-1 z-20 whitespace-nowrap rounded-full bg-[var(--color-text)] px-2.5 py-1 font-display text-xs tabular-nums text-[var(--color-surface)] ${
                   scrub > 0.8 ? "right-2" : "left-2"
                 }`}
               >
@@ -251,7 +261,7 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
         </div>
 
         <ol className="mt-2 flex flex-col">
-          {MODULES.map((module, lane) => {
+          {ROUTE_LANES.map((module, lane) => {
             const inLane = obligations.filter((o) => module.ids.includes(o.module));
             const standing = inLane.filter((o) => !o.dueDate);
             const until = inLane
@@ -302,14 +312,14 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
                   {wholeStay > 0 && (
                     <span
                       key={`${module.label}-${wholeStay}`}
-                      className="route-fade absolute right-0 top-5 hidden font-body text-xs text-[var(--color-accent)] md:block"
+                      className="route-fade route-knockout absolute right-0 top-5 hidden font-body text-xs text-[var(--color-accent)] md:block"
                     >
                       {wholeStay} {wholeStay === 1 ? "condition" : "conditions"} for the whole stay
                     </span>
                   )}
                   {until && (
                     <span
-                      className="route-fade absolute top-6 hidden -translate-x-full pr-1 font-body text-xs text-[var(--color-accent)] md:block"
+                      className="route-fade route-knockout absolute top-6 hidden -translate-x-full pr-1 font-body text-xs text-[var(--color-accent)] md:block"
                       style={{ left: `${axisT(until) * 100}%` }}
                     >
                       Study conditions end {shortDate(until)}
@@ -334,10 +344,10 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
                             alignEnd ? "right-0 text-right" : "left-0 -ml-1.5"
                           }`}
                         >
-                          <span className="block font-display text-sm tabular-nums text-[var(--color-text)]">
+                          <span className={`route-knockout block w-fit font-display text-sm tabular-nums text-[var(--color-text)] ${alignEnd ? "ml-auto" : ""}`}>
                             {shortDate(station.dueDate!)}
                           </span>
-                          <span className="block font-body text-xs leading-snug text-[var(--color-muted)]">
+                          <span className={`route-knockout block w-fit font-body text-xs leading-snug text-[var(--color-muted)] ${alignEnd ? "ml-auto" : ""}`}>
                             {station.title}
                           </span>
                         </span>

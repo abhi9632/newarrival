@@ -3,8 +3,9 @@
 import * as React from "react";
 import type { CSSProperties } from "react";
 import { rules } from "@/lib/rules";
-import { derive, toUtcDays } from "@/lib/derive";
+import { derive, toUtcDays, type Obligation } from "@/lib/derive";
 import type { Profile } from "@/lib/profile";
+import { ROUTE_LANES, axisT } from "@/components/LiveRoute";
 
 // Priya's first two years, ridden by scroll. Scroll is time: each stop gets an equal share
 // of the scroll, holds while its card is read, then travels to the next date.
@@ -30,18 +31,34 @@ function firstSentence(text: string): string {
 
 interface Stop {
   date: string;
+  // Which lane of the route the stop sits on; arrival starts every lane.
+  lane: string | null;
   title: string;
   agency: string;
   body: string;
   source: { href: string; label: string } | null;
 }
 
+const laneOf = (module: Obligation["module"]) =>
+  ROUTE_LANES.find((lane) => lane.ids.includes(module))?.label ?? null;
+
+const ALL = derive(rules, PRIYA, PRIYA.arrivalDate);
+
+// The same four lanes the hero draws, reduced to what the ride needs: the study span and
+// whether anything holds for the whole stay.
+const LANES = ROUTE_LANES.map((lane) => {
+  const inLane = ALL.filter((o) => lane.ids.includes(o.module));
+  const until = inLane.map((o) => o.activeUntil).filter((d): d is string => d !== null).sort().pop() ?? null;
+  return { label: lane.label, until, wholeStay: inLane.some((o) => !o.dueDate && !o.activeUntil) };
+});
+
 const STOPS: Stop[] = (() => {
-  const all = derive(rules, PRIYA, PRIYA.arrivalDate);
+  const all = ALL;
   const dated: Stop[] = all
     .filter((o) => o.dueDate)
     .map((o) => ({
       date: o.dueDate!,
+      lane: laneOf(o.module),
       title: o.title,
       agency: o.agency,
       body: firstSentence(o.detail),
@@ -51,6 +68,7 @@ const STOPS: Stop[] = (() => {
   const stops: Stop[] = [
     {
       date: PRIYA.arrivalDate,
+      lane: null,
       title: "Arrival day in Victoria",
       agency: "Every clock starts here",
       body: `Student visa 500, Indian citizen, Victoria. From these four facts, ${all.length} obligations across ${
@@ -63,6 +81,7 @@ const STOPS: Stop[] = (() => {
   if (lifted.length > 0)
     stops.push({
       date: PRIYA.courseEndDate,
+      lane: laneOf(lifted[0].module),
       title: "Course ends, study conditions lift",
       agency: lifted[0].agency,
       body: `${lifted.map((o) => o.title).join(" and ")}: both run until the course ends, then fall away.`,
@@ -71,33 +90,26 @@ const STOPS: Stop[] = (() => {
   return stops.sort((a, b) => a.date.localeCompare(b.date));
 })();
 
-const START = toUtcDays(STOPS[0].date);
-const SPAN = toUtcDays(STOPS[STOPS.length - 1].date) - START;
-const STOP_T = STOPS.map((s) => (toUtcDays(s.date) - START) / SPAN);
+const STOP_DAYS = STOPS.map((stop) => toUtcDays(stop.date));
+const ARRIVAL_X = axisT(PRIYA.arrivalDate);
 
-// Dates cluster early on a true time axis, so a tag only shows when it clears the last one shown.
-const TAGGED = STOP_T.reduce<number[]>(
-  (shown, t, i) => (i === 0 || t - STOP_T[shown[shown.length - 1]] > 0.12 ? [...shown, i] : shown),
-  []
-);
-
-// Scroll share per stop: hold for the first part, travel for the rest.
+// Scroll share per stop: hold for the first part (time to read the card), then travel.
 const HOLD = 0.45;
 const ease = (x: number) => (x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2);
 
-function timeAt(progress: number): { t: number; index: number } {
+function timeAt(progress: number): { days: number; index: number } {
   const segments = STOPS.length - 1;
   const scaled = Math.min(progress, 0.9999) * segments;
   const index = Math.floor(scaled);
   const local = scaled - index;
   const travel = local <= HOLD ? 0 : ease((local - HOLD) / (1 - HOLD));
-  const t = STOP_T[index] + (STOP_T[index + 1] - STOP_T[index]) * travel;
-  return { t, index: travel >= 1 ? index + 1 : index };
+  const days = STOP_DAYS[index] + (STOP_DAYS[index + 1] - STOP_DAYS[index]) * travel;
+  // The card switches halfway through the travel, so the last stop is reachable at the end.
+  return { days, index: travel >= 0.5 ? index + 1 : index };
 }
 
-function dateAtT(t: number): string {
-  const days = Math.round(START + t * SPAN);
-  return shortDate(new Date(days * 86400000).toISOString().slice(0, 10));
+function isoOf(days: number): string {
+  return new Date(Math.round(days) * 86400000).toISOString().slice(0, 10);
 }
 
 export function RideTheLine() {
@@ -105,7 +117,7 @@ export function RideTheLine() {
   const sceneRef = React.useRef<HTMLDivElement>(null);
   const dateRef = React.useRef<HTMLSpanElement>(null);
   const [active, setActive] = React.useState(0);
-  const [passedT, setPassedT] = React.useState(0);
+  const [passedDays, setPassedDays] = React.useState(STOP_DAYS[0]);
 
   React.useEffect(() => {
     const section = sectionRef.current;
@@ -126,18 +138,19 @@ export function RideTheLine() {
     const update = () => {
       frame = 0;
       const progress = Math.min(1, Math.max(0, (window.scrollY - top) / range));
-      const { t, index } = timeAt(progress);
-      scene.style.setProperty("--p", t.toFixed(4));
-      if (dateRef.current) dateRef.current.textContent = dateAtT(t);
+      const { days, index } = timeAt(progress);
+      const iso = isoOf(days);
+      scene.style.setProperty("--p", axisT(iso).toFixed(4));
+      if (dateRef.current) dateRef.current.textContent = shortDate(iso);
       if (index !== lastIndex) {
         lastIndex = index;
         setActive(index);
       }
       // Only re-render the stops when the head crosses one.
-      const crossed = STOP_T.filter((s) => s <= t + 1e-6).length;
+      const crossed = STOP_DAYS.filter((d) => d <= days + 0.5).length;
       if (crossed !== lastCrossed) {
         lastCrossed = crossed;
-        setPassedT(t);
+        setPassedDays(days);
       }
     };
     const onScroll = () => {
@@ -182,31 +195,53 @@ export function RideTheLine() {
             <span ref={dateRef}>{shortDate(STOPS[0].date)}</span>
           </p>
 
-          <div aria-hidden="true" className="ride-track relative mt-8 h-16 md:mt-12">
-            <div className="absolute inset-x-0 top-3 h-0.5 bg-[var(--color-text)]" />
-            <div className="ride-fill absolute inset-x-0 top-[9px] h-2 rounded-full bg-[var(--color-accent)]" />
-            <div className="ride-head pointer-events-none absolute inset-x-0 top-3">
-              <span className="absolute left-0 block h-5 w-5 -translate-x-1/2 -translate-y-1/2 rounded-full bg-[var(--color-accent)] shadow-[0_0_0_6px_rgb(181_70_31/0.18)]" />
-            </div>
-            {STOPS.map((stop, i) => (
-              <div
-                key={stop.date + stop.title}
-                data-passed={STOP_T[i] <= passedT + 1e-6}
-                className="ride-stop absolute top-0"
-                style={{ left: `${STOP_T[i] * 100}%` }}
-              >
-                <span className="ride-dot absolute left-0 top-3 block h-3.5 w-3.5 -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--color-text)] bg-[var(--color-bg)]" />
-                {TAGGED.includes(i) && (
-                  <span
-                    className={`ride-tag absolute top-7 hidden whitespace-nowrap font-display text-xs tabular-nums text-[var(--color-muted)] md:block ${
-                      i === STOPS.length - 1 ? "right-0 translate-x-2" : i === 0 ? "-left-2" : "-translate-x-1/2"
-                    }`}
-                  >
-                    {shortDate(stop.date)}
-                  </span>
-                )}
-              </div>
+          {/* The hero's four lanes on the hero's own axis, with scroll as the scrubber. */}
+          <div
+            aria-hidden="true"
+            className="ride-track mt-6 grid grid-cols-[4.5rem_1fr] gap-x-3 md:mt-10 md:grid-cols-[7rem_1fr] md:gap-x-6"
+            style={{ "--a": ARRIVAL_X } as CSSProperties}
+          >
+            {LANES.map((lane) => (
+              <React.Fragment key={lane.label}>
+                <span className="self-center py-2 font-display text-sm text-[var(--color-muted)] md:py-2.5 md:text-base">{lane.label}</span>
+                <div className="relative h-8 md:h-10">
+                  <div className="absolute inset-x-0 top-1/2 h-px -translate-y-1/2 bg-[var(--color-text)]/70" />
+                  {lane.wholeStay && (
+                    <div
+                      className="absolute right-0 top-1/2 h-[3px] -translate-y-1/2 rounded-full bg-[var(--color-accent)]/25"
+                      style={{ left: `${ARRIVAL_X * 100}%` }}
+                    />
+                  )}
+                  {lane.until && (
+                    <div
+                      className="absolute top-1/2 h-[5px] -translate-y-1/2 rounded-full bg-[var(--color-accent)]/35"
+                      style={{ left: `${ARRIVAL_X * 100}%`, width: `${(axisT(lane.until) - ARRIVAL_X) * 100}%` }}
+                    />
+                  )}
+                  <div className="ride-fill absolute right-0 top-1/2 h-[5px] -translate-y-1/2 rounded-full bg-[var(--color-accent)]" style={{ left: `${ARRIVAL_X * 100}%` }} />
+                  {STOPS.map((stop, i) =>
+                    stop.lane === lane.label || stop.lane === null ? (
+                      <span
+                        key={stop.date + stop.title}
+                        data-passed={STOP_DAYS[i] <= passedDays + 0.5}
+                        className={`ride-stop ride-dot absolute top-1/2 block -translate-x-1/2 -translate-y-1/2 rounded-full border-2 border-[var(--color-text)] bg-[var(--color-bg)] ${
+                          stop.lane === null ? "h-2.5 w-2.5" : "h-3.5 w-3.5"
+                        }`}
+                        style={{ left: `${axisT(stop.date) * 100}%` }}
+                      />
+                    ) : null
+                  )}
+                </div>
+              </React.Fragment>
             ))}
+            <span />
+            <div className="relative h-0">
+              {/* One hairline crosses every lane at the current date. */}
+              <div className="ride-head pointer-events-none absolute inset-x-0 bottom-0 h-[calc(4*2rem)] md:h-[calc(4*2.5rem)]">
+                <span className="absolute inset-y-0 left-0 w-px bg-[var(--color-accent)]" />
+                <span className="absolute -top-1.5 left-0 block h-3 w-3 -translate-x-1/2 rounded-full bg-[var(--color-accent)] shadow-[0_0_0_5px_rgb(181_70_31/0.18)]" />
+              </div>
+            </div>
           </div>
 
           <ol className="ride-cards mt-6 grid md:mt-10">

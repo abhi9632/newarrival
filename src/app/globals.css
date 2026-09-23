@@ -334,6 +334,13 @@ a:focus-visible .nudge-up {
   opacity: 1;
 }
 
+.route-knockout {
+  position: relative;
+  z-index: 1;
+  background: var(--color-surface);
+  box-shadow: 0 0 0 3px var(--color-surface);
+}
+
 .route-station .route-dot {
   transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out),
     scale var(--dur-fast) var(--ease-out);
@@ -350,28 +357,21 @@ a:focus-visible .nudge-up {
   transform: translateX(calc(var(--p, 0) * 100%));
 }
 
+/* Lanes fill from arrival (--a) to the head (--p), both on the hero's axis. */
 .ride-fill {
   transform-origin: left center;
-  transform: scaleX(var(--p, 0));
+  transform: scaleX(clamp(0, calc((var(--p, 0) - var(--a, 0)) / (1 - var(--a, 0))), 1));
 }
 
-.ride-stop .ride-dot {
+.ride-dot {
   transition: background-color 240ms var(--ease-out), scale 240ms var(--ease-out),
     border-color 240ms var(--ease-out);
 }
 
-.ride-stop[data-passed="true"] .ride-dot {
+.ride-dot[data-passed="true"] {
   background: var(--color-accent);
   border-color: var(--color-accent);
   scale: 1.3;
-}
-
-.ride-stop .ride-tag {
-  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
-}
-
-.ride-stop[data-passed="false"] .ride-tag {
-  opacity: 0.35;
 }
 
 .ride-card {
@@ -390,6 +390,27 @@ a:focus-visible .nudge-up {
 
 .ride {
   height: calc(var(--stops) * 85svh + 100svh);
+}
+
+/* /timeline rail: fills as the list scrolls past. Unsupported browsers show it full. */
+.rail-fill {
+  transform-origin: top center;
+}
+
+@supports (animation-timeline: view()) {
+  @media (prefers-reduced-motion: no-preference) {
+    .rail-fill {
+      animation: grow-y linear both;
+      animation-timeline: view();
+      animation-range: entry 20% exit 60%;
+    }
+  }
+}
+
+@keyframes grow-y {
+  from {
+    transform: scaleY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

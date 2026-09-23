@@ -26,8 +26,9 @@ function todayIso(): string {
   return new Date().toLocaleDateString("en-CA");
 }
 
+// Native date input kept for its picker and accessibility, dressed in the switch's chip language.
 const CONTROL_CLASS =
-  "affordance mt-1 w-full rounded-[var(--radius-sm)] border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-2 font-body text-sm text-[var(--color-text)] hover:border-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]";
+  "affordance mt-1 w-full rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-[7px] font-body text-sm font-medium tabular-nums text-[var(--color-text)] hover:border-[var(--color-text)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] [&::-webkit-calendar-picker-indicator]:cursor-pointer [&::-webkit-calendar-picker-indicator]:opacity-50 hover:[&::-webkit-calendar-picker-indicator]:opacity-100";
 const LABEL_CLASS = "font-body text-sm font-medium text-[var(--color-text)]";
 
 // Same two-way switch as the landing page: every fact in scope has exactly two values.
@@ -111,6 +112,7 @@ export default function TimelinePage() {
   const needsCourseEnd = baseline.some((obligation) => obligation.anchor === "courseEnd");
   const dated = obligations.filter((obligation) => obligation.dueDate !== null);
   const standing = obligations.filter((obligation) => obligation.dueDate === null);
+  const agencyCount = new Set(obligations.map((obligation) => obligation.agency)).size;
   const urgentCount = obligations.filter(
     (obligation) => obligation.status === "overdue" || obligation.status === "due-soon"
   ).length;
@@ -162,11 +164,31 @@ export default function TimelinePage() {
           Four facts in, every dated obligation out, each one linked to the rule it comes from.
         </p>
 
-        <section aria-labelledby="examples-heading" className="mt-8">
-          <h2 id="examples-heading" className={LABEL_CLASS}>
+        <dl
+          aria-live="polite"
+          className="fade-up mt-8 grid grid-cols-3 border-y border-[var(--color-border)] md:mt-10"
+          style={{ "--delay": "300ms" } as React.CSSProperties}
+        >
+          {[
+            { label: "Obligations", value: obligations.length },
+            { label: "With a date", value: dated.length },
+            { label: "Agencies", value: agencyCount },
+          ].map((stat) => (
+            <div key={stat.label} className="border-l border-[var(--color-border)] py-4 pl-4 first:border-l-0 first:pl-0 md:py-5">
+              <dt className="font-body text-xs text-[var(--color-muted)] md:text-sm">{stat.label}</dt>
+              <dd className="mt-1 font-display text-4xl leading-none tracking-tight tabular-nums text-[var(--color-text)] md:text-6xl">
+                {stat.value}
+              </dd>
+            </div>
+          ))}
+        </dl>
+
+        <div className="mt-8 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] p-5 md:p-6">
+        <section aria-labelledby="examples-heading" className="flex flex-col gap-3 md:flex-row md:items-center md:gap-4">
+          <h2 id="examples-heading" className="font-body text-sm text-[var(--color-muted)]">
             Load a worked example
           </h2>
-          <div className="mt-3 flex flex-wrap gap-3">
+          <div className="flex flex-wrap gap-2">
             {EXAMPLE_PROFILES.map((example) => {
               const fields = Object.keys(example.profile) as (keyof Profile)[];
               const isLoaded = fields.every((field) => example.profile[field] === profile[field]);
@@ -177,7 +199,7 @@ export default function TimelinePage() {
                   data-profile-preset={example.id}
                   aria-pressed={isLoaded}
                   onClick={() => loadPreset(example.profile)}
-                  className="affordance rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-4 py-2 font-body text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-text)] aria-pressed:border-[var(--color-accent)] aria-pressed:bg-[var(--color-accent)] aria-pressed:text-[var(--color-surface)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
+                  className="affordance rounded-full border border-[var(--color-border)] bg-[var(--color-bg)] px-4 py-2 font-body text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-text)] aria-pressed:border-[var(--color-accent)] aria-pressed:bg-[var(--color-accent)] aria-pressed:text-[var(--color-surface)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)]"
                 >
                   {example.label}
                 </button>
@@ -186,7 +208,7 @@ export default function TimelinePage() {
           </div>
         </section>
 
-        <section aria-labelledby="facts-heading" className="mt-8 grid gap-4 sm:grid-cols-2">
+        <section aria-labelledby="facts-heading" className="mt-5 grid gap-4 border-t border-[var(--color-border)] pt-5 sm:grid-cols-2 md:grid-cols-3">
           <h2 id="facts-heading" className="sr-only">
             Your four facts
           </h2>
@@ -243,6 +265,7 @@ export default function TimelinePage() {
             </div>
           )}
         </section>
+        </div>
 
         {needsCourseEnd && (
           <WhatIfRail
@@ -261,7 +284,9 @@ export default function TimelinePage() {
           <p className="mt-2 font-body text-sm text-[var(--color-muted)]">
             {urgentCount} of {obligations.length} obligations are overdue or due soon.
           </p>
-          <ol className="mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-accent)] pl-6">
+          <ol className="relative mt-6 flex flex-col gap-6 border-l-2 border-[var(--color-border)] pl-6">
+            {/* The rail fills in terracotta as the reader travels down it. */}
+            <span aria-hidden="true" className="rail-fill absolute -left-0.5 top-0 h-full w-0.5 bg-[var(--color-accent)]" />
             {dated.map((obligation, index) => (
               <li key={obligation.id} className="relative">
                 <span
