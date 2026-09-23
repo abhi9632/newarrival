@@ -2,7 +2,7 @@
 
 Loaded at D3 (craft + motion), after `emil-design-eng`, and again at the D4 gate. The
 Awwwards floor makes a screen look award-level; this file makes it *feel* hand-made.
-Three hard requirements (haptics, one easter egg, no dead gutters) and a detail list.
+Three hard requirements (haptics, one easter egg, contained layout with deliberate full bleed) and a detail list.
 None of the design skills enforce these on their own: not taste, not awwwards, not Emil.
 That is why they live here.
 
@@ -62,49 +62,54 @@ It must grow out of the concept, not be bolted on. Reference points from past wo
 - Record it in the Art direction block (`Easter egg:` trigger, reward, why it fits) and
   in the demo script, so the presenter can land it on stage.
 
-## 3. No dead gutters -- the edges of the screen are part of the design
+## 3. Contained by default, full bleed on purpose
 
-The most reliable AI-slop tell: one centred `max-w-3xl mx-auto` column on a 1440+ screen,
-with hundreds of pixels of flat background on both sides and nothing living there. It
-reads as a template at a glance. Readable line length is a rule for **paragraphs**, not
-for the **page**.
+How Apple and Wise lay out a page: one consistent content container with calm, even
+margins, and a few chosen sections that run edge to edge. The margins are not the
+problem; they give the page rhythm and keep data readable. The two failures are opposites:
 
-Where gutters come from: `design-taste-frontend` tells builders to contain every page in
-`max-w-7xl mx-auto` (or 1400px). At 1920 that alone leaves about 260px of nothing each
-side, and a `max-w-3xl` section inside it leaves far more. This rule wins over that
-default: the container holds text grids only; visuals, bands and the signature break out
-of it to the viewport edge.
+- **The narrow-column tell (AI slop):** the whole page is one `max-w-2xl`/`max-w-3xl`
+  column, every section the same width, same background, centred text, so at 1440+ it
+  reads as a blog template floating in nothing.
+- **The stretch-everything tell (over-correction, rejected on mock_3):** a timeline, lane
+  diagram, table or card list stretched across a 1920 viewport. Data gets sparse, labels
+  drift far from what they label, and the eye has to travel the whole screen. It looks
+  unfinished, not bold.
 
-At 1440 and 1920, every section uses the width on purpose. Pick per section:
-- **Full bleed**: the signature, imagery, a diagram or a colour band runs edge to edge.
-- **Asymmetric grid**: a 12-column grid at full width; text holds 5 to 6 columns, the
-  visual or the product takes the rest. Offsets beat centring.
-- **Useful rails**: the margins carry something real: a section index or progress
-  ("02 / 05"), a sticky table of contents, running metadata (time, coordinates, the
-  live value of the signature), a vertical label, margin notes.
-- **Bleed off the edge**: a marquee or horizontal scroller that runs past the viewport,
-  saying there is more.
+**The rule:**
+1. **One container** for content, about 1200 to 1320px (`--container`), same edges on every
+   section so the page has a spine. Inner grids use its full width (12 columns); a
+   paragraph still caps at about 65ch inside it.
+2. **Backgrounds bleed, content does not.** A section band (colour, ink, tint) runs edge to
+   edge while its content sits in the container. This is most of what makes Apple pages
+   feel wide.
+3. **Full-bleed content is reserved** for 1 to 3 sections that earn it: the hero image or
+   signature scene, large photography or product shots, a marquee or horizontal
+   scroller that runs off the edge, the closing band. Never data: timelines, diagrams,
+   tables, lane charts, forms and card lists stay in the container.
+4. **Vary width between sections**, not the container itself: a contained split, then a
+   full-bleed image band, then a contained index. At least one full-bleed moment and at
+   least one tinted band per landing, so the page is not one width top to bottom.
+5. **Rails are optional**: on long pages the margins may carry real content (section
+   index, sticky TOC, running metadata). Never filler.
 
-A centred reading column is allowed on long-form text only when the rails carry
-something (progress, TOC, notes). A background colour alone does not count as using the
-width.
-
-**Finder** (run with Playwright `browser_evaluate` at 1920 wide; the screenshot is the
-judge, this lists suspects):
+**Finder** (Playwright `browser_evaluate` at 1440 wide; the screenshot judges, this lists
+suspects):
 
 ```js
 [...document.querySelectorAll('main > *, footer')].map(s => {
   let l = innerWidth, r = 0;
-  s.querySelectorAll('*').forEach(e => { const b = e.getBoundingClientRect();
-    if (b.width && b.height && b.width < innerWidth * 0.98) { l = Math.min(l, b.left); r = Math.max(r, b.right); } });
-  return { el: s.id || s.tagName, leftGap: Math.round(l / innerWidth * 100), rightGap: Math.round((innerWidth - r) / innerWidth * 100) };
-}).filter(x => x.leftGap + x.rightGap > 20)
+  s.querySelectorAll('p,h1,h2,h3,li,svg,img,figure,table,canvas,video').forEach(e => { const b = e.getBoundingClientRect();
+    if (b.width && b.height) { l = Math.min(l, b.left); r = Math.max(r, b.right); } });
+  const span = Math.round((r - l) / innerWidth * 100);
+  return { el: s.id || s.tagName, span, bleedBg: getComputedStyle(s).backgroundColor !== getComputedStyle(document.body).backgroundColor };
+}).filter(x => x.span < 50 || x.span > 96)
 ```
 
-Any section listed needs a full-bleed element, a rail, or an asymmetric layout. The threshold
-(more than 20% of the width empty across both sides) catches a bare `max-w-7xl` at 1920. The
-finder judges a section by the union of its children, so one full-bleed child clears the
-whole section; the screenshot still has to show the text block is not floating.
+`span < 50` is the narrow-column tell: widen that section's grid to the container. `span >
+96` is content running edge to edge: fine for a hero image, scene, marquee or closing
+band; anything else (data, text, cards) goes back in the container. Also look at the
+unfiltered list: if every section has the same span and no `bleedBg`, the page has no rhythm.
 
 ## 4. The detail list -- the things nobody asks for and everybody feels
 
@@ -127,5 +132,5 @@ Check each on the judge-facing screens. Most are one line of CSS.
 
 ## Gate evidence (add to the D4 log line)
 
-`haptic map: <n> events | egg: <trigger> | gutters: finder clean at 1440 + 1920 | details: 10/10`
+`haptic map: <n> events | egg: <trigger> | layout: finder clean at 1440, bleed sections named | details: 10/10`
 plus 1440 and 1920 screenshots of the landing next to the 375 and 1280 ones.

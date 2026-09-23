@@ -168,16 +168,17 @@ The kit classes are in `design-system/motion-kit.css`; the scene driver is
 7. **It feels hand-made.** A haptic map on touch (`design-system/components/haptics.ts`),
    one easter egg that grows out of the concept, and the detail list, all per
    `rules/craft-and-delight.md`.
-8. **No dead gutters.** At 1440 and 1920 no section is a lone centred column with empty
-   background either side: full bleed, an asymmetric grid, or rails that carry real
-   content. Finder snippet in `rules/craft-and-delight.md`.
+8. **Contained by default, full bleed on purpose.** One content container on every
+   section, backgrounds bleed edge to edge, and only 1 to 3 sections (hero scene, imagery,
+   marquee, closing band) run content full width. Data never stretches across the
+   viewport; no page is one narrow column. Finder in `rules/craft-and-delight.md`.
 
 Gate evidence for the floor (record in the gate log, measured, never eyeballed):
 no horizontal overflow at 320, 375, 1280; the signature whole above the fold at 1280 and
 started above it at 375; `prefers-reduced-motion` emulated gives zero running animations
 and all scene beats visible; console clean; the scene's last beat reachable at the end of
 its scroll; 375 AND 1280 captures of every route, inner pages included; 1440 and 1920
-captures of the landing with the gutter finder clean; the craft-and-delight log line.
+captures of the landing with the layout finder clean; the craft-and-delight log line.
 
 The liveliness bar that preceded this (signature in 3s, hero as thesis, visual world
 beyond type, choreographed entrances, varied sections) is folded into items 1, 2 and 6.

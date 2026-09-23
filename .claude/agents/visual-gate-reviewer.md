@@ -34,11 +34,14 @@ Then answer in writing, plainly, no hedging:
    type (no live product, illustration, data drawing or imagery). Static
    screenshots cannot show motion; judge whether the Signature is present and
    legible as a thing that moves or responds, not whether it animates.
-4. Wide screens (1440 or 1920 capture, landing only): is any section a lone
-   centred column with empty background on both sides? Fail it: that is the
-   template look. The edges must carry full-bleed work, an asymmetric grid, or
-   rails with real content (`rules/craft-and-delight.md` section 3). If no wide
-   capture exists, ask for one instead of passing.
+4. Wide screens (1440 or 1920 capture): fail either extreme
+   (`rules/craft-and-delight.md` section 3). A page that is one narrow column
+   floating in empty background is the template look. Data (timelines, lane
+   diagrams, tables, card lists) stretched edge to edge is the over-correction:
+   sparse, labels far from what they label. Pass needs one content container,
+   with full bleed reserved for hero scene, imagery, marquee or closing band.
+   Also fail any text clipped by the viewport edge. If no wide capture exists,
+   ask for one instead of passing.
 5. Does the Art direction block name a Haptic map and an Easter egg that come
    from the concept? A missing one, or confetti, is a FAIL routed to D3.
 
