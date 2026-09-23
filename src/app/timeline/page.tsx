@@ -227,7 +227,7 @@ export default function TimelinePage() {
           </div>
         </section>
 
-        <section aria-labelledby="facts-heading" className="mt-5 grid gap-4 border-t border-[var(--color-border)] pt-5 sm:grid-cols-2">
+        <section aria-labelledby="facts-heading" className="mt-5 grid gap-4 border-t border-[var(--color-border)] pt-5 sm:grid-cols-2 xl:grid-cols-1">
           <h2 id="facts-heading" className="sr-only">
             Your four facts
           </h2>
