@@ -11,6 +11,8 @@ import {
 } from "@/lib/profile";
 import { derive, toUtcDays, type Obligation } from "@/lib/derive";
 import { diffObligations } from "@/lib/perturb";
+import { haptic } from "@/lib/haptics";
+import { pressPulse } from "@/lib/pressPulse";
 
 // The landing diagram is Priya's arrival with three switchable facts. Arrival and course
 // end stay fixed so every station keeps one position across all eight profiles.
@@ -119,7 +121,22 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
   // Pointer scrub: where the hairline sits on the axis, 0 to 1, or null when idle.
   const [scrub, setScrub] = React.useState<number | null>(null);
   const trackRef = React.useRef<HTMLDivElement>(null);
+  const scrubMarkRef = React.useRef<HTMLDivElement>(null);
   const frame = React.useRef(0);
+  // Last scrub position, to detect the pointer crossing a station or year mark.
+  const lastScrubRef = React.useRef<number | null>(null);
+
+  const obligations = React.useMemo(() => deriveFor(profileOf(facts)), [facts]);
+  const present = React.useMemo(() => new Set(obligations.map((o) => o.id)), [obligations]);
+  const agencyCount = new Set(obligations.map((o) => o.agency)).size;
+  const datedCount = obligations.filter((o) => o.dueDate).length;
+
+  const marks = React.useMemo(() => {
+    const ts = new Set<number>();
+    for (const s of ALL_STATIONS) if (present.has(s.id) && s.dueDate) ts.add(axisT(s.dueDate));
+    for (const m of YEAR_MARKS) ts.add(axisT(m));
+    return [...ts];
+  }, [present]);
 
   function scrubTo(clientX: number) {
     const track = trackRef.current;
@@ -127,22 +144,25 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
     cancelAnimationFrame(frame.current);
     frame.current = requestAnimationFrame(() => {
       const rect = track.getBoundingClientRect();
-      setScrub(Math.min(1, Math.max(0, (clientX - rect.left) / rect.width)));
+      const next = Math.min(1, Math.max(0, (clientX - rect.left) / rect.width));
+      const prev = lastScrubRef.current;
+      if (prev !== null && marks.some((m) => (prev < m) !== (next < m))) {
+        if (!haptic("tick")) pressPulse(scrubMarkRef.current);
+      }
+      lastScrubRef.current = next;
+      setScrub(next);
     });
   }
 
   function endScrub() {
     cancelAnimationFrame(frame.current);
+    lastScrubRef.current = null;
     setScrub(null);
   }
 
-  const obligations = React.useMemo(() => deriveFor(profileOf(facts)), [facts]);
-  const present = React.useMemo(() => new Set(obligations.map((o) => o.id)), [obligations]);
-  const agencyCount = new Set(obligations.map((o) => o.agency)).size;
-  const datedCount = obligations.filter((o) => o.dueDate).length;
-
   function switchFact(key: keyof Facts, value: string, label: string) {
     if (facts[key] === value) return;
+    haptic("tap");
     const next = { ...facts, [key]: value } as Facts;
     setReadout(describeChange(obligations, deriveFor(profileOf(next)), `Switched to ${label}`));
     setFacts(next);
@@ -221,7 +241,7 @@ export function LiveRoute({ headline, lede }: { headline: ReactNode; lede: React
           className="pointer-events-none absolute inset-y-4 left-5 right-5 md:left-[18.5rem] md:right-8"
         >
           {scrub !== null && (
-            <div className="route-scrub absolute inset-y-0 w-px bg-[var(--color-accent)]" style={{ left: `${scrub * 100}%` }}>
+            <div ref={scrubMarkRef} className="route-scrub absolute inset-y-0 w-px bg-[var(--color-accent)]" style={{ left: `${scrub * 100}%` }}>
               <span
                 className={`absolute -top-1 z-20 whitespace-nowrap rounded-full bg-[var(--color-text)] px-2.5 py-1 font-display text-xs tabular-nums text-[var(--color-surface)] ${
                   scrub > 0.8 ? "right-2" : "left-2"

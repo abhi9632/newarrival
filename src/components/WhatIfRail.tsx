@@ -1,6 +1,8 @@
 "use client";
 
 import * as React from "react";
+import { haptic } from "@/lib/haptics";
+import { pressPulse } from "@/lib/pressPulse";
 
 const MIN_OFFSET_MONTHS = -12;
 const MAX_OFFSET_MONTHS = 12;
@@ -34,13 +36,30 @@ export function WhatIfRail({
   onReset,
 }: WhatIfRailProps) {
   const [draftOffset, setDraftOffset] = React.useState(committedOffsetMonths);
+  const rangeRef = React.useRef<HTMLInputElement>(null);
+  const prevOffsetRef = React.useRef(committedOffsetMonths);
 
   React.useEffect(() => {
     setDraftOffset(committedOffsetMonths);
+    prevOffsetRef.current = committedOffsetMonths;
   }, [committedOffsetMonths]);
 
   function commit() {
     onCommit(draftOffset);
+  }
+
+  function handleChange(event: React.ChangeEvent<HTMLInputElement>) {
+    const next = Number(event.target.value);
+    if (next !== prevOffsetRef.current) {
+      if (!haptic("tick")) pressPulse(rangeRef.current);
+      prevOffsetRef.current = next;
+    }
+    setDraftOffset(next);
+  }
+
+  function handleReset() {
+    haptic("success");
+    onReset();
   }
 
   const readoutDate = shiftMonths(courseEndDate, draftOffset);
@@ -62,13 +81,14 @@ export function WhatIfRail({
           New course end date: {readoutDate}
         </label>
         <input
+          ref={rangeRef}
           id="course-end-offset"
           type="range"
           min={MIN_OFFSET_MONTHS}
           max={MAX_OFFSET_MONTHS}
           step={1}
           value={draftOffset}
-          onChange={(event) => setDraftOffset(Number(event.target.value))}
+          onChange={handleChange}
           onPointerUp={commit}
           onKeyUp={commit}
           onBlur={commit}
@@ -79,7 +99,7 @@ export function WhatIfRail({
       <div className="mt-4 flex flex-wrap items-center gap-4">
         <button
           type="button"
-          onClick={onReset}
+          onClick={handleReset}
           disabled={committedOffsetMonths === 0}
           className="affordance rounded-[var(--radius-md)] border border-[var(--color-border)] px-4 py-2 font-body text-sm font-medium text-[var(--color-text)] hover:border-[var(--color-accent)] focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-accent)] disabled:cursor-not-allowed disabled:opacity-50"
         >

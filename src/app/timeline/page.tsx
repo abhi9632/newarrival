@@ -14,6 +14,7 @@ import { diffObligations, summariseCascade } from "@/lib/perturb";
 import { ObligationCard } from "@/components/ObligationCard";
 import { WhatIfRail } from "@/components/WhatIfRail";
 import { SiteHeader } from "@/components/SiteHeader";
+import { haptic } from "@/lib/haptics";
 
 type ViewTransitionCapableDocument = {
   startViewTransition?: (callback: () => void) => { finished: Promise<void> };
@@ -62,7 +63,10 @@ function FactSwitch<T extends string>({
               name={name}
               value={option.value}
               checked={value === option.value}
-              onChange={() => onChange(option.value)}
+              onChange={() => {
+                haptic("tap");
+                onChange(option.value);
+              }}
               className="peer sr-only"
             />
             <span className="affordance block truncate rounded-full px-3 py-2 text-center font-body text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-text)] peer-checked:text-[var(--color-surface)] peer-checked:hover:text-[var(--color-surface)] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-accent)]">

@@ -9,6 +9,7 @@ Anti-reference: a centered blue or purple SaaS hero with a gradient blob, three 
 Type stance: Space Grotesk display for civic geometric warmth rather than corporate Inter, paired with IBM Plex Sans body for institutional clarity at small disclaimer sizes
 Colour world: ink on eucalyptus-washed bone, one burnt terracotta accent carrying the rail and the call to action, never blue or purple
 Motion stance: CSS only, one easing family (--ease-out for entrances, --ease-in-out for on-screen morphs). Landing: the route diagram draws on load and re-routes on fact switches; timeline: the Perturbation cascade. Everything else stays still
+Haptic map: landing route scrubber, `tick` when the pointer crosses a visible station or year mark (`src/components/LiveRoute.tsx` `scrubTo`); landing fact pill and `/timeline` fact switch, `tap` on every change (`switchFact`, `FactSwitch`); `/timeline` course-end-date slider, `tick` per step (`WhatIfRail` `handleChange`); its reset button, `success`; the easter egg firing, `success`. Every event falls back to a 140ms scale pulse (`src/lib/pressPulse.ts`) when `haptic()` returns false on a coarse pointer; toggle taps rely on the existing `.affordance` press-scale instead of a separate pulse
 Concept: This is about the four facts that decide an arrival's obligations; it feels like a transit map because every obligation is a stop on a dated line from arrival
 Signature moment spec (landing, marketing / explanatory, exempt from the 300ms UI cap):
 - Trigger: page load, then any fact pill switch (visa, citizenship, state)
