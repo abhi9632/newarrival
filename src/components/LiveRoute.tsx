@@ -39,6 +39,14 @@ function axisT(iso: string): number {
   return (toUtcDays(iso) - start) / (toUtcDays(AXIS_END) - start);
 }
 
+const ARRIVAL_T = axisT(ARRIVAL);
+
+// A span element starts at arrival and runs to the line's end; this is the scaleX that
+// stops it on a given date.
+function spanScale(iso: string): number {
+  return (axisT(iso) - ARRIVAL_T) / (1 - ARRIVAL_T);
+}
+
 function profileOf(facts: Pick<Profile, "subclass" | "citizenship" | "state">): Profile {
   return { ...facts, arrivalDate: ARRIVAL, courseEndDate: COURSE_END };
 }
@@ -117,12 +125,12 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
 
   return (
     <>
-      <div className="grid gap-10 md:grid-cols-12 md:items-end md:gap-8">
+      <div className="grid gap-7 md:grid-cols-12 md:items-end md:gap-8">
         <div className="md:col-span-7">{intro}</div>
 
-        <div className="flex flex-col gap-3 md:col-span-5">
+        <div className="flex flex-col gap-2.5 md:col-span-5 md:gap-3">
           {FACT_ROWS.map((row) => (
-            <fieldset key={row.key} className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-1 max-[359px]:gap-1.5 md:grid-cols-[6.5rem_1fr]">
+            <fieldset key={row.key} className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-[4.25rem_1fr] max-[359px]:gap-2 md:grid-cols-[6.5rem_1fr]">
               <legend className="float-left font-body text-sm text-[var(--color-muted)]">
                 {row.legend}
               </legend>
@@ -137,7 +145,7 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
                       onChange={() => switchFact(row.key, option.value, option.label)}
                       className="peer sr-only"
                     />
-                    <span className="affordance block whitespace-nowrap rounded-full px-2 py-1.5 text-center md:px-3 font-body text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-text)] peer-checked:bg-[var(--color-text)] peer-checked:text-[var(--color-surface)] peer-checked:hover:text-[var(--color-surface)] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-accent)]">
+                    <span className="affordance block whitespace-nowrap rounded-full px-2 py-1.5 text-center max-[359px]:px-1.5 max-[359px]:text-[13px] md:px-3 font-body text-sm font-medium text-[var(--color-muted)] hover:text-[var(--color-text)] peer-checked:bg-[var(--color-text)] peer-checked:text-[var(--color-surface)] peer-checked:hover:text-[var(--color-surface)] peer-focus-visible:outline peer-focus-visible:outline-2 peer-focus-visible:outline-offset-2 peer-focus-visible:outline-[var(--color-accent)]">
                       {option.label}
                     </span>
                   </label>
@@ -145,16 +153,17 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
               </div>
             </fieldset>
           ))}
-          <div className="grid grid-cols-[5.25rem_1fr] items-center gap-3 max-[359px]:grid-cols-1 max-[359px]:gap-1.5 md:grid-cols-[6.5rem_1fr]">
+          {/* Mobile shows the arrival date on the diagram's axis instead, keeping the line above the fold. */}
+          <div className="hidden grid-cols-[6.5rem_1fr] items-center gap-3 md:grid">
             <span className="font-body text-sm text-[var(--color-muted)]">Arrived</span>
-            <span className="rounded-full border border-dashed border-[var(--color-border)] px-3 py-1.5 text-center font-body text-sm font-medium text-[var(--color-text)]">
+            <span className="rounded-full border border-[var(--color-border)] bg-[var(--color-surface)] px-3 py-1.5 text-center font-body text-sm font-medium text-[var(--color-text)]">
               {shortDate(ARRIVAL)}
             </span>
           </div>
         </div>
       </div>
 
-      <figure className="route mt-12 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 md:px-8">
+      <figure className="route mt-8 md:mt-12 rounded-[var(--radius-lg)] border border-[var(--color-border)] bg-[var(--color-surface)] px-5 pb-6 pt-5 md:px-8">
         <figcaption className="sr-only">
           Obligations across visa, health, tax and tenancy, placed on a dated line from arrival.
         </figcaption>
@@ -164,16 +173,17 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
           <div aria-hidden="true" className="relative h-7">
             <div className="route-axis absolute inset-x-0 bottom-0 h-2" />
             <span
-              className="absolute bottom-3 -translate-x-1/2 font-display text-xs text-[var(--color-accent)]"
-              style={{ left: `${axisT(ARRIVAL) * 100}%` }}
+              className="absolute bottom-3 -ml-1 font-display text-xs text-[var(--color-accent)] md:ml-0 md:-translate-x-1/2"
+              style={{ left: `${ARRIVAL_T * 100}%` }}
             >
-              <span className="md:hidden">Arrive</span>
-              <span className="hidden md:inline">Arrive {shortDate(ARRIVAL)}</span>
+              Arrive {shortDate(ARRIVAL)}
             </span>
             {YEAR_MARKS.map((mark) => (
               <span
                 key={mark}
-                className="absolute bottom-3 -translate-x-1/2 font-display text-xs tabular-nums text-[var(--color-muted)]"
+                className={`absolute bottom-3 -translate-x-1/2 font-display text-xs tabular-nums text-[var(--color-muted)] ${
+                  axisT(mark) < 0.3 ? "hidden md:block" : ""
+                }`}
                 style={{ left: `${axisT(mark) * 100}%` }}
               >
                 {mark.slice(0, 4)}
@@ -193,6 +203,7 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
               .pop();
             const laneStations = ALL_STATIONS.filter((s) => module.ids.includes(s.module));
             const hasStation = laneStations.some((s) => present.has(s.id));
+            const wholeStay = standing.filter((o) => !o.activeUntil).length;
 
             return (
               <li
@@ -220,10 +231,24 @@ export function LiveRoute({ intro }: { intro: ReactNode }) {
 
                 <div className={`relative ${hasStation ? "h-24 md:h-20" : "h-6"}`}>
                   <div className="route-line absolute inset-x-0 top-3 h-0.5 bg-[var(--color-text)]" />
+                  {/* Both spans start at arrival. Solid: conditions that end on a date.
+                      Thin: conditions that hold for the whole stay, run off the line's end. */}
                   <div
-                    className="route-span absolute left-0 right-0 top-[9px] h-2 rounded-full bg-[var(--color-accent)]"
-                    style={{ "--span": until ? axisT(until) : 0 } as CSSProperties}
+                    className="route-span absolute right-0 top-[10.5px] h-[5px] rounded-l-full bg-[var(--color-accent)] opacity-70"
+                    style={{ left: `${ARRIVAL_T * 100}%`, "--span": wholeStay > 0 ? 1 : 0 } as CSSProperties}
                   />
+                  <div
+                    className="route-span absolute right-0 top-[9px] h-2 rounded-full bg-[var(--color-accent)]"
+                    style={{ left: `${ARRIVAL_T * 100}%`, "--span": until ? spanScale(until) : 0 } as CSSProperties}
+                  />
+                  {wholeStay > 0 && (
+                    <span
+                      key={`${module.label}-${wholeStay}`}
+                      className="route-fade absolute right-0 top-5 hidden font-body text-xs text-[var(--color-accent)] md:block"
+                    >
+                      {wholeStay} {wholeStay === 1 ? "condition" : "conditions"} for the whole stay
+                    </span>
+                  )}
                   {until && (
                     <span
                       className="route-fade absolute top-6 hidden -translate-x-full pr-1 font-body text-xs text-[var(--color-accent)] md:block"

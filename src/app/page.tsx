@@ -34,14 +34,14 @@ export default function Home() {
           </a>
         </header>
 
-        <div className="mt-12 md:mt-16">
+        <div className="mt-8 md:mt-16">
           <LiveRoute
             intro={
               <>
                 <h1 className="max-w-[16ch] font-display text-4xl leading-[1.05] tracking-tight text-[var(--color-text)] md:text-6xl">
                   Four facts decide every deadline you have in Australia.
                 </h1>
-                <p className="mt-6 max-w-[46ch] font-body text-lg leading-relaxed text-[var(--color-muted)]">
+                <p className="mt-4 max-w-[46ch] font-body text-lg md:mt-6 leading-relaxed text-[var(--color-muted)]">
                   Visa, citizenship, arrival and state set your obligations across four agencies.
                   Change one and see what moves.
                 </p>
