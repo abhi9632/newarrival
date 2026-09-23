@@ -55,7 +55,8 @@ Structure:
 ```
 
 Numbered, exact clicks. What to say during each. Timing per step. Rule: never demo anything
-not rehearsed 3 times.
+not rehearsed 3 times. The last step before the close is the easter egg from
+`design-system/README.md`: "one more thing", shown, not explained.
 
 ---
 

@@ -93,6 +93,10 @@ polish pass (invisible-detail decisions — easing, hover/press states, interrup
 Sequential after the authority, never loaded alongside it. Full detail and the rest of
 the `emilkowalski/skills` companions: `rules/frontend-design.md`.
 
+After the polish pass, run `rules/craft-and-delight.md`: haptics, one concept-born
+easter egg, no dead gutters, the detail list. None of the design skills enforce these
+on their own.
+
 V1x and later: read `design-system/README.md` and reinforce the Signature. You do not
 re-run Rule 0, but you MAY run a fresh single-authority pass on a screen that looks
 generic. A generic screen is a bug.
@@ -217,6 +221,7 @@ install, do not stall: SKILL.md Phase 2 Step 0 has the plan-without-GSD fallback
 | Any UI work | ONE design authority. T1 also writes Art direction. `rules/frontend-design.md` |
 | About to call a screen done | Visual gate: screenshot 375 + 1280, judge it, log it |
 | Screen looks generic | Fresh single-authority pass on that screen. Do not ship it |
+| Any UI task, after layout is on screen | `emil-design-eng`, then `rules/craft-and-delight.md` (haptics, easter egg, no dead gutters, detail list) |
 | Human names 3 design skills at once | Pick one, say which and why, treat the rest as unread |
 | Plan file missing | Say so, build from CONCEPT.md + AGENTS.md, log the assumption. Do not stall |
 | Finished any unit of work | Commit and push now, do not batch |
@@ -241,6 +246,7 @@ install, do not stall: SKILL.md Phase 2 Step 0 has the plan-without-GSD fallback
 |---|---|
 | Day 1, before any planning | `rules/ideation-sprint.md` (run by `/kickoff`) |
 | Any UI | `rules/frontend-design.md` |
+| D3 craft pass, haptics, easter egg, wide-screen layout | `rules/craft-and-delight.md` |
 | Exploring before building | `rules/brainstorming.md` |
 | Any feature | `rules/development-workflow.md` |
 | Data fetch or form | `rules/data-and-forms.md` |
