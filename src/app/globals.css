@@ -30,6 +30,20 @@
 body {
   background: var(--color-bg);
   color: var(--color-text);
+  -webkit-tap-highlight-color: transparent;
+}
+
+h1, h2, h3 {
+  text-wrap: balance;
+}
+
+p {
+  text-wrap: pretty;
+}
+
+/* Anchored sections land clear of the sticky header. */
+[id] {
+  scroll-margin-top: 4.5rem;
 }
 
 .affordance {
@@ -61,6 +75,11 @@ body {
 .route {
   --route-draw: 900ms;
   --route-lane-gap: 90ms;
+  cursor: grab;
+}
+
+.route[data-scrub="true"] {
+  cursor: grabbing;
 }
 
 .route-axis {

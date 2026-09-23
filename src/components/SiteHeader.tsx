@@ -2,7 +2,7 @@ import Link from "next/link";
 
 // One header for every page, so the inner page reads as the same project. The terracotta
 // hairline along its foot is the page's own route line: it fills as you scroll.
-export function SiteHeader({ current }: { current: "home" | "timeline" }) {
+export function SiteHeader({ current }: { current?: "home" | "timeline" }) {
   return (
     <header className="sticky top-0 z-30 border-b border-[var(--color-border)] bg-[var(--color-bg)]/85 backdrop-blur-md">
       <div className="mx-auto flex h-16 w-full max-w-6xl items-center justify-between px-6 md:px-8">

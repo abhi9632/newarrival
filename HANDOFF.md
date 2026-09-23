@@ -33,7 +33,16 @@ This is the human-action ledger: accounts, dashboard settings, DNS, purchases, A
 anything Claude cannot do itself. Capture items the moment they surface so they can be
 actioned in parallel with the build.
 
-(none)
+- [ ] **Designed favicon and OG image missing.** `src/app/favicon.ico` is still the default
+  Next.js icon, not a designed one; there is no OG image. Per the no-image-asset-generation
+  rule, image prompts only, not files:
+  - Favicon: a small square mark on eucalyptus-washed bone (`#f6f3ec`), one burnt terracotta
+    (`#b5461f`) line with a single circular station dot on it, echoing the route diagram's
+    dated line, no text, legible down to 16px.
+  - OG image (1200x630): the same civic-transit language as the landing route diagram, ink
+    on eucalyptus-washed bone, one terracotta line running left to right with two or three
+    station dots, "NewArrival" set in Space Grotesk top left, a one-line subhead in IBM Plex
+    Sans ("Four facts in, a dated obligation timeline out"), no photography, no gradient blob.
 
 ## Code failures & fixes
 (permanent log, never pruned)
