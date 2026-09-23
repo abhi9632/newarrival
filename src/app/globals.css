@@ -13,6 +13,7 @@
   --color-muted: #635e54;
   --color-border: #ded8c9;
   --color-accent: #b5461f;
+  --color-accent-on-ink: #e58760;
   --color-overdue: #9e2b25;
   --color-due-soon: #b8842a;
   --color-upcoming: #4f6d54;
@@ -160,5 +161,288 @@ body {
   :root {
     --cascade-duration: 0ms;
     --cascade-stagger: 0ms;
+  }
+}
+
+/* ------------------------------------------------------------------ */
+/* Awwwards pass: one motion family, quiet craft around the signature. */
+
+:root {
+  --dur-fast: 180ms;
+  --dur-base: 400ms;
+  --dur-slow: 900ms;
+}
+
+html {
+  scrollbar-color: var(--color-muted) var(--color-bg);
+}
+
+::selection {
+  background: var(--color-accent);
+  color: var(--color-surface);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-accent);
+  outline-offset: 3px;
+}
+
+/* Page progress rides the header as a route line. Decorative, so no fallback needed. */
+.page-progress {
+  transform-origin: left center;
+  transform: scaleX(0);
+}
+
+@supports (animation-timeline: scroll()) {
+  .page-progress {
+    animation: grow-x linear both;
+    animation-timeline: scroll(root block);
+  }
+}
+
+@keyframes grow-x {
+  to {
+    transform: scaleX(1);
+  }
+}
+
+/* Headline lines rise out of a mask on load. Server-rendered, visible if CSS animations never run. */
+.mask-line {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.08em;
+  margin-bottom: -0.08em;
+}
+
+.mask-line > span {
+  display: block;
+  animation: rise var(--dur-slow) var(--ease-out) backwards;
+  animation-delay: calc(var(--i, 0) * 80ms + 60ms);
+}
+
+@keyframes rise {
+  from {
+    transform: translateY(105%);
+  }
+}
+
+.fade-up {
+  animation: fade-up 700ms var(--ease-out) backwards;
+  animation-delay: var(--delay, 0ms);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+/* One scroll reveal, groups only. Without view timelines content simply shows. */
+@supports (animation-timeline: view()) {
+  [data-reveal] {
+    animation: fade-up linear both;
+    animation-timeline: view();
+    animation-range: entry 5% cover 28%;
+  }
+}
+
+/* Link underline that sweeps in from the left and out to the right. */
+.link-sweep {
+  position: relative;
+  text-decoration: none;
+}
+
+.link-sweep::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+.link-sweep:hover::after,
+.link-sweep:focus-visible::after,
+a:hover .link-sweep::after,
+a:focus-visible .link-sweep::after,
+[aria-current="page"] .link-sweep::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.nudge {
+  display: inline-block;
+  transition: transform var(--dur-base) var(--ease-out);
+}
+
+a:hover .nudge,
+a:focus-visible .nudge {
+  transform: translateX(4px);
+}
+
+a:hover .nudge-up,
+a:focus-visible .nudge-up {
+  transform: translate(3px, -3px);
+}
+
+/* Agency rows draw a terracotta rule on hover. */
+.source-row {
+  position: relative;
+}
+
+.source-row::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -1px;
+  height: 2px;
+  background: var(--color-accent);
+  transform: scaleX(0);
+  transform-origin: right;
+  transition: transform 600ms var(--ease-out);
+}
+
+.source-row:hover::after,
+.source-row:focus-visible::after {
+  transform: scaleX(1);
+  transform-origin: left;
+}
+
+.source-row .source-name {
+  transition: transform var(--dur-base) var(--ease-out), color var(--dur-fast) var(--ease-out);
+}
+
+.source-row:hover .source-name,
+.source-row:focus-visible .source-name {
+  transform: translateX(10px);
+  color: var(--color-accent);
+}
+
+/* Hero scrubber: a hairline that follows the pointer over the route. */
+.route-scrub {
+  opacity: 0;
+  transition: opacity var(--dur-fast) var(--ease-out);
+}
+
+.route[data-scrub="true"] .route-scrub {
+  opacity: 1;
+}
+
+.route-station .route-dot {
+  transition: background-color var(--dur-fast) var(--ease-out), border-color var(--dur-fast) var(--ease-out),
+    scale var(--dur-fast) var(--ease-out);
+}
+
+.route-station[data-passed="true"] .route-dot {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  scale: 1.25;
+}
+
+/* Ride the line: scroll is time. Everything reads one progress value, --p. */
+.ride-head {
+  transform: translateX(calc(var(--p, 0) * 100%));
+}
+
+.ride-fill {
+  transform-origin: left center;
+  transform: scaleX(var(--p, 0));
+}
+
+.ride-stop .ride-dot {
+  transition: background-color 240ms var(--ease-out), scale 240ms var(--ease-out),
+    border-color 240ms var(--ease-out);
+}
+
+.ride-stop[data-passed="true"] .ride-dot {
+  background: var(--color-accent);
+  border-color: var(--color-accent);
+  scale: 1.3;
+}
+
+.ride-stop .ride-tag {
+  transition: opacity 300ms var(--ease-out), transform 300ms var(--ease-out);
+}
+
+.ride-stop[data-passed="false"] .ride-tag {
+  opacity: 0.35;
+}
+
+.ride-card {
+  transition: opacity 360ms var(--ease-out), transform 480ms var(--ease-out);
+}
+
+.ride-card[data-active="false"] {
+  opacity: 0;
+  transform: translateY(24px);
+  pointer-events: none;
+}
+
+.ride-card[data-active="false"][data-past="true"] {
+  transform: translateY(-24px);
+}
+
+.ride {
+  height: calc(var(--stops) * 85svh + 100svh);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  /* The ride becomes a static dated list: no sticky scene, no ticking date. */
+  .ride {
+    height: auto;
+  }
+
+  .ride-scene {
+    position: static;
+    height: auto;
+    padding-block: 6rem;
+  }
+
+  .ride-date,
+  .ride-track,
+  .ride-count {
+    display: none;
+  }
+
+  .ride-cards {
+    gap: 2.5rem;
+  }
+
+  .ride-card,
+  .ride-card[data-active="false"] {
+    grid-row: auto;
+    opacity: 1;
+    transform: none;
+    pointer-events: auto;
+    transition: none;
+  }
+
+  .mask-line > span,
+  .fade-up,
+  [data-reveal],
+  .page-progress {
+    animation: none !important;
+  }
+
+  .page-progress {
+    display: none;
+  }
+
+  .link-sweep::after,
+  .nudge,
+  .source-row::after,
+  .source-row .source-name {
+    transition: none;
+  }
+
+  a:hover .nudge,
+  .source-row:hover .source-name {
+    transform: none;
   }
 }

@@ -19,6 +19,23 @@ Signature moment spec (landing, marketing / explanatory, exempt from the 300ms U
 - Reduced motion: no draw or pop; stations and text cross-fade at 150ms, state is identical
 - First 3 seconds at 1280: four terracotta lines drawing across a dated axis beside the headline
 
+### Awwwards pass (2026-09-23, awwwards as the craft authority over the locked D1 system)
+
+Register: civic editorial, kinetic. Palette and type pair unchanged; scale, rhythm and motion rebuilt.
+One signature, three inputs. The route is the only idea; everything else stays quieter.
+- Load: headline lines rise out of a mask (anchor), the route draws (support), labels resolve (detail).
+- Pointer: a hairline scrubber follows the pointer across the diagram, reading out the date under it
+  and filling every station it has passed. Touch: drag on the diagram, vertical scroll stays native.
+- Scroll: "Ride the line", a sticky scene (not a hijack, native scrollbar) where scroll is time: a
+  giant date ticks from arrival to the last stop, a terracotta head travels the line, each stop
+  lights and its card slides in. Progress signal: "Stop n of 5" plus the line itself.
+- Reduced motion: no mask rise, no scrub, no sticky ride; the ride renders as a static dated list.
+- Supporting craft (quiet): page progress as a terracotta route line in the sticky header, one
+  view-driven reveal (24px, once, groups only, content visible without support), link underlines
+  that sweep, arrow nudges, agency rows that draw a terracotta rule on hover, an ink closing band.
+Motion tokens: --dur-fast 180ms, --dur-base 400ms, --dur-slow 900ms; --ease-out expo-style,
+--ease-in-out for travel. One family.
+
 ---
 
 ## Visual gate log
